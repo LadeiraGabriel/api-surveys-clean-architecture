@@ -1,19 +1,13 @@
 export class SignUpController {
   handle (request: any): any {
-    const { name, email } = request
+    const requiredFields = ['name', 'email']
+    for (const field of requiredFields) {
+      if (!request[field]) {
+        return {
+          statusCode: 400,
+          body: new Error(`Missing param: ${field}`)
 
-    if (!name) {
-      return {
-        statusCode: 400,
-        body: new Error('Missing param: name')
-
-      }
-    }
-
-    if (!email) {
-      return {
-        statusCode: 400,
-        body: new Error('Missing param: email')
+        }
       }
     }
   }
