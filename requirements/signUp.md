@@ -6,11 +6,11 @@
 ### 2. 🚫 validar os campos de name, e-mail, password e password-confimation.
 ### 3. 🚫 verificar se o e-mail é  valido.
 ### 4. 🚫 verica se ja existe uma conta com o email apresentado.
-### 3. 🚫 comparar password com password-confirmation.
-### 5. 🚫 transformar a senha em uma hash.
-### 6. 🚫 salvar os dados corretos no banco de dados com a senha encriptada.
-### 7. 🚫 cria o token de acesso para o novo usuário.   
-### 8. 🚫 retonar 201 token de acesso e nome do usuário.
+### 5. 🚫 comparar password com password-confirmation.
+### 6. 🚫 transformar a senha em uma hash.
+### 7. 🚫 salvar os dados corretos no banco de dados com a senha encriptada.
+### 8. 🚫 cria o token de acesso para o novo usuário.   
+### 9. 🚫 retonar 201 token de acesso e nome do usuário.
 <br/>
 
 ## Exceções
