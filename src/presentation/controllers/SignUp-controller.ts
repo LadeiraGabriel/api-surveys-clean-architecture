@@ -1,6 +1,8 @@
+import type { HttpResponse } from '../protocols/http'
+
 export class SignUpController {
-  handle (request: any): any {
-    const requiredFields = ['name', 'email']
+  handle (request: any): HttpResponse {
+    const requiredFields = ['name', 'email', 'password', 'passwordConfirmation']
     for (const field of requiredFields) {
       if (!request[field]) {
         return {
