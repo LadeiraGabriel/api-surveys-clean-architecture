@@ -5,7 +5,7 @@ export class SignUpController {
     if (!name) {
       return {
         statusCode: 400,
-        body: new Error('Missing param error: name')
+        body: new Error('Missing param: name')
 
       }
     }
@@ -13,7 +13,7 @@ export class SignUpController {
     if (!email) {
       return {
         statusCode: 400,
-        body: new Error('Missing param error: email')
+        body: new Error('Missing param: email')
       }
     }
   }
