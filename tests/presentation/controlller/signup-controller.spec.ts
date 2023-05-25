@@ -1,6 +1,6 @@
 import { SignUpController } from '../../../src/presentation/controllers/SignUp-controller'
 import { InvalidParamError, MissingParamError, ServerError } from '../../../src/presentation/errors'
-import type { EmailValitor } from '../../../src/presentation/protocols/'
+import type { EmailValitor } from '../../../src/validations/protocols'
 import { makeEmailValitorStub } from '../mocks/email-validator-stub'
 
 type SutType = {
