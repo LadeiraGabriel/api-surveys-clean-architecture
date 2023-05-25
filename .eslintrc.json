@@ -10,5 +10,6 @@
         "@typescript-eslint/no-namespace": "off",
         "@typescript-eslint/method-signature-style": "off",
         "@typescript-eslint/return-await": "off"
+       
     }
 }
