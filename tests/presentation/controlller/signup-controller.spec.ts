@@ -1,7 +1,6 @@
 import { SignUpController } from '../../../src/presentation/controllers/SignUp-controller'
-import { InvalidParamError } from '../../../src/presentation/errors/Invalid-param-error'
-import { MissingParamError } from '../../../src/presentation/errors/Missing-param-error'
-import type { EmailValitor } from '../../../src/presentation/protocols/email-validator'
+import { InvalidParamError, MissingParamError, ServerError } from '../../../src/presentation/errors'
+import type { EmailValitor } from '../../../src/presentation/protocols/'
 
 type SutType = {
   sut: SignUpController
@@ -110,6 +109,6 @@ describe('SignUp Controller', () => {
     })
     const httpResponse = sut.handle(request)
     expect(httpResponse.statusCode).toEqual(500)
-    expect(httpResponse.body).toEqual(new Error())
+    expect(httpResponse.body).toEqual(new ServerError())
   })
 })
