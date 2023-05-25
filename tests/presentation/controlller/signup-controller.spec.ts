@@ -1,4 +1,6 @@
 import { SignUpController } from '../../../src/presentation/controllers/SignUp-controller'
+import { MissingParamError } from '../../../src/presentation/errors/Missing-param-error'
+import { badRequest } from '../../../src/presentation/helpers/http-helper'
 describe('SignUp Controller', () => {
   test('Should return 400 if name not is provided', () => {
     const request = {
@@ -8,8 +10,7 @@ describe('SignUp Controller', () => {
     }
     const sut = new SignUpController()
     const httpResponse = sut.handle(request)
-    expect(httpResponse.statusCode).toEqual(400)
-    expect(httpResponse.body).toEqual(new Error('Missing param: name'))
+    expect(httpResponse).toEqual(badRequest(new MissingParamError('name')))
   })
 
   test('Should return 400 if email not is provided', () => {
@@ -20,8 +21,7 @@ describe('SignUp Controller', () => {
     }
     const sut = new SignUpController()
     const httpResponse = sut.handle(request)
-    expect(httpResponse.statusCode).toEqual(400)
-    expect(httpResponse.body).toEqual(new Error('Missing param: email'))
+    expect(httpResponse).toEqual(badRequest(new MissingParamError('email')))
   })
 
   test('Should return 400 if password not is provided', () => {
@@ -32,8 +32,7 @@ describe('SignUp Controller', () => {
     }
     const sut = new SignUpController()
     const httpResponse = sut.handle(request)
-    expect(httpResponse.statusCode).toEqual(400)
-    expect(httpResponse.body).toEqual(new Error('Missing param: password'))
+    expect(httpResponse).toEqual(badRequest(new MissingParamError('password')))
   })
 
   test('Should return 400 if password not is provided', () => {
@@ -44,7 +43,6 @@ describe('SignUp Controller', () => {
     }
     const sut = new SignUpController()
     const httpResponse = sut.handle(request)
-    expect(httpResponse.statusCode).toEqual(400)
-    expect(httpResponse.body).toEqual(new Error('Missing param: passwordConfirmation'))
+    expect(httpResponse).toEqual(badRequest(new MissingParamError('passwordConfirmation')))
   })
 })
