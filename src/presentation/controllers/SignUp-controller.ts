@@ -1,4 +1,5 @@
-import type { AddAccount } from './../../domain/account/use-cases/add-account'
+import type { Authentication } from './../../domain/use-cases/Authentication'
+import type { AddAccount } from '../../domain/use-cases/account/add-account'
 import { MissingParamError, InvalidParamError } from '../errors'
 import { badRequest, forbidden, serverError } from '../helpers/http-helper'
 import type { Controller, HttpResponse } from '../protocols'
@@ -8,7 +9,8 @@ import { EmailInUsedError } from '../errors/Email-in-used-error'
 export class SignUpController implements Controller {
   constructor (
     private readonly emailValidator: EmailValitor,
-    private readonly addAccount: AddAccount
+    private readonly addAccount: AddAccount,
+    private readonly authantication: Authentication
   ) { }
 
   async handle (request: any): Promise<HttpResponse> {
@@ -41,8 +43,13 @@ export class SignUpController implements Controller {
         return forbidden(new EmailInUsedError())
       }
 
+      await this.authantication.auth({
+        email,
+        password
+      })
+
       return {
-        statusCode: 201,
+        statusCode: 200,
         body: {
           name,
           acessToken: 'any_token'
