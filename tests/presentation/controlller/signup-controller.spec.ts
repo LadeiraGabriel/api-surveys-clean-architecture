@@ -154,4 +154,21 @@ describe('SignUp Controller', () => {
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.body).toEqual(new ServerError())
   })
+
+  test('Should return 403 if addAccount is false', async () => {
+    const { sut, addAccountStub } = makeSut()
+    const request = {
+      name: 'any_name',
+      email: 'any_email',
+      password: 'any_password',
+      passwordConfirmation: 'any_password'
+    }
+
+    jest.spyOn(addAccountStub, 'add').mockImplementationOnce(async () => {
+      return Promise.resolve(false)
+    })
+    const httpResponse = await sut.handle(request)
+    expect(httpResponse.statusCode).toBe(403)
+    expect(httpResponse.body).toEqual(new Error())
+  })
 })
