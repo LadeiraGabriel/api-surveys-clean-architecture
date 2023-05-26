@@ -1,4 +1,4 @@
-import type { AddAccount } from '../../../src/domain/account/use-cases/add-account'
+import type { AddAccount } from '../../../../src/domain/account/use-cases/add-account'
 
 export const mockAddAccountStub = (): AddAccount => {
   class AddAccountStub implements AddAccount {
