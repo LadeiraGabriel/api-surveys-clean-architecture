@@ -1,10 +1,12 @@
-import type { AddAccount } from '../../../src/domain/account/use-cases/add-account'
+import type { Authentication } from '../../../src/domain/use-cases/Authentication'
+import type { AddAccount } from '../../../src/domain/use-cases/account/add-account'
 import { SignUpController } from '../../../src/presentation/controllers/SignUp-controller'
 import { InvalidParamError, MissingParamError, ServerError } from '../../../src/presentation/errors'
 import { EmailInUsedError } from '../../../src/presentation/errors/Email-in-used-error'
 import type { EmailValitor } from '../../../src/validations/protocols'
 import { mockAddAccountStub } from '../mocks/account/add-account-stub'
-import { mockEmailValitorStub } from '../mocks/email-validator-stub'
+import { mockAuthenticationStub } from '../mocks/mock-authentication'
+import { mockEmailValitorStub } from '../mocks/validation/email-validator-stub'
 
 type mockeFieldsAccount = {
   name: string
@@ -25,16 +27,19 @@ type SutType = {
   sut: SignUpController
   emailValitorStub: EmailValitor
   addAccountStub: AddAccount
+  authentication: Authentication
 }
 
 const makeSut = (): SutType => {
   const emailValitorStub = mockEmailValitorStub()
   const addAccountStub = mockAddAccountStub()
-  const sut = new SignUpController(emailValitorStub, addAccountStub)
+  const authentication = mockAuthenticationStub()
+  const sut = new SignUpController(emailValitorStub, addAccountStub, authentication)
   return {
     sut,
     emailValitorStub,
-    addAccountStub
+    addAccountStub,
+    authentication
   }
 }
 describe('SignUp Controller', () => {
@@ -143,7 +148,15 @@ describe('SignUp Controller', () => {
     expect(httpResponse.body).toEqual(new EmailInUsedError())
   })
 
-  test('Should return 201 on success', async () => {
+  test('Should call Authantication with correct values', async () => {
+    const { sut, authentication } = makeSut()
+    const request = mockFakeRequest()
+    const authApy = jest.spyOn(authentication, 'auth')
+    await sut.handle(request)
+    expect(authApy).toHaveBeenCalledWith({ email: 'any_email', password: 'any_password' })
+  })
+
+  test('Should return 200 on success', async () => {
     const { sut } = makeSut()
     const request = {
       name: 'any_name',
@@ -152,7 +165,7 @@ describe('SignUp Controller', () => {
       passwordConfirmation: 'any_password'
     }
     const httpResponse = await sut.handle(request)
-    expect(httpResponse.statusCode).toBe(201)
+    expect(httpResponse.statusCode).toBe(200)
     expect(httpResponse.body).toEqual({
       name: 'any_name',
       acessToken: 'any_token'
