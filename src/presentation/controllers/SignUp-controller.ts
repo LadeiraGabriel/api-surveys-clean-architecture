@@ -30,11 +30,18 @@ export class SignUpController implements Controller {
           body: new InvalidParamError('passwordConfirmation')
         }
       }
-      await this.addAccount.add({
+      const accountValid = await this.addAccount.add({
         name,
         email,
         password
       })
+
+      if (!accountValid) {
+        return {
+          statusCode: 403,
+          body: new Error()
+        }
+      }
     } catch (error) {
       return serverError()
     }
