@@ -1,6 +1,7 @@
 import type { AddAccount } from '../../../src/domain/account/use-cases/add-account'
 import { SignUpController } from '../../../src/presentation/controllers/SignUp-controller'
 import { InvalidParamError, MissingParamError, ServerError } from '../../../src/presentation/errors'
+import { EmailInUsedError } from '../../../src/presentation/errors/Email-in-used-error'
 import type { EmailValitor } from '../../../src/validations/protocols'
 import { mockAddAccountStub } from '../mocks/add-account-stub'
 import { mockEmailValitorStub } from '../mocks/email-validator-stub'
@@ -169,6 +170,6 @@ describe('SignUp Controller', () => {
     })
     const httpResponse = await sut.handle(request)
     expect(httpResponse.statusCode).toBe(403)
-    expect(httpResponse.body).toEqual(new Error())
+    expect(httpResponse.body).toEqual(new EmailInUsedError())
   })
 })

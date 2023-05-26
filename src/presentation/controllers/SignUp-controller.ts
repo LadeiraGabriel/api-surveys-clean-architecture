@@ -1,8 +1,9 @@
 import type { AddAccount } from './../../domain/account/use-cases/add-account'
 import { MissingParamError, InvalidParamError } from '../errors'
-import { badRequest, serverError } from '../helpers/http-helper'
+import { badRequest, forbidden, serverError } from '../helpers/http-helper'
 import type { Controller, HttpResponse } from '../protocols'
 import type { EmailValitor } from '../../validations/protocols'
+import { EmailInUsedError } from '../errors/Email-in-used-error'
 
 export class SignUpController implements Controller {
   constructor (
@@ -37,10 +38,7 @@ export class SignUpController implements Controller {
       })
 
       if (!accountValid) {
-        return {
-          statusCode: 403,
-          body: new Error()
-        }
+        return forbidden(new EmailInUsedError())
       }
     } catch (error) {
       return serverError()
