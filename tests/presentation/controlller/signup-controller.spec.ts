@@ -142,4 +142,20 @@ describe('SignUp Controller', () => {
     expect(httpResponse.statusCode).toBe(403)
     expect(httpResponse.body).toEqual(new EmailInUsedError())
   })
+
+  test('Should return 201 on success', async () => {
+    const { sut } = makeSut()
+    const request = {
+      name: 'any_name',
+      email: 'any_email',
+      password: 'any_password',
+      passwordConfirmation: 'any_password'
+    }
+    const httpResponse = await sut.handle(request)
+    expect(httpResponse.statusCode).toBe(201)
+    expect(httpResponse.body).toEqual({
+      name: 'any_name',
+      acessToken: 'any_token'
+    })
+  })
 })
