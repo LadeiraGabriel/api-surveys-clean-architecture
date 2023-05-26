@@ -40,6 +40,14 @@ export class SignUpController implements Controller {
       if (!accountValid) {
         return forbidden(new EmailInUsedError())
       }
+
+      return {
+        statusCode: 201,
+        body: {
+          name,
+          acessToken: 'any_token'
+        }
+      }
     } catch (error) {
       return serverError()
     }
