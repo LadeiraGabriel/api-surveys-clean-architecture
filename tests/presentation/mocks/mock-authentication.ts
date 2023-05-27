@@ -5,7 +5,7 @@ export const mockAuthenticationStub = (): Authentication => {
     async auth (data: Authentication.Params): Promise<Authentication.Result> {
       return Promise.resolve({
         name: 'any_name',
-        token: 'any_token'
+        acessToken: 'any_token'
       })
     }
   }
