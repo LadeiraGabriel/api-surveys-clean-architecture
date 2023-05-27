@@ -1,7 +1,7 @@
 import type { Authentication } from './../../domain/use-cases/Authentication'
 import type { AddAccount } from '../../domain/use-cases/account/add-account'
 import { MissingParamError, InvalidParamError } from '../errors'
-import { badRequest, forbidden, serverError } from '../helpers/http-helper'
+import { badRequest, forbidden, ok, serverError } from '../helpers/http-helper'
 import type { Controller, HttpResponse } from '../protocols'
 import type { EmailValitor } from '../../validations/protocols'
 import { EmailInUsedError } from '../errors/Email-in-used-error'
@@ -47,11 +47,7 @@ export class SignUpController implements Controller {
         email,
         password
       })
-
-      return {
-        statusCode: 200,
-        body: userAcess
-      }
+      return ok(userAcess)
     } catch (error) {
       return serverError()
     }
