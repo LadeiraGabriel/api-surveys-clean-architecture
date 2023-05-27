@@ -156,6 +156,17 @@ describe('SignUp Controller', () => {
     expect(authApy).toHaveBeenCalledWith({ email: 'any_email', password: 'any_password' })
   })
 
+  test('Should return 500 if Authantication throws', async () => {
+    const { sut, authentication } = makeSut()
+    const request = mockFakeRequest()
+    jest.spyOn(authentication, 'auth').mockImplementation(async () => {
+      return Promise.reject(new Error())
+    })
+    const httpResponse = await sut.handle(request)
+    expect(httpResponse.statusCode).toBe(500)
+    expect(httpResponse.body).toEqual(new ServerError())
+  })
+
   test('Should return 200 on success', async () => {
     const { sut } = makeSut()
     const request = {
