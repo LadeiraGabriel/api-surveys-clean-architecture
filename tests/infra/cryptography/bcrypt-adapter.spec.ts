@@ -25,4 +25,12 @@ describe('Bcrypt Adapter', () => {
     const promise = sut.hash(value)
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return a hash success', async () => {
+    const salt = 12
+    const value = 'any_value'
+    const sut = new BcryptAdapter(salt)
+    const result = await sut.hash(value)
+    expect(result).toEqual('any_hash')
+  })
 })
