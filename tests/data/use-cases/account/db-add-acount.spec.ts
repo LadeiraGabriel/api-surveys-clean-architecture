@@ -52,4 +52,12 @@ describe('Db Add Account', () => {
     const promise = sut.add(account)
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return false if addAccountRepository return false', async () => {
+    const account = mockFakeAccount()
+    const { sut, addAccountRepositoryStub } = makeSut()
+    jest.spyOn(addAccountRepositoryStub, 'add').mockReturnValueOnce(Promise.resolve(false))
+    const result = await sut.add(account)
+    expect(result).toBeFalsy()
+  })
 })
