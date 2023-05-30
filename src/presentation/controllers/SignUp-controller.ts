@@ -15,7 +15,12 @@ export class SignUpController implements Controller {
 
   async handle (request: any): Promise<HttpResponse> {
     try {
-      const requiredFields = ['name', 'email', 'password', 'passwordConfirmation']
+      const requiredFields = [
+        'name',
+        'email',
+        'password',
+        'passwordConfirmation'
+      ]
       const { name, email, password, passwordConfirmation } = request
       for (const field of requiredFields) {
         if (!request[field]) {
