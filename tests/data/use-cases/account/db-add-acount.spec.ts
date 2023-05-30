@@ -60,4 +60,10 @@ describe('Db Add Account', () => {
     const result = await sut.add(account)
     expect(result).toBeFalsy()
   })
+  test('Should return true on success', async () => {
+    const account = mockFakeAccount()
+    const { sut } = makeSut()
+    const result = await sut.add(account)
+    expect(result).toBeTruthy()
+  })
 })
