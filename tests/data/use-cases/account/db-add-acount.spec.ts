@@ -44,4 +44,12 @@ describe('Db Add Account', () => {
     await sut.add(account)
     expect(addSpy).toHaveBeenCalledWith({ ...account, password: 'any_hash' })
   })
+
+  test('Should throw if addAccountRepository throw', async () => {
+    const account = mockFakeAccount()
+    const { sut, addAccountRepositoryStub } = makeSut()
+    jest.spyOn(addAccountRepositoryStub, 'add').mockReturnValueOnce(Promise.reject(new Error()))
+    const promise = sut.add(account)
+    await expect(promise).rejects.toThrow()
+  })
 })
