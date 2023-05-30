@@ -1,18 +1,22 @@
 import type { Hasher } from '../../../../src/data/protocols/cryptography/Hasher'
+import type { AddAccountRepository } from '../../../../src/data/protocols/db/add-account-repository'
 import { DbAddAccount } from '../../../../src/data/use-cases/db-add-acount'
-import { HasherStub, mockFakeAccount } from '../../mocks/mocks-cryptography'
+import { AddAccountRepositoryStub, HasherStub, mockFakeAccount } from '../../mocks/mocks-cryptography'
 
 type SutType = {
   sut: DbAddAccount
   hasherStub: Hasher
+  addAccountRepositoryStub: AddAccountRepository
 }
 
 const makeSut = (): SutType => {
   const hasherStub = new HasherStub()
-  const sut = new DbAddAccount(hasherStub)
+  const addAccountRepositoryStub = new AddAccountRepositoryStub()
+  const sut = new DbAddAccount(hasherStub, addAccountRepositoryStub)
   return {
     sut,
-    hasherStub
+    hasherStub,
+    addAccountRepositoryStub
   }
 }
 
@@ -31,5 +35,13 @@ describe('Db Add Account', () => {
     jest.spyOn(hasherStub, 'hash').mockReturnValueOnce(Promise.reject(new Error()))
     const promise = sut.add(account)
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should call addAccountRepository with correct values', async () => {
+    const account = mockFakeAccount()
+    const { sut, addAccountRepositoryStub } = makeSut()
+    const addSpy = jest.spyOn(addAccountRepositoryStub, 'add')
+    await sut.add(account)
+    expect(addSpy).toHaveBeenCalledWith({ ...account, password: 'any_hash' })
   })
 })
