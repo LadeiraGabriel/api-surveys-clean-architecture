@@ -6,10 +6,10 @@ export class DbAddAccount implements AddAccount {
   constructor (private readonly hasher: Hasher, private readonly addAccountRepository: AddAccountRepository) { }
   async add (account: AddAccount.Params): Promise<AddAccount.Result> {
     const passwordHashed = await this.hasher.hash(account.password)
-    await this.addAccountRepository.add({
+    const result = await this.addAccountRepository.add({
       ...account,
       password: passwordHashed
     })
-    return Promise.resolve(true)
+    return result
   }
 }
