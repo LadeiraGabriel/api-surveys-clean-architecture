@@ -1,4 +1,4 @@
-import type { AddAccountRepository } from './../protocols/db/add-account-repository'
+import type { AddAccountRepository } from '../protocols/db/account/add-account-repository'
 import type { AddAccount } from '../../domain/use-cases/account/add-account'
 import type { Hasher } from '../protocols/cryptography/Hasher'
 

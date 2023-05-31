@@ -1,5 +1,5 @@
 import type { Hasher } from '../../../src/data/protocols/cryptography/Hasher'
-import type { AddAccountRepository } from '../../../src/data/protocols/db/add-account-repository'
+import type { AddAccountRepository } from '../../../src/data/protocols/db/account/add-account-repository'
 import type { AddAccount } from '../../../src/domain/use-cases/account/add-account'
 
 export const mockFakeAccount = (): AddAccount.Params => ({
