@@ -1,7 +1,11 @@
 import { AccountPrismaRepository } from '../../../../src/infra/db/prisma/account-prisma-repository'
 import { prismaClientHelper } from '../../../../src/infra/helpers/prisma-client-helper'
 
-beforeAll(async () => {
+beforeEach(async () => {
+  await prismaClientHelper.account.deleteMany({})
+})
+
+afterEach(async () => {
   await prismaClientHelper.account.deleteMany({})
 })
 describe('Account Prisma Repository', () => {
@@ -21,7 +25,6 @@ describe('Account Prisma Repository', () => {
       })
 
       const result = {
-        id: 'any_id',
         name: 'any_name',
         email: 'any_email',
         password: '$2b$12$0.L9KbPTZtGFz6C5kTpiN.MT8HmTyqpPMfAXxZi5CP9uGuWT45Upu'
@@ -39,6 +42,12 @@ describe('Account Prisma Repository', () => {
       expect(prismaSpy).toHaveBeenCalledWith({
         where: { email: 'any_email' }
       })
+    })
+
+    test('Should return false if FindUnique return null', async () => {
+      const sut = new AccountPrismaRepository()
+      const result = await sut.checkByEmail('any_email')
+      expect(result).toBeFalsy()
     })
   })
 })
