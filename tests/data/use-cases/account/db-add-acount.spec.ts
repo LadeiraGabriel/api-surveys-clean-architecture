@@ -1,5 +1,5 @@
 import type { Hasher } from '../../../../src/data/protocols/cryptography/Hasher'
-import type { AddAccountRepository } from '../../../../src/data/protocols/db/add-account-repository'
+import type { AddAccountRepository } from '../../../../src/data/protocols/db/account/add-account-repository'
 import { DbAddAccount } from '../../../../src/data/use-cases/db-add-acount'
 import { AddAccountRepositoryStub, HasherStub, mockFakeAccount } from '../../mocks/mocks-cryptography'
 
