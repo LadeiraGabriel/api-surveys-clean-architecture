@@ -3,11 +3,11 @@ import { prismaClientHelper } from '../../../../src/infra/helpers/prisma-client-
 
 export class AccountPrismaRepository implements CheckAccounByEmailRepository {
   async checkByEmail (email: CheckAccounByEmailRepository.Params): Promise<CheckAccounByEmailRepository.Result> {
-    await prismaClientHelper.account.findUnique({
+    const findAccount = await prismaClientHelper.account.findUnique({
       where: {
         email
       }
     })
-    return Promise.resolve(true)
+    return findAccount !== null
   }
 }
