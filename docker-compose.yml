@@ -1,0 +1,22 @@
+version: '3'
+
+
+services:
+  db_test:
+    container_name: db_test
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+        PGDATABASE: db_test
+        PGUSER: gabriel
+        PGPASSWORD: 123456
+        PGPORT: 5432
+        POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - data:/var/lib/postgresql/data
+
+volumes:
+   data:
+
