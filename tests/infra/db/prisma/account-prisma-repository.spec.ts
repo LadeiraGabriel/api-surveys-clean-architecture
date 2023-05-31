@@ -44,10 +44,23 @@ describe('Account Prisma Repository', () => {
       })
     })
 
-    test('Should return false if FindUnique return null', async () => {
+    test('Should return false if FindUnique not return account', async () => {
       const sut = new AccountPrismaRepository()
       const result = await sut.checkByEmail('any_email')
       expect(result).toBeFalsy()
+    })
+
+    test('Should return true if prisma return a account', async () => {
+      await prismaClientHelper.account.create({
+        data: {
+          name: 'any_name',
+          email: 'any_email',
+          password: '$2b$12$0.L9KbPTZtGFz6C5kTpiN.MT8HmTyqpPMfAXxZi5CP9uGuWT45Upu'
+        }
+      })
+      const sut = new AccountPrismaRepository()
+      const result = await sut.checkByEmail('any_email')
+      expect(result).toBeTruthy()
     })
   })
 })
