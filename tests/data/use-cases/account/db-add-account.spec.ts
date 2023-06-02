@@ -42,6 +42,14 @@ describe('Db Add Account', () => {
       const result = await sut.add(account)
       expect(result).toBeFalsy()
     })
+
+    test('Should throws if checkAccountByEmailRepository throws', async () => {
+      const account = mockFakeAccount()
+      const { sut, checkAccounByEmailRepositoryStub } = makeSut()
+      jest.spyOn(checkAccounByEmailRepositoryStub, 'checkByEmail').mockReturnValueOnce(Promise.reject(new Error()))
+      const promise = sut.add(account)
+      await expect(promise).rejects.toThrow()
+    })
   })
   describe('Hasher', () => {
     test('Should call Hasher with correct value', async () => {
