@@ -14,7 +14,7 @@ const makeSut = (): AccountPrismaRepository => {
   return new AccountPrismaRepository()
 }
 describe('Account Prisma Repository', () => {
-  describe('check account by email', () => {
+  describe('check account by email repository', () => {
     test('Should connect to the database create a user and return it through findUnique', async () => {
       const result = await makeCreateAccount()
       const account = await prismaClientHelper.account.findUnique({ where: { email: 'any_email' } })
@@ -44,6 +44,20 @@ describe('Account Prisma Repository', () => {
       const sut = makeSut()
       const result = await sut.checkByEmail('any_email')
       expect(result).toBeTruthy()
+    })
+  })
+
+  describe('add account repository', () => {
+    test('Should call create with correct values', async () => {
+      const sut = makeSut()
+      const account = {
+        name: 'any_name',
+        email: 'any_email',
+        password: '$2b$12$0.L9KbPTZtGFz6C5kTpiN.MT8HmTyqpPMfAXxZi5CP9uGuWT45Upu'
+      }
+      const createSpy = jest.spyOn(prismaClientHelper.account, 'create')
+      await sut.add(account)
+      expect(createSpy).toHaveBeenCalledWith({ data: account })
     })
   })
 })
