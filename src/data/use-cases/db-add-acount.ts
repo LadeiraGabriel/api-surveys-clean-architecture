@@ -6,7 +6,10 @@ import type { Hasher } from '../protocols/cryptography/Hasher'
 export class DbAddAccount implements AddAccount {
   constructor (private readonly hasher: Hasher, private readonly addAccountRepository: AddAccountRepository, private readonly checkAccounByEmailRepository: CheckAccounByEmailRepository) { }
   async add (account: AddAccount.Params): Promise<AddAccount.Result> {
-    await this.checkAccounByEmailRepository.checkByEmail(account.email)
+    const checkByEmail = await this.checkAccounByEmailRepository.checkByEmail(account.email)
+    if (!checkByEmail) {
+      return false
+    }
     const passwordHashed = await this.hasher.hash(account.password)
     const result = await this.addAccountRepository.add({
       ...account,
