@@ -1,9 +1,9 @@
-import type { CheckAccounByEmailRepository } from './../../../../src/data/protocols/db/account/check-account-by-email-repository'
+import type { CheckAccounByEmailRepository } from '../../../../src/data/protocols/db/account/check-account-by-email-repository'
 import type { Hasher } from '../../../../src/data/protocols/cryptography/Hasher'
 import type { AddAccountRepository } from '../../../../src/data/protocols/db/account/add-account-repository'
 import { DbAddAccount } from '../../../../src/data/use-cases/db-add-acount'
-import { AddAccountRepositoryStub, HasherStub, mockFakeAccount } from '../../mocks/mocks-cryptography'
-import { CheckAccounByEmailRepositoryStub } from '../../mocks/mock-db-account'
+import { HasherStub, mockFakeAccount } from '../../mocks/mock-cryptography'
+import { AddAccountRepositoryStub, CheckAccounByEmailRepositoryStub } from '../../mocks/mock-db-account'
 
 type SutType = {
   sut: DbAddAccount
