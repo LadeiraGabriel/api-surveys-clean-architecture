@@ -73,5 +73,16 @@ describe('Account Prisma Repository', () => {
       const result = await sut.add(account)
       expect(result).toBeFalsy()
     })
+
+    test('Should return true on sucess', async () => {
+      const sut = makeSut()
+      const account = {
+        name: 'any_name',
+        email: 'any_email',
+        password: '$2b$12$0.L9KbPTZtGFz6C5kTpiN.MT8HmTyqpPMfAXxZi5CP9uGuWT45Upu'
+      }
+      const result = await sut.add(account)
+      expect(result).toBeTruthy()
+    })
   })
 })
