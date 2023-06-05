@@ -59,5 +59,19 @@ describe('Account Prisma Repository', () => {
       await sut.add(account)
       expect(createSpy).toHaveBeenCalledWith({ data: account })
     })
+
+    test('Should return false if create return false', async () => {
+      const sut = makeSut()
+      const account = {
+        name: 'any_name',
+        email: 'any_email',
+        password: '$2b$12$0.L9KbPTZtGFz6C5kTpiN.MT8HmTyqpPMfAXxZi5CP9uGuWT45Upu'
+      }
+      jest.spyOn(prismaClientHelper.account, 'create').mockImplementationOnce(() => {
+        return null
+      })
+      const result = await sut.add(account)
+      expect(result).toBeFalsy()
+    })
   })
 })
