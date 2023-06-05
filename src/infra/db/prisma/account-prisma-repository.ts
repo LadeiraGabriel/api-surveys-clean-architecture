@@ -13,9 +13,9 @@ export class AccountPrismaRepository implements CheckAccounByEmailRepository, Ad
   }
 
   async add (account: AddAccountRepository.Params): Promise<AddAccountRepository.Result> {
-    await prismaClientHelper.account.create({
+    const result = await prismaClientHelper.account.create({
       data: account
     })
-    return Promise.resolve(true)
+    return result !== null
   }
 }
