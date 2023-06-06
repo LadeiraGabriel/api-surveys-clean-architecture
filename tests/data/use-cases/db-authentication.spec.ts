@@ -51,6 +51,17 @@ describe('Db Authentication', () => {
     await expect(promise).rejects.toThrowError()
   })
 
+  test('Should return null if loadAccountByEmailRepostirory return null', async () => {
+    const requiredFields = {
+      email: 'any_email',
+      password: 'any_password'
+    }
+    const { sut, loadAccountByEmailRepositoryStub } = makeSut()
+    jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail').mockReturnValueOnce(Promise.resolve(null))
+    const result = await sut.auth(requiredFields)
+    expect(result).toBeNull()
+  })
+
   test('Should call hashCompare with correct values', async () => {
     const requiredFields = {
       email: 'any_email',
