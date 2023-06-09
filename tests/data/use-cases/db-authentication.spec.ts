@@ -146,4 +146,17 @@ describe('Db Authentication', () => {
     const promise = sut.auth(requiredFields)
     await expect(promise).rejects.toThrowError()
   })
+
+  test('Should return name and token on success', async () => {
+    const requiredFields = {
+      email: 'any_email',
+      password: 'any_password'
+    }
+    const { sut } = makeSut()
+    const result = await sut.auth(requiredFields)
+    expect(result).toEqual({
+      name: 'any_name',
+      acessToken: 'any_token'
+    })
+  })
 })
