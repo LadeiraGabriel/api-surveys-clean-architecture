@@ -20,7 +20,10 @@ export class DbAthentication implements Authentication {
       if (compareMatch) {
         const token = await this.encrypter.encrypt(account.id)
         await this.updateAcessTokenRepository.update(token)
-        return Promise.resolve(null)
+        return {
+          name: account.name,
+          acessToken: token
+        }
       }
       return null
     }
