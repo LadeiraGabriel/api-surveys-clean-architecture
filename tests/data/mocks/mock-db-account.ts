@@ -1,6 +1,7 @@
 import type { CheckAccounByEmailRepository } from '../../../src/data/protocols/db/account/check-account-by-email-repository'
 import type { AddAccountRepository } from '../../../src/data/protocols/db/account/add-account-repository'
 import type { LoadAccountByEmailRepository } from '../../../src/data/protocols/db/account/load-by-email-repository'
+import type { UpdateAcessTokenRepository } from '../../../src/data/protocols/db/account/update-acess-token-repository'
 
 export class CheckAccounByEmailRepositoryStub implements CheckAccounByEmailRepository {
   async checkByEmail (email: CheckAccounByEmailRepository.Params): Promise<CheckAccounByEmailRepository.Result> {
@@ -23,5 +24,11 @@ export class LoadAccountByEmailRepositoryStub implements LoadAccountByEmailRepos
       password: 'any_hash',
       token: 'any_token'
     })
+  }
+}
+
+export class UpdateAcessTokenRepositoryStub implements UpdateAcessTokenRepository {
+  async update (plainText: string): Promise<void> {
+    return Promise.resolve(null)
   }
 }
