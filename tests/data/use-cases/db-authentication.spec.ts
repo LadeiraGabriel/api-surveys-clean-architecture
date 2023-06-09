@@ -1,9 +1,10 @@
 import type { Encrypter } from '../../../src/data/protocols/cryptography/Encrypter'
 import type { HashComparer } from '../../../src/data/protocols/cryptography/hash-comparer'
 import type { LoadAccountByEmailRepository } from '../../../src/data/protocols/db/account/load-by-email-repository'
+import type { UpdateAcessTokenRepository } from '../../../src/data/protocols/db/account/update-acess-token-repository'
 import { DbAthentication } from '../../../src/data/use-cases/db-authentication'
 import { EncrypterStub, HashComparerStub } from '../mocks/mock-cryptography'
-import { LoadAccountByEmailRepositoryStub } from '../mocks/mock-db-account'
+import { LoadAccountByEmailRepositoryStub, UpdateAcessTokenRepositoryStub } from '../mocks/mock-db-account'
 
 /* receber um email e um password
     metodo para verificar se o email ja existe no banco
@@ -17,18 +18,21 @@ type SutType = {
   loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository
   hashComparerStub: HashComparer
   encrypterStub: Encrypter
+  updateAcessTokenRepositoryStub: UpdateAcessTokenRepository
 }
 
 const makeSut = (): SutType => {
   const loadAccountByEmailRepositoryStub = new LoadAccountByEmailRepositoryStub()
   const hashComparerStub = new HashComparerStub()
   const encrypterStub = new EncrypterStub()
-  const sut = new DbAthentication(loadAccountByEmailRepositoryStub, hashComparerStub, encrypterStub)
+  const updateAcessTokenRepositoryStub = new UpdateAcessTokenRepositoryStub()
+  const sut = new DbAthentication(loadAccountByEmailRepositoryStub, hashComparerStub, encrypterStub, updateAcessTokenRepositoryStub)
   return {
     sut,
     loadAccountByEmailRepositoryStub,
     hashComparerStub,
-    encrypterStub
+    encrypterStub,
+    updateAcessTokenRepositoryStub
   }
 }
 
@@ -119,5 +123,16 @@ describe('Db Authentication', () => {
     jest.spyOn(encrypterStub, 'encrypt').mockReturnValueOnce(Promise.reject(new Error()))
     const promise = sut.auth(requiredFields)
     await expect(promise).rejects.toThrowError()
+  })
+
+  test('Should call  updateAcessTokenRepository with correct value', async () => {
+    const requiredFields = {
+      email: 'any_email',
+      password: 'any_password'
+    }
+    const { sut, updateAcessTokenRepositoryStub } = makeSut()
+    const updateSpy = jest.spyOn(updateAcessTokenRepositoryStub, 'update')
+    await sut.auth(requiredFields)
+    expect(updateSpy).toHaveBeenCalledWith('any_token')
   })
 })
