@@ -135,4 +135,15 @@ describe('Db Authentication', () => {
     await sut.auth(requiredFields)
     expect(updateSpy).toHaveBeenCalledWith('any_token')
   })
+
+  test('Should throws if updateAcessTokenRepository throws', async () => {
+    const requiredFields = {
+      email: 'any_email',
+      password: 'any_password'
+    }
+    const { sut, updateAcessTokenRepositoryStub } = makeSut()
+    jest.spyOn(updateAcessTokenRepositoryStub, 'update').mockReturnValueOnce(Promise.reject(new Error()))
+    const promise = sut.auth(requiredFields)
+    await expect(promise).rejects.toThrowError()
+  })
 })
