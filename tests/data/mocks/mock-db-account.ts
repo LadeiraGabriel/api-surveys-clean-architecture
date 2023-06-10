@@ -5,7 +5,7 @@ import type { UpdateAcessTokenRepository } from '../../../src/data/protocols/db/
 
 export class CheckAccounByEmailRepositoryStub implements CheckAccounByEmailRepository {
   async checkByEmail (email: CheckAccounByEmailRepository.Params): Promise<CheckAccounByEmailRepository.Result> {
-    return Promise.resolve(true)
+    return Promise.resolve(false)
   }
 }
 

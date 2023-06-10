@@ -6,15 +6,15 @@ import type { Hasher } from '../protocols/cryptography/Hasher'
 export class DbAddAccount implements AddAccount {
   constructor (private readonly hasher: Hasher, private readonly addAccountRepository: AddAccountRepository, private readonly checkAccounByEmailRepository: CheckAccounByEmailRepository) { }
   async add (account: AddAccount.Params): Promise<AddAccount.Result> {
-    const checkByEmail = await this.checkAccounByEmailRepository.checkByEmail(account.email)
-    if (!checkByEmail) {
-      return false
+    const exits = await this.checkAccounByEmailRepository.checkByEmail(account.email)
+    let isValid = false
+    if (!exits) {
+      const passwordHashed = await this.hasher.hash(account.password)
+      isValid = await this.addAccountRepository.add({
+        ...account,
+        password: passwordHashed
+      })
     }
-    const passwordHashed = await this.hasher.hash(account.password)
-    const result = await this.addAccountRepository.add({
-      ...account,
-      password: passwordHashed
-    })
-    return result
+    return isValid
   }
 }

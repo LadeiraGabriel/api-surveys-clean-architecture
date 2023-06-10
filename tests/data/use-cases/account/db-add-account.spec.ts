@@ -35,10 +35,10 @@ describe('Db Add Account', () => {
       expect(checkSpy).toHaveBeenCalledWith(account.email)
     })
 
-    test('Should return false if checkAccountByEmailRepository return false', async () => {
+    test('Should return false if checkAccountByEmailRepository return true', async () => {
       const account = mockFakeAccount()
       const { sut, checkAccounByEmailRepositoryStub } = makeSut()
-      jest.spyOn(checkAccounByEmailRepositoryStub, 'checkByEmail').mockReturnValueOnce(Promise.resolve(false))
+      jest.spyOn(checkAccounByEmailRepositoryStub, 'checkByEmail').mockReturnValueOnce(Promise.resolve(true))
       const result = await sut.add(account)
       expect(result).toBeFalsy()
     })
@@ -62,7 +62,9 @@ describe('Db Add Account', () => {
     test('Should throw if Hasher throw', async () => {
       const account = mockFakeAccount()
       const { sut, hasherStub } = makeSut()
-      jest.spyOn(hasherStub, 'hash').mockReturnValueOnce(Promise.reject(new Error()))
+      jest.spyOn(hasherStub, 'hash').mockImplementationOnce(() => {
+        throw new Error()
+      })
       const promise = sut.add(account)
       await expect(promise).rejects.toThrow()
     })
@@ -78,7 +80,9 @@ describe('Db Add Account', () => {
     test('Should throw if addAccountRepository throw', async () => {
       const account = mockFakeAccount()
       const { sut, addAccountRepositoryStub } = makeSut()
-      jest.spyOn(addAccountRepositoryStub, 'add').mockReturnValueOnce(Promise.reject(new Error()))
+      jest.spyOn(addAccountRepositoryStub, 'add').mockImplementationOnce(() => {
+        throw new Error()
+      })
       const promise = sut.add(account)
       await expect(promise).rejects.toThrow()
     })

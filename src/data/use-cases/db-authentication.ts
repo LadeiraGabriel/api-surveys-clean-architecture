@@ -25,7 +25,6 @@ export class DbAthentication implements Authentication {
           acessToken: token
         }
       }
-      return null
     }
     return null
   }
