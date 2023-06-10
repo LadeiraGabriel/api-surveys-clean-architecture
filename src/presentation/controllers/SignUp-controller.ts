@@ -1,10 +1,8 @@
-import type { Authentication } from './../../domain/use-cases/Authentication'
-import type { AddAccount } from '../../domain/use-cases/account/add-account'
-import { MissingParamError, InvalidParamError } from '../errors'
+import type { Authentication, AddAccount } from './../../domain/use-cases'
+import { MissingParamError, InvalidParamError, EmailInUsedError } from '../errors'
 import { badRequest, forbidden, ok, serverError } from '../helpers/http-helper'
 import type { Controller, HttpResponse } from '../protocols'
 import type { EmailValitor } from '../../validations/protocols'
-import { EmailInUsedError } from '../errors/Email-in-used-error'
 
 export class SignUpController implements Controller {
   constructor (

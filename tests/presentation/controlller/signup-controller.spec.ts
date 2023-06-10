@@ -1,5 +1,5 @@
 import type { Authentication } from '../../../src/domain/use-cases/Authentication'
-import type { AddAccount } from '../../../src/domain/use-cases/account/add-account'
+import type { AddAccount } from '../../../src/domain/use-cases/add-account'
 import { SignUpController } from '../../../src/presentation/controllers/SignUp-controller'
 import {
   InvalidParamError,

@@ -1,7 +1,7 @@
 import type { Encrypter } from '../../../src/data/protocols/cryptography/Encrypter'
 import type { Hasher } from '../../../src/data/protocols/cryptography/Hasher'
 import type { HashComparer } from '../../../src/data/protocols/cryptography/hash-comparer'
-import type { AddAccount } from '../../../src/domain/use-cases/account/add-account'
+import type { AddAccount } from '../../../src/domain/use-cases/add-account'
 
 export const mockFakeAccount = (): AddAccount.Params => ({
   name: 'any_name',
