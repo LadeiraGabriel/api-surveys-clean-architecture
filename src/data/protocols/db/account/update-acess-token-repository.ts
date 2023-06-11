@@ -1,5 +1,5 @@
 export interface UpdateAcessTokenRepository {
-  update (plainText: UpdateAcessTokenRepository.Params): Promise<void>
+  update (identify: UpdateAcessTokenRepository.Params, dataUpdate: UpdateAcessTokenRepository.Params): Promise<void>
 }
 
 export namespace UpdateAcessTokenRepository {
