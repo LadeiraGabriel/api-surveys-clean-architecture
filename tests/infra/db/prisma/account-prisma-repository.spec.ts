@@ -73,4 +73,14 @@ describe('Account Prisma Repository', () => {
       expect(result).toBeNull()
     })
   })
+
+  describe('update access token repository', () => {
+    test('Should return token on success', async () => {
+      const initialAccount = await mockCreateAccount()
+      const sut = makeSut()
+      await sut.update(initialAccount.id, 'any_token')
+      const account = await sut.loadByEmail(initialAccount.email)
+      expect(account.token).toEqual('any_token')
+    })
+  })
 })
