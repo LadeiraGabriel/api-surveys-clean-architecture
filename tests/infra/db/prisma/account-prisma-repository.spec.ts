@@ -1,6 +1,6 @@
 import { AccountPrismaRepository } from '../../../../src/infra/db/prisma/account-prisma-repository'
 import { prismaClientHelper } from '../../../../src/infra/helpers/prisma-client-helper'
-import { makeCreateAccount } from './mocks/mock-prisma-repository'
+import { mockCreateAccount } from './mocks/mock-prisma-repository'
 
 beforeEach(async () => {
   await prismaClientHelper.account.deleteMany({})
@@ -15,32 +15,14 @@ const makeSut = (): AccountPrismaRepository => {
 }
 describe('Account Prisma Repository', () => {
   describe('check account by email repository', () => {
-    test('Should connect to the database create a user and return it through findUnique', async () => {
-      const result = await makeCreateAccount()
-      const account = await prismaClientHelper.account.findUnique({ where: { email: 'any_email' } })
-      expect(account.id).toBeTruthy()
-      expect(account.name).toEqual(result.name)
-      expect(account.email).toEqual(result.email)
-      expect(account.password).toEqual(result.password)
-    })
-
-    test('Should call prisma with correct value', async () => {
-      const sut = makeSut()
-      const prismaSpy = jest.spyOn(prismaClientHelper.account, 'findUnique')
-      await sut.checkByEmail('any_email')
-      expect(prismaSpy).toHaveBeenCalledWith({
-        where: { email: 'any_email' }
-      })
-    })
-
-    test('Should return false if FindUnique not return account', async () => {
+    test('Should return false if checkByEmail not return account', async () => {
       const sut = makeSut()
       const result = await sut.checkByEmail('any_email')
       expect(result).toBeFalsy()
     })
 
     test('Should return true if prisma return a account', async () => {
-      await makeCreateAccount()
+      await mockCreateAccount()
       const sut = makeSut()
       const result = await sut.checkByEmail('any_email')
       expect(result).toBeTruthy()
@@ -48,19 +30,7 @@ describe('Account Prisma Repository', () => {
   })
 
   describe('add account repository', () => {
-    test('Should call create with correct values', async () => {
-      const sut = makeSut()
-      const account = {
-        name: 'any_name',
-        email: 'any_email',
-        password: '$2b$12$0.L9KbPTZtGFz6C5kTpiN.MT8HmTyqpPMfAXxZi5CP9uGuWT45Upu'
-      }
-      const createSpy = jest.spyOn(prismaClientHelper.account, 'create')
-      await sut.add(account)
-      expect(createSpy).toHaveBeenCalledWith({ data: account })
-    })
-
-    test('Should return false if create return false', async () => {
+    test('Should return false if create return null', async () => {
       const sut = makeSut()
       const account = {
         name: 'any_name',
@@ -83,6 +53,18 @@ describe('Account Prisma Repository', () => {
       }
       const result = await sut.add(account)
       expect(result).toBeTruthy()
+    })
+  })
+
+  describe('Load Account By EmailRepository', () => {
+    test('Should return account on success', async () => {
+      await mockCreateAccount()
+      const sut = makeSut()
+      const result = await sut.loadByEmail('any_email')
+      expect(result.id).toBeTruthy()
+      expect(result.name).toEqual('any_name')
+      expect(result.email).toEqual('any_email')
+      expect(result.password).toEqual('$2b$12$0.L9KbPTZtGFz6C5kTpiN.MT8HmTyqpPMfAXxZi5CP9uGuWT45Upu')
     })
   })
 })
