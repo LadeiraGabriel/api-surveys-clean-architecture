@@ -1,9 +1,9 @@
 import type { CheckAccounByEmailRepository } from '../../../data/protocols/db/account/check-account-by-email-repository'
 import type { AddAccountRepository } from '../../../data/protocols/db/account/add-account-repository'
 import { prismaClientHelper } from '../../../../src/infra/helpers/prisma-client-helper'
-import type { LoadAccountByEmailRepository } from '../../../data/protocols/db/account'
+import type { LoadAccountByEmailRepository, UpdateAcessTokenRepository } from '../../../data/protocols/db/account'
 
-export class AccountPrismaRepository implements CheckAccounByEmailRepository, AddAccountRepository, LoadAccountByEmailRepository {
+export class AccountPrismaRepository implements CheckAccounByEmailRepository, AddAccountRepository, LoadAccountByEmailRepository, UpdateAcessTokenRepository {
   async checkByEmail (email: CheckAccounByEmailRepository.Params): Promise<CheckAccounByEmailRepository.Result> {
     const findAccount = await prismaClientHelper.account.findUnique({
       where: {
@@ -28,5 +28,16 @@ export class AccountPrismaRepository implements CheckAccounByEmailRepository, Ad
     })
 
     return account
+  }
+
+  async update (identify: UpdateAcessTokenRepository.Params, dataUpdate: UpdateAcessTokenRepository.Params): Promise<void> {
+    await prismaClientHelper.account.update({
+      where: {
+        id: identify
+      },
+      data: {
+        token: dataUpdate
+      }
+    })
   }
 }
