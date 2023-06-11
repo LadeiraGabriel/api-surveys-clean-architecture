@@ -1,6 +1,6 @@
 import { prismaClientHelper } from '../../../../../src/infra/helpers/prisma-client-helper'
 
-export const makeCreateAccount = async (): Promise<any> => {
+export const mockCreateAccount = async (): Promise<any> => {
   const account = await prismaClientHelper.account.create({
     data: {
       name: 'any_name',
