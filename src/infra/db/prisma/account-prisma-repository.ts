@@ -21,12 +21,12 @@ export class AccountPrismaRepository implements CheckAccounByEmailRepository, Ad
   }
 
   async loadByEmail (plainText: LoadAccountByEmailRepository.Params): Promise<LoadAccountByEmailRepository.Result> {
-    await prismaClientHelper.account.findUnique({
+    const account = await prismaClientHelper.account.findUnique({
       where: {
         email: plainText
       }
     })
 
-    return Promise.resolve(null)
+    return account
   }
 }

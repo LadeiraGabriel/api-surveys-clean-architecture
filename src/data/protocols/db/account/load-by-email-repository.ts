@@ -10,6 +10,6 @@ export namespace LoadAccountByEmailRepository {
     name: string
     email: string
     password: string
-    token: string
+    token?: string
   }
 }
