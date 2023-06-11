@@ -66,5 +66,11 @@ describe('Account Prisma Repository', () => {
       expect(result.email).toEqual('any_email')
       expect(result.password).toEqual('$2b$12$0.L9KbPTZtGFz6C5kTpiN.MT8HmTyqpPMfAXxZi5CP9uGuWT45Upu')
     })
+
+    test('Should return null if load by email repository fails', async () => {
+      const sut = makeSut()
+      const result = await sut.loadByEmail('any_email')
+      expect(result).toBeNull()
+    })
   })
 })
