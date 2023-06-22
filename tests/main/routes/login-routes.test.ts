@@ -8,12 +8,13 @@ describe('Routes', () => {
   beforeAll(async () => {
     app = await setupApp()
   })
+
   test('Should return 200 on success', async () => {
     await request(app).post('/api/sign-up').send({
-      name: 'gabriel',
-      email: 'gabrielladeira8@gmail.com',
-      password: '123',
-      passwordConfirmation: '123'
+      name: 'any_name',
+      email: 'any_email@gmail.com',
+      password: 'any_password',
+      passwordConfirmation: 'any_password'
     }).expect(200)
   })
 })
