@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "tsc ",
+    "start": "nodemon -e js,json dist/src/main/server.js",
+    "start-dev": "nodemon -e ts,json src/main/server.ts",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:unit": "npm run test -- --watch -c jest-unit-config.js",
     "test:integration": "npm run test -- --watch -c jest-integration-config.js",
