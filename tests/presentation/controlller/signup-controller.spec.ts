@@ -114,7 +114,7 @@ describe('SignUp Controller', () => {
     })
     const httpResponse = await sut.handle(mockFakeRequest())
     expect(httpResponse.statusCode).toEqual(500)
-    expect(httpResponse.body).toEqual(new ServerError())
+    expect(httpResponse.body).toEqual(new ServerError(new Error().stack))
   })
 
   test('Should return 400 if password Confirmation is incorrect', async () => {
@@ -146,7 +146,7 @@ describe('SignUp Controller', () => {
     })
     const httpResponse = await sut.handle(mockFakeRequest())
     expect(httpResponse.statusCode).toBe(500)
-    expect(httpResponse.body).toEqual(new ServerError())
+    expect(httpResponse.body).toEqual(new ServerError(new Error().stack))
   })
 
   test('Should return 403 if addAccount is false', async () => {
@@ -176,7 +176,7 @@ describe('SignUp Controller', () => {
     })
     const httpResponse = await sut.handle(mockFakeRequest())
     expect(httpResponse.statusCode).toBe(500)
-    expect(httpResponse.body).toEqual(new ServerError())
+    expect(httpResponse.body).toEqual(new ServerError(new Error().stack))
   })
 
   test('Should return 200 on success', async () => {
