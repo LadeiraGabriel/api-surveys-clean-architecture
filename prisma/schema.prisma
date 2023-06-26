@@ -16,3 +16,9 @@ model Account {
 
   @@map("account")
 }
+
+model Log {
+  id       String @unique @default(uuid())
+  stack    String 
+  date     DateTime
+}
