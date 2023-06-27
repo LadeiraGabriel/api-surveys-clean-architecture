@@ -10,7 +10,7 @@ describe('Routes', () => {
   })
 
   test('Should return 200 on success', async () => {
-    await request(app).post('/api/sign-up').send({
+    await request(app).post('/api/signup').send({
       name: 'any_name',
       email: 'any_email@gmail.com',
       password: 'any_password',

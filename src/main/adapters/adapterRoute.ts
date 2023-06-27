@@ -8,7 +8,13 @@ export const adapterRoute = (controller: Controller) => {
       ...(req.params || {})
     }
     controller.handle(request).then((httpResponse: HttpResponse) => {
-      res.status(httpResponse.statusCode).json(httpResponse.body)
+      if (httpResponse.statusCode === 200) {
+        res.status(httpResponse.statusCode).json(httpResponse.body)
+      } else {
+        res.status(httpResponse.statusCode).json({
+          error: httpResponse.body.message
+        })
+      }
     }).catch(e => {
       console.log(e)
     })
