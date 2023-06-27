@@ -18,7 +18,7 @@ model Account {
 }
 
 model Log {
-  id       String @unique @default(uuid())
+  id       String     @unique @default(uuid())
   stack    String 
-  date     DateTime
+  date     DateTime   
 }
