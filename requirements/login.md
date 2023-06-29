@@ -7,7 +7,7 @@
 ### 1. 🚫 Receber a requisição do tipo post na rota api/login.
 ### 2. 🚫 validar os campos de  e-mail, password.
 ### 3. 🚫 verificar se o e-mail é valido.
-### 4. 🚫 verica se existe uma conta com o email apresentado.
+### 4. 🚫 verifica se existe uma conta com o email apresentado.
 ### 7. 🚫 compara a password com a password-hash salva.""
 ### 8. 🚫 atualiza o token de acesso do usuário.   
 ### 9. 🚫 retonar 200, token de acesso e nome do usuário.
