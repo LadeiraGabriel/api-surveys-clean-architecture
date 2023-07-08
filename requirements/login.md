@@ -19,8 +19,6 @@
 
 ### 1. 🚫 retornar 404 caso a rota não encontrada.
 ### 2. 🚫 retornar 400 caso os campos obrigatórios não sejam fornecidos. 
-### 3. 🚫 retornar 401 caso o e-mail não seja encontrado.
-### 4. 🚫 retornar 401 caso password seja diferente de password-hash.
-### 5. 🚫 retornar 500 caso a geração do token de acesso do usuario falhar.
-### 6. 🚫 retornar 500 caso a atualização do token falhar.
-### 7. 🚫 retornar 500 caso a buscar pelo usuario atrás do e-mail falhar.
+### 3. 🚫 retornar 401 caso os dados sejam inválidos.
+### 4. 🚫 retornar 500 caso a atualização do token falhar.
+### 5. 🚫 retornar 500 caso a buscar pelo usuario atrás do e-mail falhar.
