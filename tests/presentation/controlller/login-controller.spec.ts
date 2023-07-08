@@ -1,6 +1,6 @@
 import type { Authentication } from '../../../src/domain/use-cases'
 import { LoginController } from '../../../src/presentation/controllers/login-controller'
-import { serverError, unauthorized } from '../../../src/presentation/helpers/http-helper'
+import { ok, serverError, unauthorized } from '../../../src/presentation/helpers/http-helper'
 import { mockAuthenticationStub } from '../mocks'
 
 type SutType = () => {
@@ -42,5 +42,11 @@ describe('Login controller', () => {
     })
     const result = await sut.handle(mockrequest)
     expect(result).toEqual(serverError(new Error()))
+  })
+
+  test('Should return 200 on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(mockrequest)
+    expect(httpResponse).toEqual(ok({ name: 'any_name', accessToken: 'any_token' }))
   })
 })
