@@ -1,6 +1,7 @@
 import type { Authentication } from '../../../src/domain/use-cases'
 import { LoginController } from '../../../src/presentation/controllers/login-controller'
-import { ok, serverError, unauthorized } from '../../../src/presentation/helpers/http-helper'
+import { MissingParamError } from '../../../src/presentation/errors'
+import { badRequest, ok, serverError, unauthorized } from '../../../src/presentation/helpers/http-helper'
 import { mockAuthenticationStub } from '../mocks'
 
 type SutType = () => {
@@ -21,6 +22,12 @@ const makeSut: SutType = () => {
 }
 
 describe('Login controller', () => {
+  test('Should return 400 if email not is provided', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle({ password: 'any_password' })
+    expect(httpResponse).toEqual(badRequest(new MissingParamError('email')))
+  })
+
   test('Should call authentication with correct values', async () => {
     const { sut, authenticationStub } = makeSut()
     const authSpy = jest.spyOn(authenticationStub, 'auth')
