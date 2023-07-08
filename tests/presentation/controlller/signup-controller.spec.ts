@@ -7,6 +7,7 @@ import {
   ServerError
 } from '../../../src/presentation/errors'
 import { EmailInUsedError } from '../../../src/presentation/errors/Email-in-used-error'
+import { serverError } from '../../../src/presentation/helpers/http-helper'
 import type { EmailValitor } from '../../../src/validations/protocols'
 import {
   mockAddAccountStub,
@@ -141,12 +142,11 @@ describe('SignUp Controller', () => {
 
   test('Should return 500 if addAccount throws', async () => {
     const { sut, addAccountStub } = makeSut()
-    jest.spyOn(addAccountStub, 'add').mockImplementationOnce(async () => {
-      return Promise.reject(new Error())
+    jest.spyOn(addAccountStub, 'add').mockImplementationOnce(() => {
+      throw new Error()
     })
     const httpResponse = await sut.handle(mockFakeRequest())
-    expect(httpResponse.statusCode).toBe(500)
-    expect(httpResponse.body).toEqual(new ServerError(new Error().stack))
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 
   test('Should return 403 if addAccount is false', async () => {
@@ -171,12 +171,11 @@ describe('SignUp Controller', () => {
 
   test('Should return 500 if Authantication throws', async () => {
     const { sut, authentication } = makeSut()
-    jest.spyOn(authentication, 'auth').mockImplementationOnce(async () => {
-      return Promise.reject(new Error())
+    jest.spyOn(authentication, 'auth').mockImplementationOnce(() => {
+      throw new Error()
     })
     const httpResponse = await sut.handle(mockFakeRequest())
-    expect(httpResponse.statusCode).toBe(500)
-    expect(httpResponse.body).toEqual(new ServerError(new Error().stack))
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 
   test('Should return 200 on success', async () => {
