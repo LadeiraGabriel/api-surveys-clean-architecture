@@ -28,6 +28,12 @@ describe('Login controller', () => {
     expect(httpResponse).toEqual(badRequest(new MissingParamError('email')))
   })
 
+  test('Should return 400 if password not is provided', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle({ email: 'any_email' })
+    expect(httpResponse).toEqual(badRequest(new MissingParamError('password')))
+  })
+
   test('Should call authentication with correct values', async () => {
     const { sut, authenticationStub } = makeSut()
     const authSpy = jest.spyOn(authenticationStub, 'auth')
