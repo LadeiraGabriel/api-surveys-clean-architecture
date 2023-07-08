@@ -184,7 +184,7 @@ describe('SignUp Controller', () => {
     expect(httpResponse.statusCode).toBe(200)
     expect(httpResponse.body).toEqual({
       name: 'any_name',
-      acessToken: 'any_token'
+      accessToken: 'any_token'
     })
   })
 })

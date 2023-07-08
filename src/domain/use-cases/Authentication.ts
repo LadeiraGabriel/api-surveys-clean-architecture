@@ -10,6 +10,6 @@ export namespace Authentication {
 
   export type Result = {
     name: string
-    acessToken: string
+    accessToken: string
   }
 }
