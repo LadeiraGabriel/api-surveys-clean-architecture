@@ -1,4 +1,4 @@
-import { serverError, unauthorized } from '../helpers/http-helper'
+import { ok, serverError, unauthorized } from '../helpers/http-helper'
 import type { HttpResponse } from '../protocols'
 import type { Authentication } from './../../domain/use-cases/Authentication'
 import type { Controller } from './../protocols/controller'
@@ -10,10 +10,7 @@ export class LoginController implements Controller {
       if (!isAuthaticate) {
         return unauthorized()
       }
-      return Promise.resolve({
-        statusCode: 200,
-        body: ''
-      })
+      return ok(isAuthaticate)
     } catch (e) {
       return serverError(e)
     }
