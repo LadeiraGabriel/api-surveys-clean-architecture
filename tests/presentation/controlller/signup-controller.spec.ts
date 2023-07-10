@@ -8,11 +8,13 @@ import {
 } from '../../../src/presentation/errors'
 import { EmailInUsedError } from '../../../src/presentation/errors/Email-in-used-error'
 import { serverError } from '../../../src/presentation/helpers/http-helper'
+import type { Validation } from '../../../src/presentation/protocols/validation'
 import type { EmailValitor } from '../../../src/validations/protocols'
 import {
   mockAddAccountStub,
   mockAuthenticationStub,
-  mockEmailValitorStub
+  mockEmailValitorStub,
+  mockValidationStub
 } from '../mocks'
 
 type mockeFieldsAccount = {
@@ -31,28 +33,40 @@ const mockFakeRequest = (): mockeFieldsAccount => ({
 
 type SutType = {
   sut: SignUpController
+  validationStub: Validation
   emailValitorStub: EmailValitor
   addAccountStub: AddAccount
   authentication: Authentication
 }
 
 const makeSut = (): SutType => {
+  const validationStub = mockValidationStub()
   const emailValitorStub = mockEmailValitorStub()
   const addAccountStub = mockAddAccountStub()
   const authentication = mockAuthenticationStub()
   const sut = new SignUpController(
+    validationStub,
     emailValitorStub,
     addAccountStub,
     authentication
   )
   return {
     sut,
+    validationStub,
     emailValitorStub,
     addAccountStub,
     authentication
   }
 }
 describe('SignUp Controller', () => {
+  test('Should call validation with correct values', async () => {
+    const { sut, validationStub } = makeSut()
+    const validateSpy = jest.spyOn(validationStub, 'validate')
+    const request = mockFakeRequest()
+    await sut.handle(request)
+    expect(validateSpy).toHaveBeenCalledWith(request)
+  })
+
   test('Should return 400 if name not is provided', async () => {
     const request = mockFakeRequest()
     request.name = ''
