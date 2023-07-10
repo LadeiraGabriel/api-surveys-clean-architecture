@@ -1,6 +1,6 @@
 import type { Authentication } from '../../../src/domain/use-cases'
 import { LoginController } from '../../../src/presentation/controllers/login-controller'
-import { MissingParamError } from '../../../src/presentation/errors'
+import { InvalidParamError, MissingParamError } from '../../../src/presentation/errors'
 import { badRequest, ok, serverError, unauthorized } from '../../../src/presentation/helpers/http-helper'
 import type { EmailValitor } from '../../../src/validations/protocols'
 import { mockAuthenticationStub, mockEmailValitorStub } from '../mocks'
@@ -43,6 +43,13 @@ describe('Login controller', () => {
     const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid')
     await sut.handle(mockrequest)
     expect(isValidSpy).toBeCalledWith(mockrequest.email)
+  })
+
+  test('Should return 400 if email validator return false', async () => {
+    const { sut, emailValidatorStub } = makeSut()
+    jest.spyOn(emailValidatorStub, 'isValid').mockReturnValueOnce(false)
+    const httpResponse = await sut.handle(mockrequest)
+    expect(httpResponse).toEqual(badRequest(new InvalidParamError('Email')))
   })
 
   test('Should call authentication with correct values', async () => {
