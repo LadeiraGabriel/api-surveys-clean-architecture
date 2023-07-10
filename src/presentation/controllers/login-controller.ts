@@ -17,11 +17,11 @@ export class LoginController implements Controller {
       if (!isValid) {
         return badRequest(new InvalidParamError('Email'))
       }
-      const isAuthaticate = await this.authentication.auth(request)
-      if (!isAuthaticate) {
+      const isAuthaticated = await this.authentication.auth(request)
+      if (!isAuthaticated) {
         return unauthorized()
       }
-      return ok(isAuthaticate)
+      return ok(isAuthaticated)
     } catch (e) {
       return serverError(e)
     }
