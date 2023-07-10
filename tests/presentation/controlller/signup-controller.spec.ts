@@ -7,7 +7,7 @@ import {
   ServerError
 } from '../../../src/presentation/errors'
 import { EmailInUsedError } from '../../../src/presentation/errors/Email-in-used-error'
-import { serverError } from '../../../src/presentation/helpers/http-helper'
+import { badRequest, serverError } from '../../../src/presentation/helpers/http-helper'
 import type { Validation } from '../../../src/presentation/protocols/validation'
 import type { EmailValitor } from '../../../src/validations/protocols'
 import {
@@ -65,6 +65,14 @@ describe('SignUp Controller', () => {
     const request = mockFakeRequest()
     await sut.handle(request)
     expect(validateSpy).toHaveBeenCalledWith(request)
+  })
+
+  test('Should return 400 if validation return at error', async () => {
+    const { sut, validationStub } = makeSut()
+    jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new MissingParamError('email'))
+    const request = mockFakeRequest()
+    const httpResponse = await sut.handle(request)
+    expect(httpResponse).toEqual(badRequest(new MissingParamError('email')))
   })
 
   test('Should return 400 if name not is provided', async () => {
