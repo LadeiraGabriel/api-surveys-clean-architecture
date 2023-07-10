@@ -2,22 +2,26 @@ import type { Authentication } from '../../../src/domain/use-cases'
 import { LoginController } from '../../../src/presentation/controllers/login-controller'
 import { MissingParamError } from '../../../src/presentation/errors'
 import { badRequest, ok, serverError, unauthorized } from '../../../src/presentation/helpers/http-helper'
-import { mockAuthenticationStub } from '../mocks'
+import type { EmailValitor } from '../../../src/validations/protocols'
+import { mockAuthenticationStub, mockEmailValitorStub } from '../mocks'
 
 type SutType = () => {
   sut: LoginController
   authenticationStub: Authentication
+  emailValidatorStub: EmailValitor
 }
 const mockrequest = {
   email: 'any_email',
   password: 'any_password'
 }
 const makeSut: SutType = () => {
+  const emailValidatorStub = mockEmailValitorStub()
   const authenticationStub = mockAuthenticationStub()
-  const sut = new LoginController(authenticationStub)
+  const sut = new LoginController(emailValidatorStub, authenticationStub)
   return {
     sut,
-    authenticationStub
+    authenticationStub,
+    emailValidatorStub
   }
 }
 
@@ -32,6 +36,13 @@ describe('Login controller', () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle({ email: 'any_email' })
     expect(httpResponse).toEqual(badRequest(new MissingParamError('password')))
+  })
+
+  test('Should call email validator with correct values', async () => {
+    const { sut, emailValidatorStub } = makeSut()
+    const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid')
+    await sut.handle(mockrequest)
+    expect(isValidSpy).toBeCalledWith(mockrequest.email)
   })
 
   test('Should call authentication with correct values', async () => {
