@@ -3,9 +3,11 @@ import { MissingParamError, InvalidParamError, EmailInUsedError } from '../error
 import { badRequest, forbidden, ok, serverError } from '../helpers/http-helper'
 import type { Controller, HttpResponse } from '../protocols'
 import type { EmailValitor } from '../../validations/protocols'
+import type { Validation } from '../protocols/validation'
 
 export class SignUpController implements Controller {
   constructor (
+    private readonly validation: Validation,
     private readonly emailValidator: EmailValitor,
     private readonly addAccount: AddAccount,
     private readonly authantication: Authentication
@@ -13,6 +15,7 @@ export class SignUpController implements Controller {
 
   async handle (request: any): Promise<HttpResponse> {
     try {
+      this.validation.validate(request)
       const requiredFields = [
         'name',
         'email',
