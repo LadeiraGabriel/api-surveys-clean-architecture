@@ -6,7 +6,7 @@ import { JwtAdapter } from '../../infra/cryptography/jwt-adapter'
 import { AccountPrismaRepository } from '../../infra/db/prisma/account-prisma-repository'
 import { SignUpController } from '../../presentation/controllers/SignUp-controller'
 import type { Controller } from '../../presentation/protocols'
-import { EmailValidatorApdater } from '../../validations/validator/Email-validator-adapter'
+import { EmailValidatorApdater } from '../../validations/validators/Email-validator-adapter'
 import { LogControllerDecorator } from '../decorator/log-controller-decorator'
 
 export const makeSignUpController = (): Controller => {
