@@ -1,3 +1,4 @@
+import { MissingParamError } from '../../../src/presentation/errors'
 import type { Validation } from '../../../src/presentation/protocols/validation'
 import { ValidationComposite } from '../../../src/validations/validators/validation-composite'
 import { mockValidationStub } from '../../presentation/mocks'
@@ -26,5 +27,16 @@ describe('Validation Composite', () => {
     const validateSpy = jest.spyOn(valitionStub, 'validate')
     sut.validate(fields)
     expect(validateSpy).toHaveBeenCalledWith(fields)
+  })
+
+  test('Should return erro if validation return error', () => {
+    const fields = {
+      name: 'any_name',
+      email: 'any_email'
+    }
+    const { sut, valitionStub } = makeSut()
+    jest.spyOn(valitionStub, 'validate').mockReturnValueOnce(new MissingParamError('email'))
+    const result = sut.validate(fields)
+    expect(result).toEqual(new MissingParamError('email'))
   })
 })
