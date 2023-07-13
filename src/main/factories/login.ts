@@ -5,7 +5,7 @@ import { AccountPrismaRepository } from '../../infra/db/prisma/account-prisma-re
 import { LogPrismaRepository } from '../../infra/db/prisma/log-prisma-repository'
 import { LoginController } from '../../presentation/controllers/login-controller'
 import type { Controller } from '../../presentation/protocols'
-import { EmailValidatorApdater } from '../../validations/validators/Email-validator-adapter'
+import { EmailValidatorApdater } from '../../infra/validators/Email-validator-adapter'
 import { LogControllerDecorator } from '../decorator/log-controller-decorator'
 
 export const makeLoginController = (): Controller => {
