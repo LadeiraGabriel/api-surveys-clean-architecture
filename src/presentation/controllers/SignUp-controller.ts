@@ -1,5 +1,5 @@
 import type { Authentication, AddAccount } from './../../domain/use-cases'
-import { MissingParamError, InvalidParamError, EmailInUsedError } from '../errors'
+import { EmailInUsedError } from '../errors'
 import { badRequest, forbidden, ok, serverError } from '../helpers/http-helper'
 import type { Controller, HttpResponse } from '../protocols'
 import type { EmailValitor } from '../../validations/protocols'
@@ -19,33 +19,10 @@ export class SignUpController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      const requiredFields = [
-        'name',
-        'email',
-        'password',
-        'passwordConfirmation'
-      ]
-      const { name, email, password, passwordConfirmation } = request
-      for (const field of requiredFields) {
-        if (!request[field]) {
-          return badRequest(new MissingParamError(field))
-        }
-      }
-      const isValid = this.emailValidator.isValid(email)
-      if (!isValid) {
-        return badRequest(new InvalidParamError('email'))
-      }
-
-      if (password !== passwordConfirmation) {
-        return {
-          statusCode: 400,
-          body: new InvalidParamError('passwordConfirmation')
-        }
-      }
       const accountValid = await this.addAccount.add({
-        name,
-        email,
-        password
+        name: request.name,
+        email: request.email,
+        password: request.password
       })
 
       if (!accountValid) {
@@ -53,8 +30,8 @@ export class SignUpController implements Controller {
       }
 
       const userAcess = await this.authantication.auth({
-        email,
-        password
+        email: request.email,
+        password: request.password
       })
       return ok(userAcess)
     } catch (error) {

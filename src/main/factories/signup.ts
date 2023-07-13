@@ -8,6 +8,7 @@ import { SignUpController } from '../../presentation/controllers/SignUp-controll
 import type { Controller } from '../../presentation/protocols'
 import { EmailValidatorApdater } from '../../validations/validators/Email-validator-adapter'
 import { LogControllerDecorator } from '../decorator/log-controller-decorator'
+import { makeSignUpValidation } from './signup-validations'
 
 export const makeSignUpController = (): Controller => {
   const salt = 12
@@ -17,7 +18,7 @@ export const makeSignUpController = (): Controller => {
   const jwtAdapter = new JwtAdapter(process.env.SECRET_KEY)
   const dbAddAccount = new DbAddAccount(bcrytpAdapter, accountPrismaRepository, accountPrismaRepository)
   const dbAuthentication = new DbAthentication(accountPrismaRepository, bcrytpAdapter, jwtAdapter, accountPrismaRepository)
-  const signupController = new SignUpController(emailValidator, dbAddAccount, dbAuthentication)
+  const signupController = new SignUpController(makeSignUpValidation(), emailValidator, dbAddAccount, dbAuthentication)
   const logPrismaRepository = new LogPrismaRepository()
   return new LogControllerDecorator(signupController, logPrismaRepository)
 }
