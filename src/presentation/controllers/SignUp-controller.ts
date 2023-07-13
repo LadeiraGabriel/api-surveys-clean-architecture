@@ -2,13 +2,11 @@ import type { Authentication, AddAccount } from './../../domain/use-cases'
 import { EmailInUsedError } from '../errors'
 import { badRequest, forbidden, ok, serverError } from '../helpers/http-helper'
 import type { Controller, HttpResponse } from '../protocols'
-import type { EmailValitor } from '../../validations/protocols'
 import type { Validation } from '../protocols/validation'
 
 export class SignUpController implements Controller {
   constructor (
     private readonly validation: Validation,
-    private readonly emailValidator: EmailValitor,
     private readonly addAccount: AddAccount,
     private readonly authantication: Authentication
   ) { }
