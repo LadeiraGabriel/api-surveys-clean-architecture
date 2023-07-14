@@ -5,18 +5,16 @@ import { AccountPrismaRepository } from '../../infra/db/prisma/account-prisma-re
 import { LogPrismaRepository } from '../../infra/db/prisma/log-prisma-repository'
 import { LoginController } from '../../presentation/controllers/login-controller'
 import type { Controller } from '../../presentation/protocols'
-import { EmailValidatorApdater } from '../../infra/validators/Email-validator-adapter'
 import { LogControllerDecorator } from '../decorator/log-controller-decorator'
 import { makeLoginValidation } from './login-validation'
 
 export const makeLoginController = (): Controller => {
   const salt = 12
-  const emailValidatorAdapter = new EmailValidatorApdater()
   const accountPrismaRepository = new AccountPrismaRepository()
   const bcryptAdapter = new BcryptAdapter(salt)
   const jwtAdapter = new JwtAdapter(process.env.SECRET_KEY)
   const dbAuthentication = new DbAthentication(accountPrismaRepository, bcryptAdapter, jwtAdapter, accountPrismaRepository)
-  const loginController = new LoginController(makeLoginValidation(), emailValidatorAdapter, dbAuthentication)
+  const loginController = new LoginController(makeLoginValidation(), dbAuthentication)
   const logPrismaRepository = new LogPrismaRepository()
   return new LogControllerDecorator(loginController, logPrismaRepository)
 }
