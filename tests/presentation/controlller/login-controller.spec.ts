@@ -2,30 +2,40 @@ import type { Authentication } from '../../../src/domain/use-cases'
 import { LoginController } from '../../../src/presentation/controllers/login-controller'
 import { InvalidParamError, MissingParamError } from '../../../src/presentation/errors'
 import { badRequest, ok, serverError, unauthorized } from '../../../src/presentation/helpers/http-helper'
+import type { Validation } from '../../../src/presentation/protocols'
 import type { EmailValitor } from '../../../src/validations/protocols'
-import { mockAuthenticationStub, mockEmailValitorStub } from '../mocks'
+import { mockAuthenticationStub, mockEmailValitorStub, mockValidationStub } from '../mocks'
 
 type SutType = () => {
   sut: LoginController
   authenticationStub: Authentication
   emailValidatorStub: EmailValitor
+  validationStub: Validation
 }
 const mockrequest = {
   email: 'any_email',
   password: 'any_password'
 }
 const makeSut: SutType = () => {
+  const validationStub = mockValidationStub()
   const emailValidatorStub = mockEmailValitorStub()
   const authenticationStub = mockAuthenticationStub()
-  const sut = new LoginController(emailValidatorStub, authenticationStub)
+  const sut = new LoginController(validationStub, emailValidatorStub, authenticationStub)
   return {
     sut,
     authenticationStub,
-    emailValidatorStub
+    emailValidatorStub,
+    validationStub
   }
 }
 
 describe('Login controller', () => {
+  test('Should call validation with correct values', async () => {
+    const { sut, validationStub } = makeSut()
+    const spyValidate = jest.spyOn(validationStub, 'validate')
+    await sut.handle(mockrequest)
+    expect(spyValidate).toHaveBeenCalledWith(mockrequest)
+  })
   test('Should return 400 if email not is provided', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle({ password: 'any_password' })
