@@ -7,6 +7,7 @@ import { LoginController } from '../../presentation/controllers/login-controller
 import type { Controller } from '../../presentation/protocols'
 import { EmailValidatorApdater } from '../../infra/validators/Email-validator-adapter'
 import { LogControllerDecorator } from '../decorator/log-controller-decorator'
+import { makeLoginValidation } from './login-validation'
 
 export const makeLoginController = (): Controller => {
   const salt = 12
@@ -15,7 +16,7 @@ export const makeLoginController = (): Controller => {
   const bcryptAdapter = new BcryptAdapter(salt)
   const jwtAdapter = new JwtAdapter(process.env.SECRET_KEY)
   const dbAuthentication = new DbAthentication(accountPrismaRepository, bcryptAdapter, jwtAdapter, accountPrismaRepository)
-  const loginController = new LoginController(emailValidatorAdapter, dbAuthentication)
+  const loginController = new LoginController(makeLoginValidation(), emailValidatorAdapter, dbAuthentication)
   const logPrismaRepository = new LogPrismaRepository()
   return new LogControllerDecorator(loginController, logPrismaRepository)
 }
