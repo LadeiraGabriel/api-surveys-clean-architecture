@@ -7,7 +7,10 @@ export class LoginController implements Controller {
   constructor (private readonly valdaition: Validation, private readonly emailValidator: EmailValitor, private readonly authentication: Authentication) {}
   async handle (request: any): Promise<HttpResponse> {
     try {
-      this.valdaition.validate(request)
+      const error = this.valdaition.validate(request)
+      if (error) {
+        return badRequest(error)
+      }
       const fields = ['email', 'password']
       for (const field of fields) {
         if (!request[field]) {
