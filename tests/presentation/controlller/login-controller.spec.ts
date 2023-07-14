@@ -36,6 +36,13 @@ describe('Login controller', () => {
     await sut.handle(mockrequest)
     expect(spyValidate).toHaveBeenCalledWith(mockrequest)
   })
+
+  test('Should return 400 if validation return at error', async () => {
+    const { sut, validationStub } = makeSut()
+    jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new MissingParamError('password'))
+    const httpResponse = await sut.handle(mockrequest)
+    expect(httpResponse).toEqual(badRequest(new MissingParamError('password')))
+  })
   test('Should return 400 if email not is provided', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle({ password: 'any_password' })
