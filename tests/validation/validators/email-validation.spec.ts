@@ -1,5 +1,5 @@
 import { InvalidParamError } from '../../../src/presentation/errors'
-import { EmailValidation } from '../../../src/validations/validators/email-validation'
+import { EmailValidation } from '../../../src/validations/validators'
 import { mockEmailValitorStub } from '../mocks/mock-email-validator'
 
 describe('Email Validation', () => {

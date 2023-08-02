@@ -1,6 +1,6 @@
 import { InvalidParamError, MissingParamError } from '../../../src/presentation/errors'
 import type { Validation } from '../../../src/presentation/protocols/validation'
-import { ValidationComposite } from '../../../src/validations/validators/validation-composite'
+import { ValidationComposite } from '../../../src/validations/validators'
 import { mockValidationStub } from '../../presentation/mocks'
 
 type sutType = {
