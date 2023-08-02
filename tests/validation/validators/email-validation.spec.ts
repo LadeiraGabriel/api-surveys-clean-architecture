@@ -14,7 +14,7 @@ describe('Email Validation', () => {
     expect(spyIsValid).toHaveBeenCalledWith(input.email)
   })
 
-  test('Should return error if email validator return false', () => {
+  test('Should return InvalidParamError if email validator return false', () => {
     const input = {
       email: 'any_email'
     }

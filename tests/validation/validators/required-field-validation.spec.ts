@@ -6,7 +6,7 @@ const makeSut = (): RequiredFieldsValidation => {
 }
 
 describe('Required field validation', () => {
-  test('should return error if required fields are empty', () => {
+  test('should return missing param error if required fields are empty', () => {
     const input = {
       email: ''
     }

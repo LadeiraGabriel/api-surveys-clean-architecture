@@ -29,7 +29,7 @@ describe('Validation Composite', () => {
     expect(validateSpy).toHaveBeenCalledWith(fields)
   })
 
-  test('Should return erro if validation return error', () => {
+  test('Should return missing param error if validation return error', () => {
     const fields = {
       name: 'any_name',
       email: 'any_email'
