@@ -1,19 +1,19 @@
-import { MissingParamError } from '../../../src/presentation/errors'
+import { InvalidParamError, MissingParamError } from '../../../src/presentation/errors'
 import type { Validation } from '../../../src/presentation/protocols/validation'
 import { ValidationComposite } from '../../../src/validations/validators/validation-composite'
 import { mockValidationStub } from '../../presentation/mocks'
 
 type sutType = {
   sut: ValidationComposite
-  valitionStub: Validation
+  valitionStubs: Validation[]
 }
 
 const makeSut = (): sutType => {
-  const valitionStub = mockValidationStub()
-  const sut = new ValidationComposite([valitionStub])
+  const valitionStubs = [mockValidationStub(), mockValidationStub()]
+  const sut = new ValidationComposite(valitionStubs)
   return {
     sut,
-    valitionStub
+    valitionStubs
   }
 }
 
@@ -23,20 +23,21 @@ describe('Validation Composite', () => {
       name: 'any_name',
       email: 'any_email'
     }
-    const { sut, valitionStub } = makeSut()
-    const validateSpy = jest.spyOn(valitionStub, 'validate')
+    const { sut, valitionStubs } = makeSut()
+    const validateSpy = jest.spyOn(valitionStubs[0], 'validate')
     sut.validate(fields)
     expect(validateSpy).toHaveBeenCalledWith(fields)
   })
 
-  test('Should return missing param error if validation return error', () => {
+  test('should return the error of the first validation that returns an error', () => {
     const fields = {
       name: 'any_name',
       email: 'any_email'
     }
-    const { sut, valitionStub } = makeSut()
-    jest.spyOn(valitionStub, 'validate').mockReturnValueOnce(new MissingParamError('email'))
+    const { sut, valitionStubs } = makeSut()
+    jest.spyOn(valitionStubs[0], 'validate').mockReturnValueOnce(new MissingParamError('name'))
+    jest.spyOn(valitionStubs[1], 'validate').mockReturnValueOnce(new InvalidParamError('email'))
     const result = sut.validate(fields)
-    expect(result).toEqual(new MissingParamError('email'))
+    expect(result).toEqual(new MissingParamError('name'))
   })
 })
