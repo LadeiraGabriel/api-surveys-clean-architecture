@@ -1,17 +1,17 @@
-import type { Authentication } from '../../../src/domain/use-cases/Authentication'
-import type { AddAccount } from '../../../src/domain/use-cases/add-account'
-import { SignUpController } from '../../../src/presentation/controllers/SignUp-controller'
+import { SignUpController } from './../../../../src/presentation/controllers/login/SignUp-controller'
+import type { AddAccount } from './../../../../src/domain/use-cases/add-account'
+import type { Authentication } from './../../../../src/domain/use-cases/Authentication'
 import {
   MissingParamError
-} from '../../../src/presentation/errors'
-import { EmailInUsedError } from '../../../src/presentation/errors/Email-in-used-error'
-import { badRequest, serverError } from '../../../src/presentation/helpers/http-helper'
-import type { Validation } from '../../../src/presentation/protocols/validation'
+} from './../../../../src/presentation/errors/Missing-param-error'
+import { EmailInUsedError } from './../../../../src/presentation/errors/Email-in-used-error'
+import { badRequest, serverError } from './../../../../src/presentation/helpers/http-helper'
+import type { Validation } from './../../../../src/presentation/protocols/validation'
 import {
   mockAddAccountStub,
   mockAuthenticationStub,
   mockValidationStub
-} from '../mocks'
+} from './../../mocks'
 
 type mockeFieldsAccount = {
   name: string
