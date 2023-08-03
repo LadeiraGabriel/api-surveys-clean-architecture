@@ -3,7 +3,7 @@ import { AddSurveyController } from '../../../../src/presentation/controllers/su
 import { badRequest, noContent, serverError } from '../../../../src/presentation/helpers/http-helper'
 import type { Controller, Validation } from '../../../../src/presentation/protocols'
 import { mockValidationStub } from '../../mocks'
-import { mockAddSurveyStub, mockRequest } from '../../mocks/mock-survey'
+import { mockAddSurveyStub } from '../../mocks/mock-survey'
 
 type SutType = {
   sut: Controller
@@ -21,6 +21,14 @@ const makeSut = (): SutType => {
     addSuveyStub
   }
 }
+
+export const mockRequest = (): AddSurvey.Params => ({
+  question: 'any_question',
+  anwers: [{
+    anwer: 'any_anwern',
+    image: 'any_image'
+  }]
+})
 
 describe('Add Survey controller', () => {
   test('should call validation with correct values', async () => {
