@@ -11,6 +11,14 @@ type SutType = {
   addSuveyStub: AddSurvey
 }
 
+const mockRequest = (): AddSurvey.Params => ({
+  question: 'any_question',
+  anwers: [{
+    anwer: 'any_anwern',
+    image: 'any_image'
+  }]
+})
+
 const makeSut = (): SutType => {
   const validationStub = mockValidationStub()
   const addSuveyStub = mockAddSurveyStub()
@@ -24,73 +32,38 @@ const makeSut = (): SutType => {
 
 describe('Add Survey controller', () => {
   test('should call validation with correct values', async () => {
-    const request = {
-      question: 'any_question',
-      anwerns: {
-        anwerns: 'any_anwern',
-        image: 'any_image'
-      }
-    }
     const { sut, validationStub } = makeSut()
     const spyValidate = jest.spyOn(validationStub, 'validate')
-    await sut.handle(request)
-    expect(spyValidate).toHaveBeenCalledWith(request)
+    await sut.handle(mockRequest())
+    expect(spyValidate).toHaveBeenCalledWith(mockRequest())
   })
 
   test('should return 400 if validation return a error', async () => {
-    const request = {
-      question: 'any_question',
-      anwerns: {
-        anwern: 'any_anwern',
-        image: 'any_image'
-      }
-    }
     const { sut, validationStub } = makeSut()
     jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new Error())
-    const httpResponse = await sut.handle(request)
+    const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(badRequest(new Error()))
   })
 
   test('should call add survey with correct values', async () => {
-    const request = {
-      question: 'any_question',
-      anwerns: {
-        anwern: 'any_anwern',
-        image: 'any_image'
-      }
-    }
     const { sut, addSuveyStub } = makeSut()
     const spyAdd = jest.spyOn(addSuveyStub, 'add')
-    await sut.handle(request)
-    expect(spyAdd).toHaveBeenCalledWith(request)
+    await sut.handle(mockRequest())
+    expect(spyAdd).toHaveBeenCalledWith(mockRequest())
   })
 
   test('should call add survey with correct values', async () => {
-    const request = {
-      question: 'any_question',
-      anwerns: {
-        anwern: 'any_anwern',
-        image: 'any_image'
-      }
-    }
     const { sut, addSuveyStub } = makeSut()
     jest.spyOn(addSuveyStub, 'add').mockImplementationOnce(() => {
       throw new Error()
     })
-    const httpResponse = await sut.handle(request)
+    const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
   })
 
   test('should return 204 on success', async () => {
-    const request = {
-      question: 'any_question',
-      anwerns: {
-        anwern: 'any_anwern',
-        image: 'any_image'
-      }
-    }
     const { sut } = makeSut()
-    const httpResponse = await sut.handle(request)
+    const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(noContent())
   })
 })
