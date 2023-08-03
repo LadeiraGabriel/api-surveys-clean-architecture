@@ -4,7 +4,7 @@ export interface AddSurvey {
 
 type anwers = {
   anwer: string
-  image: string
+  image?: string
 }
 
 export namespace AddSurvey {

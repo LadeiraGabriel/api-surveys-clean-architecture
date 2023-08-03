@@ -22,3 +22,20 @@ model Log {
   stack    String 
   date     DateTime   
 }
+
+model Survey {
+  id       String     @unique @default(uuid())
+  question String 
+  anwers Anwer[]
+  @@map("surveys")
+   
+}
+
+model Anwer {
+   id       String     @unique @default(uuid())
+   anwer    String
+   image    String? 
+   survey   Survey @relation(fields: [surveyId], references: [id])
+   surveyId String
+   @@map("anwers")
+}
