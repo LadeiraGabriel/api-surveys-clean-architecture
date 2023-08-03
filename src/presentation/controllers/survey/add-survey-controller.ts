@@ -1,5 +1,5 @@
 import type { AddSurvey } from '../../../domain/use-cases/add-survey'
-import { badRequest, serverError } from '../../helpers/http-helper'
+import { badRequest, noContent, serverError } from '../../helpers/http-helper'
 import type { Controller, HttpResponse, Validation } from '../../protocols'
 
 export class AddSurveyController implements Controller {
@@ -11,10 +11,7 @@ export class AddSurveyController implements Controller {
         return badRequest(error)
       }
       await this.addSurvey.add(request)
-      return Promise.resolve({
-        statusCode: 200,
-        body: ''
-      })
+      return noContent()
     } catch (error) {
       return serverError(error)
     }
