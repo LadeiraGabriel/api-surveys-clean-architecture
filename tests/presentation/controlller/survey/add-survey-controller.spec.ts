@@ -1,6 +1,6 @@
 import type { AddSurvey } from '../../../../src/domain/use-cases/add-survey'
 import { AddSurveyController } from '../../../../src/presentation/controllers/survey/add-survey-controller'
-import { badRequest, serverError } from '../../../../src/presentation/helpers/http-helper'
+import { badRequest, noContent, serverError } from '../../../../src/presentation/helpers/http-helper'
 import type { Controller, Validation } from '../../../../src/presentation/protocols'
 import { mockValidationStub } from '../../mocks'
 import { mockAddSurveyStub } from '../../mocks/mock-survey'
@@ -79,5 +79,18 @@ describe('Add Survey controller', () => {
     })
     const httpResponse = await sut.handle(request)
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
+  test('should return 204 on success', async () => {
+    const request = {
+      question: 'any_question',
+      anwerns: {
+        anwern: 'any_anwern',
+        image: 'any_image'
+      }
+    }
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(request)
+    expect(httpResponse).toEqual(noContent())
   })
 })
