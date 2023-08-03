@@ -1,6 +1,6 @@
 import type { AddSurvey } from '../../../../src/domain/use-cases/add-survey'
 import { AddSurveyController } from '../../../../src/presentation/controllers/survey/add-survey-controller'
-import { badRequest } from '../../../../src/presentation/helpers/http-helper'
+import { badRequest, serverError } from '../../../../src/presentation/helpers/http-helper'
 import type { Controller, Validation } from '../../../../src/presentation/protocols'
 import { mockValidationStub } from '../../mocks'
 import { mockAddSurveyStub } from '../../mocks/mock-survey'
@@ -41,7 +41,7 @@ describe('Add Survey controller', () => {
     const request = {
       question: 'any_question',
       anwerns: {
-        anwerns: 'any_anwern',
+        anwern: 'any_anwern',
         image: 'any_image'
       }
     }
@@ -55,7 +55,7 @@ describe('Add Survey controller', () => {
     const request = {
       question: 'any_question',
       anwerns: {
-        anwerns: 'any_anwern',
+        anwern: 'any_anwern',
         image: 'any_image'
       }
     }
@@ -63,5 +63,21 @@ describe('Add Survey controller', () => {
     const spyAdd = jest.spyOn(addSuveyStub, 'add')
     await sut.handle(request)
     expect(spyAdd).toHaveBeenCalledWith(request)
+  })
+
+  test('should call add survey with correct values', async () => {
+    const request = {
+      question: 'any_question',
+      anwerns: {
+        anwern: 'any_anwern',
+        image: 'any_image'
+      }
+    }
+    const { sut, addSuveyStub } = makeSut()
+    jest.spyOn(addSuveyStub, 'add').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const httpResponse = await sut.handle(request)
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
