@@ -9,7 +9,7 @@ type anwers = {
 
 export namespace AddSurvey {
   export type Params = {
-    questions: string
+    question: string
     anwers: anwers[]
   }
   export type Result = Promise<void>
