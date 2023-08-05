@@ -4,7 +4,6 @@ import type { LoadAccountByTokenRepository } from '../protocols/db/account/load-
 export class DbLoadAccountByToken implements LoadAccountByToken {
   constructor (private readonly loadAccountByTokenRepository: LoadAccountByTokenRepository) { }
   async load (accessToken: string, role?: string): Promise<LoadAccountByToken.Result> {
-    const accountId = await this.loadAccountByTokenRepository.loadAccountByToken(accessToken)
-    return accountId
+    return await this.loadAccountByTokenRepository.loadAccountByToken(accessToken, role)
   }
 }

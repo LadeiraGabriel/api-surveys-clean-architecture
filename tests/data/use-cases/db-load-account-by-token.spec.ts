@@ -20,26 +20,29 @@ const makeSut = (): SutType => {
 describe('Db load account by token use case', () => {
   test('should call load account by token repository with correct values', async () => {
     const accessToken: string = 'any_token'
+    const role = 'any_role'
     const { sut, loadAccountByTokenRepositoryStub } = makeSut()
     const spyLoad = jest.spyOn(loadAccountByTokenRepositoryStub, 'loadAccountByToken')
-    await sut.load(accessToken, 'any_role')
-    expect(spyLoad).toHaveBeenCalledWith(accessToken)
+    await sut.load(accessToken, role)
+    expect(spyLoad).toHaveBeenCalledWith(accessToken, role)
   })
 
   test('should throws if loadAccountByTokenRepository throws', async () => {
     const accessToken: string = 'any_token'
+    const role = 'any_role'
     const { sut, loadAccountByTokenRepositoryStub } = makeSut()
     jest.spyOn(loadAccountByTokenRepositoryStub, 'loadAccountByToken').mockImplementationOnce(() => {
       throw new Error()
     })
-    const result = sut.load(accessToken, 'any_role')
+    const result = sut.load(accessToken, role)
     await expect(result).rejects.toThrow()
   })
 
   test('should return id on success', async () => {
     const accessToken: string = 'any_token'
+    const role = 'any_role'
     const { sut } = makeSut()
-    const result = await sut.load(accessToken, 'any_role')
+    const result = await sut.load(accessToken, role)
     expect(result).toEqual({ id: 'any_id' })
   })
 })
