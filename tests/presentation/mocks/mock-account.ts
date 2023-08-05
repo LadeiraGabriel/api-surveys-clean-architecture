@@ -1,3 +1,4 @@
+import type { LoadAccountByToken } from '../../../src/domain/load-account-by-token'
 import type { AddAccount } from '../../../src/domain/use-cases/add-account'
 import type { Authentication } from '../../../src/domain/use-cases/Authentication'
 
@@ -20,4 +21,14 @@ export const mockAuthenticationStub = (): Authentication => {
     }
   }
   return new AuthenticationStub()
+}
+
+export const mockLoadAccountByToken = (): LoadAccountByToken => {
+  class LoadAccountByTokenStub implements LoadAccountByToken {
+    async load (accessToken: string, role?: string): Promise<LoadAccountByToken.Result> {
+      return Promise.resolve(null)
+    }
+  }
+
+  return new LoadAccountByTokenStub()
 }
