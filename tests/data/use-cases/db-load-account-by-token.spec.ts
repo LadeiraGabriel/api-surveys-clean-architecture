@@ -4,7 +4,7 @@ import { DbLoadAccountByToken } from '../../../src/data/use-cases/db-load-accoun
 describe('Db load account by token use case', () => {
   test('should call load account by token repository with correct values', async () => {
     class LoadAccountByTokenRepositoryStub implements LoadAccountByTokenRepository {
-      async loadAccountByToken (accessToken: string): Promise<LoadAccountByTokenRepository.Result> {
+      async loadAccountByToken (accessToken: string, role?: string): Promise<LoadAccountByTokenRepository.Result> {
         return Promise.resolve(null)
       }
     }
