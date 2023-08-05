@@ -1,4 +1,4 @@
-import type { LoadAccountByToken } from '../../../src/domain/load-account-by-token'
+import type { LoadAccountByToken } from '../../../src/domain/use-cases/load-account-by-token'
 import type { AddAccount } from '../../../src/domain/use-cases/add-account'
 import type { Authentication } from '../../../src/domain/use-cases/Authentication'
 
