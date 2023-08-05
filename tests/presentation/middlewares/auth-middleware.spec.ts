@@ -1,7 +1,7 @@
 import type { Middleware } from '../../../src/presentation/protocols/middleware'
 import type { LoadAccountByToken } from '../../../src/domain/load-account-by-token'
 import { AccessDeniedError } from '../../../src/presentation/errors/access-denied-error'
-import { forbidden, serverError } from '../../../src/presentation/helpers/http-helper'
+import { forbidden, ok, serverError } from '../../../src/presentation/helpers/http-helper'
 import { AuthMiddleware } from '../../../src/presentation/middlewares/auth-middleware'
 import { mockLoadAccountByToken } from '../mocks'
 
@@ -47,5 +47,14 @@ describe('Auth middleware', () => {
     })
     const httpReponse = await sut.auth(request)
     expect(httpReponse).toEqual(serverError(new Error()))
+  })
+
+  test('should return 200 on success', async () => {
+    const request = {
+      accessToken: 'any_token'
+    }
+    const { sut } = makeSut()
+    const httpReponse = await sut.auth(request)
+    expect(httpReponse).toEqual(ok({ id: 'any_id' }))
   })
 })
