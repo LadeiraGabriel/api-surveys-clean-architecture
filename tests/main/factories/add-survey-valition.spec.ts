@@ -1,7 +1,7 @@
 import type { Validation } from '../../../src/presentation/protocols'
 import { ValidationComposite } from '../../../src/validations/validators/validation-composite'
 import { RequiredFieldsValidation } from '../../../src/validations/validators/required-field-validation'
-import { makeAddSurveyValidation } from '../../../src/main/factories/add-survey-validation'
+import { makeAddSurveyValidation } from '../../../src/main/factories/controllers/add-survey-validation'
 
 jest.mock('./../../../src/validations/validators/validation-composite')
 describe('Add Survey validation', () => {

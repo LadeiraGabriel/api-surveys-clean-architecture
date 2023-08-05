@@ -4,7 +4,7 @@ import { EmailValidatorApdater } from './../../../src/infra/validators/Email-val
 import { EmailValidation } from '../../../src/validations/validators/email-validation'
 import { RequiredFieldsValidation } from '../../../src/validations/validators/required-field-validation'
 import { CompareFieldsValidation } from '../../../src/validations/validators/compare-fields-valition'
-import { makeSignUpValidation } from '../../../src/main/factories/signup-validations'
+import { makeSignUpValidation } from '../../../src/main/factories/controllers/signup-validations'
 
 jest.mock('./../../../src/validations/validators/validation-composite')
 describe('Signup validation', () => {
