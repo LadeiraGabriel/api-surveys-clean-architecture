@@ -83,4 +83,14 @@ describe('Account Prisma Repository', () => {
       expect(account.token).toEqual('any_token')
     })
   })
+
+  describe('load account by token repository', () => {
+    test('Should return null if account not found', async () => {
+      const accessToken: string = 'any_token'
+      const role = 'any_role'
+      const sut = makeSut()
+      const result = await sut.loadAccountByToken(accessToken, role)
+      expect(result).toBeNull()
+    })
+  })
 })
