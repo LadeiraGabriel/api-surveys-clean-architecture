@@ -122,5 +122,21 @@ describe('Account Prisma Repository', () => {
       const result = await sut.loadAccountByToken(accessToken)
       expect(result).toBeTruthy()
     })
+
+    test('Should return id if role is provided and role"s matched', async () => {
+      await prismaClientHelper.account.create({
+        data: {
+          name: 'any_name',
+          email: 'any_email',
+          password: '$2b$12$0.L9KbPTZtGFz6C5kTpiN.MT8HmTyqpPMfAXxZi5CP9uGuWT45Upu',
+          token: 'any_token',
+          role: 'admin'
+        }
+      })
+      const accessToken: string = 'any_token'
+      const sut = makeSut()
+      const result = await sut.loadAccountByToken(accessToken, 'admin')
+      expect(result).toBeTruthy()
+    })
   })
 })
