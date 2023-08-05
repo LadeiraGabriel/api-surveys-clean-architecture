@@ -13,7 +13,7 @@ model Account {
   name     String
   password String
   token    String?
-  
+  role    String?
   @@map("account")
 }
 

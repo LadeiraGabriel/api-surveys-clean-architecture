@@ -40,10 +40,15 @@ export class AccountPrismaRepository implements CheckAccounByEmailRepository, Ad
   }
 
   async loadAccountByToken (accessToken: string, role?: string): Promise<LoadAccountByTokenRepository.Result> {
-    return await prismaClientHelper.account.findFirst({
+    const account = await prismaClientHelper.account.findFirst({
       where: {
-        token: accessToken
+        token: accessToken,
+        role
       }
     })
+    if (account) {
+      return { id: account.id }
+    }
+    return null
   }
 }
