@@ -1,7 +1,9 @@
-import type { CheckAccounByEmailRepository } from '../../../src/data/protocols/db/account/check-account-by-email-repository'
-import type { AddAccountRepository } from '../../../src/data/protocols/db/account/add-account-repository'
-import type { LoadAccountByEmailRepository } from '../../../src/data/protocols/db/account/load-by-email-repository'
-import type { UpdateAccessTokenRepository } from '../../../src/data/protocols/db/account/update-access-token-repository'
+import type {
+  CheckAccounByEmailRepository,
+  AddAccountRepository,
+  LoadAccountByEmailRepository,
+  UpdateAccessTokenRepository, LoadAccountByTokenRepository
+} from '../../../src/data/protocols/db/account'
 
 export class CheckAccounByEmailRepositoryStub implements CheckAccounByEmailRepository {
   async checkByEmail (email: CheckAccounByEmailRepository.Params): Promise<CheckAccounByEmailRepository.Result> {
@@ -31,4 +33,13 @@ export class UpdateAccessTokenRepositoryStub implements UpdateAccessTokenReposit
   async update (plainText: string): Promise<void> {
     return Promise.resolve(null)
   }
+}
+
+export const mockLoadAccountByTokenRepositoryStub = (): LoadAccountByTokenRepository => {
+  class LoadAccountByTokenRepositoryStub implements LoadAccountByTokenRepository {
+    async loadAccountByToken (accessToken: string, role?: string): Promise<LoadAccountByTokenRepository.Result> {
+      return Promise.resolve({ id: 'any_id' })
+    }
+  }
+  return new LoadAccountByTokenRepositoryStub()
 }
