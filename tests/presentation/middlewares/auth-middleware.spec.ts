@@ -1,5 +1,5 @@
 import type { Middleware } from '../../../src/presentation/protocols/middleware'
-import type { LoadAccountByToken } from '../../../src/domain/load-account-by-token'
+import type { LoadAccountByToken } from '../../../src/domain/use-cases/load-account-by-token'
 import { AccessDeniedError } from '../../../src/presentation/errors/access-denied-error'
 import { forbidden, ok, serverError } from '../../../src/presentation/helpers/http-helper'
 import { AuthMiddleware } from '../../../src/presentation/middlewares/auth-middleware'
