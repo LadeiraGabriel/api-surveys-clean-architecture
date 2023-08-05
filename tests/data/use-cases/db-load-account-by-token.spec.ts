@@ -35,4 +35,11 @@ describe('Db load account by token use case', () => {
     const result = sut.load(accessToken, 'any_role')
     await expect(result).rejects.toThrow()
   })
+
+  test('should return id on success', async () => {
+    const accessToken: string = 'any_token'
+    const { sut } = makeSut()
+    const result = await sut.load(accessToken, 'any_role')
+    expect(result).toEqual({ id: 'any_id' })
+  })
 })
