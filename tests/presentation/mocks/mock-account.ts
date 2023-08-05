@@ -26,7 +26,7 @@ export const mockAuthenticationStub = (): Authentication => {
 export const mockLoadAccountByToken = (): LoadAccountByToken => {
   class LoadAccountByTokenStub implements LoadAccountByToken {
     async load (accessToken: string, role?: string): Promise<LoadAccountByToken.Result> {
-      return Promise.resolve(null)
+      return Promise.resolve({ id: 'any_id' })
     }
   }
 
