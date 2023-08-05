@@ -1,7 +1,7 @@
 import { prismaClientHelper } from '../../../../src/infra/helpers/prisma-client-helper'
-import type { LoadAccountByEmailRepository, UpdateAccessTokenRepository, CheckAccounByEmailRepository, AddAccountRepository } from '../../../data/protocols/db/account'
+import type { LoadAccountByEmailRepository, UpdateAccessTokenRepository, CheckAccounByEmailRepository, AddAccountRepository, LoadAccountByTokenRepository } from '../../../data/protocols/db/account'
 
-export class AccountPrismaRepository implements CheckAccounByEmailRepository, AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository {
+export class AccountPrismaRepository implements CheckAccounByEmailRepository, AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository, LoadAccountByTokenRepository {
   async checkByEmail (email: CheckAccounByEmailRepository.Params): Promise<CheckAccounByEmailRepository.Result> {
     const findAccount = await prismaClientHelper.account.findUnique({
       where: {
@@ -35,6 +35,14 @@ export class AccountPrismaRepository implements CheckAccounByEmailRepository, Ad
       },
       data: {
         token: dataUpdate
+      }
+    })
+  }
+
+  async loadAccountByToken (accessToken: string, role?: string): Promise<LoadAccountByTokenRepository.Result> {
+    return await prismaClientHelper.account.findFirst({
+      where: {
+        token: accessToken
       }
     })
   }
