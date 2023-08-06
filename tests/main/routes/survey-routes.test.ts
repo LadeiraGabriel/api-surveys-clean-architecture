@@ -19,7 +19,16 @@ afterAll(async () => {
 describe('Survey Routes', () => {
   describe('Add Survey Route', () => {
     test('Should return 204 on success', async () => {
-      await request(app).post('/api/add-survey').send({
+      await prismaClientHelper.account.create({
+        data: {
+          name: 'any_name',
+          email: 'any_email@gmail.com',
+          password: '$2b$12$vE.nSc9qmclKapl15JxG/exfGpSHUzY2MCIjs/hLYlVNC3ITW.kt.',
+          token: 'any_token',
+          role: 'admin'
+        }
+      })
+      await request(app).post('/api/add-survey').set('x-access-token', 'any_token').send({
         question: 'any_question',
         anwers: [{
           anwer: 'any_anwern',
