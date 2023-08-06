@@ -1,5 +1,5 @@
 import type { HttpResponse } from './index'
 
 export interface Middleware {
-  auth (request: any): Promise<HttpResponse>
+  handle (request: any): Promise<HttpResponse>
 }

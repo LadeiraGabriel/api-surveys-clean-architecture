@@ -6,7 +6,7 @@ import type { Middleware } from '../protocols/middleware'
 
 export class AuthMiddleware implements Middleware {
   constructor (private readonly loadAccountByToken: LoadAccountByToken, private readonly role?: string) { }
-  async auth (request: any): Promise<HttpResponse> {
+  async handle (request: any): Promise<HttpResponse> {
     try {
       const { accessToken } = request
       if (accessToken) {

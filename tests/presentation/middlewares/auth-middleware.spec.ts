@@ -23,7 +23,7 @@ describe('Auth middleware', () => {
   test('should return 403 if access token is empty', async () => {
     const request = {}
     const { sut } = makeSut()
-    const httpReponse = await sut.auth(request)
+    const httpReponse = await sut.handle(request)
     expect(httpReponse).toEqual(forbidden(new AccessDeniedError()))
   })
 
@@ -33,7 +33,7 @@ describe('Auth middleware', () => {
     }
     const { sut, loadAccountByTokenStub } = makeSut()
     const spyload = jest.spyOn(loadAccountByTokenStub, 'load')
-    await sut.auth(request)
+    await sut.handle(request)
     expect(spyload).toHaveBeenCalledWith('any_token', 'any_role')
   })
 
@@ -45,7 +45,7 @@ describe('Auth middleware', () => {
     jest.spyOn(loadAccountByTokenStub, 'load').mockImplementationOnce(() => {
       throw new Error()
     })
-    const httpReponse = await sut.auth(request)
+    const httpReponse = await sut.handle(request)
     expect(httpReponse).toEqual(serverError(new Error()))
   })
 
@@ -54,7 +54,7 @@ describe('Auth middleware', () => {
       accessToken: 'any_token'
     }
     const { sut } = makeSut()
-    const httpReponse = await sut.auth(request)
+    const httpReponse = await sut.handle(request)
     expect(httpReponse).toEqual(ok({ id: 'any_id' }))
   })
 })

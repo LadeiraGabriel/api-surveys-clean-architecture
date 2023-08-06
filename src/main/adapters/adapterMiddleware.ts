@@ -8,7 +8,7 @@ export const adapterMiddleware = (middleware: Middleware) => {
       accessToken: req.headers?.['x-access-token'],
       ...(req.headers || {})
     }
-    middleware.auth(request).then((httpResponse: HttpResponse) => {
+    middleware.handle(request).then((httpResponse: HttpResponse) => {
       if (httpResponse.statusCode === 200) {
         Object.assign(req, httpResponse.body)
         next()
