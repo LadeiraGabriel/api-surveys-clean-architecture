@@ -5,7 +5,10 @@ import type { LoadAccountByTokenRepository } from '../protocols/db/account/load-
 export class DbLoadAccountByToken implements LoadAccountByToken {
   constructor (private readonly loadAccountByTokenRepository: LoadAccountByTokenRepository, private readonly decrypter: Decrypter) { }
   async load (accessToken: string, role?: string): Promise<LoadAccountByToken.Result> {
-    await this.decrypter.decrypt(accessToken)
-    return await this.loadAccountByTokenRepository.loadAccountByToken(accessToken, role)
+    const token = await this.decrypter.decrypt(accessToken)
+    if (token) {
+      return await this.loadAccountByTokenRepository.loadAccountByToken(accessToken, role)
+    }
+    return null
   }
 }
