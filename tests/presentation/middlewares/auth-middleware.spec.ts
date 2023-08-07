@@ -65,6 +65,6 @@ describe('Auth middleware', () => {
     }
     const { sut } = makeSut()
     const httpReponse = await sut.handle(request)
-    expect(httpReponse).toEqual(ok({ id: 'any_id' }))
+    expect(httpReponse).toEqual(ok({ accountId: 'any_id' }))
   })
 })
