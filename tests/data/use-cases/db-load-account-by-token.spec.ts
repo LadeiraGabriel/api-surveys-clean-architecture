@@ -39,6 +39,15 @@ describe('Db load account by token use case', () => {
     const result = await sut.load(accessToken, role)
     expect(result).toBeNull()
   })
+
+  test('should return null if decrypter throws', async () => {
+    const accessToken: string = 'any_token'
+    const role = 'any_role'
+    const { sut, decrypterStub } = makeSut()
+    jest.spyOn(decrypterStub, 'decrypt').mockReturnValueOnce(Promise.reject(new Error()))
+    const result = await sut.load(accessToken, role)
+    expect(result).toBeNull()
+  })
   test('should call load account by token repository with correct values', async () => {
     const accessToken: string = 'any_token'
     const role = 'any_role'
