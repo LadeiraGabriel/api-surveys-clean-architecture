@@ -1,6 +1,6 @@
 import { LogPrismaRepository } from './../../../infra/db/prisma/log-prisma-repository'
 import { DbAddAccount } from '../../../data/use-cases/db-add-acount'
-import { DbAthentication } from '../../../data/use-cases/db-authentication'
+import { DbAuthentication } from '../../../data/use-cases/db-authentication'
 import { BcryptAdapter } from '../../../infra/cryptography/bcrypt-adapter'
 import { JwtAdapter } from '../../../infra/cryptography/jwt-adapter'
 import { AccountPrismaRepository } from '../../../infra/db/prisma/account-prisma-repository'
@@ -15,7 +15,7 @@ export const makeSignUpController = (): Controller => {
   const accountPrismaRepository = new AccountPrismaRepository()
   const jwtAdapter = new JwtAdapter(process.env.SECRET_KEY)
   const dbAddAccount = new DbAddAccount(bcrytpAdapter, accountPrismaRepository, accountPrismaRepository)
-  const dbAuthentication = new DbAthentication(accountPrismaRepository, bcrytpAdapter, jwtAdapter, accountPrismaRepository)
+  const dbAuthentication = new DbAuthentication(accountPrismaRepository, bcrytpAdapter, jwtAdapter, accountPrismaRepository)
   const signupController = new SignUpController(makeSignUpValidation(), dbAddAccount, dbAuthentication)
   const logPrismaRepository = new LogPrismaRepository()
   return new LogControllerDecorator(signupController, logPrismaRepository)
