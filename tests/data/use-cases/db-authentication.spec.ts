@@ -2,12 +2,12 @@ import type { Encrypter } from '../../../src/data/protocols/cryptography/Encrypt
 import type { HashComparer } from '../../../src/data/protocols/cryptography/hash-comparer'
 import type { LoadAccountByEmailRepository } from '../../../src/data/protocols/db/account/load-by-email-repository'
 import type { UpdateAccessTokenRepository } from '../../../src/data/protocols/db/account/update-access-token-repository'
-import { DbAthentication } from '../../../src/data/use-cases/db-authentication'
+import { DbAuthentication } from '../../../src/data/use-cases/db-authentication'
 import { EncrypterStub, HashComparerStub } from '../mocks/mock-cryptography'
 import { LoadAccountByEmailRepositoryStub, UpdateAccessTokenRepositoryStub } from '../mocks/mock-db-account'
 
 type SutType = {
-  sut: DbAthentication
+  sut: DbAuthentication
   loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository
   hashComparerStub: HashComparer
   encrypterStub: Encrypter
@@ -19,7 +19,7 @@ const makeSut = (): SutType => {
   const hashComparerStub = new HashComparerStub()
   const encrypterStub = new EncrypterStub()
   const updateaccessTokenRepositoryStub = new UpdateAccessTokenRepositoryStub()
-  const sut = new DbAthentication(loadAccountByEmailRepositoryStub, hashComparerStub, encrypterStub, updateaccessTokenRepositoryStub)
+  const sut = new DbAuthentication(loadAccountByEmailRepositoryStub, hashComparerStub, encrypterStub, updateaccessTokenRepositoryStub)
   return {
     sut,
     loadAccountByEmailRepositoryStub,

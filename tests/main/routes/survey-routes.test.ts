@@ -2,6 +2,7 @@ import type { Express } from 'express'
 import { setupApp } from '../../../src/main/config/app'
 import request from 'supertest'
 import { prismaClientHelper } from '../../../src/infra/helpers/prisma-client-helper'
+import Jwt from 'jsonwebtoken'
 
 let app: Express
 
@@ -19,16 +20,23 @@ afterAll(async () => {
 describe('Survey Routes', () => {
   describe('Add Survey Route', () => {
     test('Should return 204 on success', async () => {
-      await prismaClientHelper.account.create({
+      let account = await prismaClientHelper.account.create({
         data: {
           name: 'any_name',
           email: 'any_email@gmail.com',
           password: '$2b$12$vE.nSc9qmclKapl15JxG/exfGpSHUzY2MCIjs/hLYlVNC3ITW.kt.',
-          token: 'any_token',
           role: 'admin'
         }
       })
-      await request(app).post('/api/add-survey').set('x-access-token', 'any_token').send({
+      account = await prismaClientHelper.account.update({
+        where: {
+          id: account.id
+        },
+        data: {
+          token: Jwt.sign({ id: account.id }, process.env.SECRET_KEY)
+        }
+      })
+      await request(app).post('/api/add-survey').set('x-access-token', account.token).send({
         question: 'any_question',
         anwers: [{
           anwer: 'any_anwern',

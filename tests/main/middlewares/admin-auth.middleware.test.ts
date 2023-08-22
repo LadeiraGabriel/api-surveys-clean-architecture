@@ -3,6 +3,7 @@ import request from 'supertest'
 import type { Express } from 'express'
 import { prismaClientHelper } from '../../../src/infra/helpers/prisma-client-helper'
 import { adminAuthMiddleware } from '../../../src/main/middlewares/admin-auth-middleware'
+import Jwt from 'jsonwebtoken'
 
 let app: Express
 describe('Admin auth Middleware', () => {
@@ -17,13 +18,20 @@ describe('Admin auth Middleware', () => {
     await prismaClientHelper.account.deleteMany({})
   })
   test('should access the admin route', async () => {
-    await prismaClientHelper.account.create({
+    let account = await prismaClientHelper.account.create({
       data: {
         name: 'any_name',
         email: 'any_email@gmail.com',
         password: '$2b$12$vE.nSc9qmclKapl15JxG/exfGpSHUzY2MCIjs/hLYlVNC3ITW.kt.',
-        token: 'any_token',
         role: 'admin'
+      }
+    })
+    account = await prismaClientHelper.account.update({
+      where: {
+        id: account.id
+      },
+      data: {
+        token: Jwt.sign({ id: account.id }, process.env.SECRET_KEY)
       }
     })
 
@@ -31,6 +39,6 @@ describe('Admin auth Middleware', () => {
       res.send(req.body)
     })
 
-    await request(app).post('/test_admin_auth_middleware').set('x-access-token', 'any_token').send({ name: 'gabriel' }).expect({ name: 'gabriel' })
+    await request(app).post('/test_admin_auth_middleware').set('x-access-token', account.token).send({ name: 'gabriel' }).expect({ name: 'gabriel' })
   })
 })
