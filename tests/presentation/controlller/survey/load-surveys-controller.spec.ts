@@ -1,6 +1,6 @@
 import type { LoadSurveys } from '../../../../src/domain/use-cases'
 import { LoadSurveysController } from '../../../../src/presentation/controllers/survey/load-surveys-controller'
-import { ok } from '../../../../src/presentation/helpers/http-helper'
+import { ok, serverError } from '../../../../src/presentation/helpers/http-helper'
 import { mockLoadSurveysStub } from '../../mocks/mock-survey'
 
 type SutType = {
@@ -38,5 +38,12 @@ describe('Load Surveys Controller', () => {
         }
       ]
     }]))
+  })
+
+  test('should return 500 if load surveys throws', async () => {
+    const { sut, loadSurveysStub } = makeSut()
+    jest.spyOn(loadSurveysStub, 'load').mockReturnValueOnce(Promise.reject(new Error()))
+    const httpRepose = await sut.handle()
+    expect(httpRepose).toEqual(serverError(new Error()))
   })
 })
