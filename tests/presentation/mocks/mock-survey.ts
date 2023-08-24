@@ -1,4 +1,4 @@
-import type { AddSurvey } from '../../../src/domain/use-cases/add-survey'
+import type { LoadSurveys, AddSurvey } from '../../../src/domain/use-cases'
 
 export const mockRequest = (): AddSurvey.Params => ({
   question: 'any_question',
@@ -16,4 +16,22 @@ export const mockAddSurveyStub = (): AddSurvey => {
   }
 
   return new AddSurveyStub()
+}
+
+export const mockLoadSurveysStub = (): LoadSurveys => {
+  class LoadSurveysStub implements LoadSurveys {
+    async load (): Promise<LoadSurveys.Result[]> {
+      return [{
+        id: 'any_id',
+        question: 'any_question',
+        anwers: [
+          {
+            anwer: 'any_anwer',
+            image: 'any_image'
+          }
+        ]
+      }]
+    }
+  }
+  return new LoadSurveysStub()
 }
