@@ -22,4 +22,18 @@ describe('Db load surveys', () => {
     await sut.load()
     expect(spyloadRepo).toHaveBeenCalled()
   })
+  test('should return list surveys on success', async () => {
+    const { sut } = makeSut()
+    const listSurveys = await sut.load()
+    expect(listSurveys).toEqual([{
+      id: 'any_id',
+      question: 'any_question',
+      anwers: [
+        {
+          anwer: 'any_anwer',
+          image: 'any_image'
+        }
+      ]
+    }])
+  })
 })
