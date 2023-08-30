@@ -4,9 +4,9 @@ import type { Middleware } from '../../../presentation/protocols/middleware'
 import { AccountPrismaRepository } from '../../../infra/db/prisma/account-prisma-repository'
 import { JwtAdapter } from '../../../infra/cryptography/jwt-adapter'
 
-export const makeAuthMiddlewareFactory = (role: string): Middleware => {
-  const jwrAdapter = new JwtAdapter(process.env.SECRET_KEY)
+export const makeAuthMiddlewareFactory = (role?: string): Middleware => {
+  const jwtAdapter = new JwtAdapter(process.env.SECRET_KEY)
   const accountPrismaRepository = new AccountPrismaRepository()
-  const dbLoadAccountByToken = new DbLoadAccountByToken(accountPrismaRepository, jwrAdapter)
+  const dbLoadAccountByToken = new DbLoadAccountByToken(accountPrismaRepository, jwtAdapter)
   return new AuthMiddleware(dbLoadAccountByToken, role)
 }
