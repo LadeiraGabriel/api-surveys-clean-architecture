@@ -39,4 +39,18 @@ describe('Survey Prisma Repository', () => {
       expect(result).toBeTruthy()
     })
   })
+
+  describe('Load Survey Repository', () => {
+    test('should return list surveys on success', async () => {
+      const sut = makeSut()
+      await sut.add(mockRequest())
+      const surveys = await sut.loadSurveys()
+      const result = await prismaClientHelper.survey.findMany({
+        include: {
+          anwers: true
+        }
+      })
+      expect(surveys).toEqual(result)
+    })
+  })
 })
