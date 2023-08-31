@@ -2,9 +2,8 @@
   "name": "clean-node-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "build": "tsc ",
+    "build": "rimraf dist && tsc -p tsconfig-build.json",
     "start": "nodemon -e js,json dist/src/main/server.js",
     "start-dev": "nodemon -e ts,json src/main/server.ts",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
@@ -37,7 +36,9 @@
     "jest": "^29.5.0",
     "jest-mock-extended": "^3.0.4",
     "lint-staged": "^13.2.2",
+    "module-alias": "^2.2.3",
     "prisma": "^4.15.0",
+    "rimraf": "^5.0.1",
     "supertest": "^6.3.3",
     "ts-jest": "^29.1.0",
     "typescript": "^5.0.4"
@@ -50,5 +51,11 @@
     "jsonwebtoken": "^9.0.0",
     "nodemon": "^2.0.22",
     "validator": "^13.9.0"
-  }
+  },
+
+  "_moduleAliases": {
+    "@"      : "dist"
+  },
+  
+  "_moduleDirectories": ["node_modules_custom"]
 }

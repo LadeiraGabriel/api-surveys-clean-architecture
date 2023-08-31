@@ -1,7 +1,7 @@
 import request from 'supertest'
 import type { Express } from 'express'
-import { setupApp } from '../../../src/main/config/app'
-import { prismaClientHelper } from '../../../src/infra/helpers/prisma-client-helper'
+import { setupApp } from '@/main/config/app'
+import { prismaClientHelper } from '@/infra/helpers/prisma-client-helper'
 
 let app: Express
 

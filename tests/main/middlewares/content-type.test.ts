@@ -1,5 +1,5 @@
 import request from 'supertest'
-import { setupApp } from '../../../src/main/config/app'
+import { setupApp } from '@/main/config/app'
 import type { Request, Response, Express } from 'express'
 
 let app: Express

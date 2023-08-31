@@ -3,7 +3,7 @@ import type {
   AddAccountRepository,
   LoadAccountByEmailRepository,
   UpdateAccessTokenRepository, LoadAccountByTokenRepository
-} from '../../../src/data/protocols/db/account'
+} from '@/data/protocols/db/account'
 
 export class CheckAccounByEmailRepositoryStub implements CheckAccounByEmailRepository {
   async checkByEmail (email: CheckAccounByEmailRepository.Params): Promise<CheckAccounByEmailRepository.Result> {

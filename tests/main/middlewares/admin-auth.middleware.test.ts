@@ -1,9 +1,9 @@
-import { setupApp } from '../../../src/main/config/app'
+import { setupApp } from '@/main/config/app'
+import { adminAuthMiddleware } from '@/main/middlewares/admin-auth-middleware'
+import { prismaClientHelper } from '@/infra/helpers/prisma-client-helper'
+import Jwt from 'jsonwebtoken'
 import request from 'supertest'
 import type { Express } from 'express'
-import { prismaClientHelper } from '../../../src/infra/helpers/prisma-client-helper'
-import { adminAuthMiddleware } from '../../../src/main/middlewares/admin-auth-middleware'
-import Jwt from 'jsonwebtoken'
 
 let app: Express
 describe('Admin auth Middleware', () => {

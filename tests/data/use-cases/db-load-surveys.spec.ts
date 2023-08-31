@@ -1,6 +1,6 @@
-import type { LoadSurveysRepository } from '../../../src/data/protocols/db/survey/load-surveys-repository'
-import { DbLoadSurveys } from '../../../src/data/use-cases/db-load-surveys'
-import { mockLoadSurveysRepositoryStub } from '../mocks/mock-load-surveys'
+import type { LoadSurveysRepository } from '@/data/protocols/db/survey/load-surveys-repository'
+import { DbLoadSurveys } from '@/data/use-cases/db-load-surveys'
+import { mockLoadSurveysRepositoryStub } from '@/tests/data/mocks/mock-load-surveys'
 
 type SutType = {
   sut: DbLoadSurveys

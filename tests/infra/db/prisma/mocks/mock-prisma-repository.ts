@@ -1,4 +1,4 @@
-import { prismaClientHelper } from '../../../../../src/infra/helpers/prisma-client-helper'
+import { prismaClientHelper } from '@/infra/helpers/prisma-client-helper'
 
 export const mockCreateAccount = async (): Promise<any> => {
   const account = await prismaClientHelper.account.create({

@@ -1,4 +1,4 @@
-import { prismaClientHelper } from '../../../../src/infra/helpers/prisma-client-helper'
+import { prismaClientHelper } from '@/infra/helpers/prisma-client-helper'
 import type { LoadAccountByEmailRepository, UpdateAccessTokenRepository, CheckAccounByEmailRepository, AddAccountRepository, LoadAccountByTokenRepository } from '../../../data/protocols/db/account'
 
 export class AccountPrismaRepository implements CheckAccounByEmailRepository, AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository, LoadAccountByTokenRepository {

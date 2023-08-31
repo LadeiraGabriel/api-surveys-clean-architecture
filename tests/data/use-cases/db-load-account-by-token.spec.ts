@@ -1,8 +1,8 @@
-import type { Decrypter } from '../../../src/data/protocols/cryptography/descrypter'
-import type { LoadAccountByTokenRepository } from '../../../src/data/protocols/db/account/load-account-by-token-repository'
-import { DbLoadAccountByToken } from '../../../src/data/use-cases/db-load-account-by-token'
-import { mockdecrypterStub } from '../mocks/mock-cryptography'
-import { mockLoadAccountByTokenRepositoryStub } from '../mocks/mock-db-account'
+import type { Decrypter } from '@/data/protocols/cryptography/descrypter'
+import type { LoadAccountByTokenRepository } from '@/data/protocols/db/account/load-account-by-token-repository'
+import { DbLoadAccountByToken } from '@/data/use-cases/db-load-account-by-token'
+import { mockdecrypterStub } from '@/tests/data/mocks/mock-cryptography'
+import { mockLoadAccountByTokenRepositoryStub } from '@/tests/data/mocks/mock-db-account'
 
 type SutType = {
   sut: DbLoadAccountByToken

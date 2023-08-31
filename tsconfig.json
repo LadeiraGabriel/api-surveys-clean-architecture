@@ -3,7 +3,16 @@
     "outDir": "./dist",
     "module": "CommonJS",
     "target": "ES2022",
+    "sourceMap": true,
     "esModuleInterop": true,
-    "allowJs": true
-  }
+    "rootDirs": ["src","tests"],
+    "baseUrl": "src",
+    "paths": {
+      "@/tests/*": ["../tests/*"],
+      "@/*": ["*"]
+    }
+  },
+  "include": [
+    "src","tests"
+  ]
 }

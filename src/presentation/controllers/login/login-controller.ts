@@ -1,7 +1,7 @@
-import { badRequest, ok, serverError, unauthorized } from '../../helpers/http-helper'
-import type { HttpResponse, Validation } from '../../protocols'
-import type { Authentication } from '../../../domain/use-cases/Authentication'
-import type { Controller } from '../../protocols/controller'
+import { badRequest, ok, serverError, unauthorized } from '@/presentation/helpers/http-helper'
+import type { HttpResponse, Validation } from '@/presentation/protocols'
+import type { Authentication } from '@/domain/use-cases/Authentication'
+import type { Controller } from '@/presentation/protocols/controller'
 export class LoginController implements Controller {
   constructor (private readonly valdaition: Validation, private readonly authentication: Authentication) {}
   async handle (request: any): Promise<HttpResponse> {

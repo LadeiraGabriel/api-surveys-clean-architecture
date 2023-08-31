@@ -1,6 +1,6 @@
-import type { AddSurvey } from '../../../domain/use-cases/add-survey'
-import { badRequest, noContent, serverError } from '../../helpers/http-helper'
-import type { Controller, HttpResponse, Validation } from '../../protocols'
+import type { AddSurvey } from '@/domain/use-cases/add-survey'
+import { badRequest, noContent, serverError } from '@/presentation/helpers/http-helper'
+import type { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 
 export class AddSurveyController implements Controller {
   constructor (private readonly validation: Validation, private readonly addSurvey: AddSurvey) { }

@@ -1,4 +1,4 @@
-import type { LoadSurveysRepository } from '../../../src/data/protocols/db/survey/load-surveys-repository'
+import type { LoadSurveysRepository } from '@/data/protocols/db/survey/load-surveys-repository'
 
 export const mockLoadSurveysRepositoryStub = (): LoadSurveysRepository => {
   class LoadSurveysRepositoryStub implements LoadSurveysRepository {

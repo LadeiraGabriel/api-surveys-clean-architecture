@@ -1,17 +1,17 @@
-import { SignUpController } from './../../../../src/presentation/controllers/login/SignUp-controller'
-import type { AddAccount } from './../../../../src/domain/use-cases/add-account'
-import type { Authentication } from './../../../../src/domain/use-cases/Authentication'
+import { SignUpController } from '@/presentation/controllers/login/SignUp-controller'
+import type { AddAccount } from '@/domain/use-cases/add-account'
+import type { Authentication } from '@/domain/use-cases/Authentication'
 import {
   MissingParamError
-} from './../../../../src/presentation/errors/Missing-param-error'
-import { EmailInUsedError } from './../../../../src/presentation/errors/Email-in-used-error'
-import { badRequest, serverError } from './../../../../src/presentation/helpers/http-helper'
-import type { Validation } from './../../../../src/presentation/protocols/validation'
+} from '@/presentation/errors/Missing-param-error'
+import { EmailInUsedError } from '@/presentation/errors/Email-in-used-error'
+import { badRequest, serverError } from '@/presentation/helpers/http-helper'
+import type { Validation } from '@/presentation/protocols/validation'
 import {
   mockAddAccountStub,
   mockAuthenticationStub,
   mockValidationStub
-} from './../../mocks'
+} from '@/tests/presentation/mocks'
 
 type mockeFieldsAccount = {
   name: string

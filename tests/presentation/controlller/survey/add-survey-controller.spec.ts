@@ -1,9 +1,9 @@
-import type { AddSurvey } from '../../../../src/domain/use-cases/add-survey'
-import { AddSurveyController } from '../../../../src/presentation/controllers/survey/add-survey-controller'
-import { badRequest, noContent, serverError } from '../../../../src/presentation/helpers/http-helper'
-import type { Controller, Validation } from '../../../../src/presentation/protocols'
-import { mockValidationStub } from '../../mocks'
-import { mockAddSurveyStub } from '../../mocks/mock-survey'
+import type { AddSurvey } from '@/domain/use-cases/add-survey'
+import { AddSurveyController } from '@/presentation/controllers/survey/add-survey-controller'
+import { badRequest, noContent, serverError } from '@/presentation/helpers/http-helper'
+import type { Controller, Validation } from '@/presentation/protocols'
+import { mockValidationStub } from '@/tests/presentation/mocks'
+import { mockAddSurveyStub } from '@/tests/presentation/mocks/mock-survey'
 
 type SutType = {
   sut: Controller

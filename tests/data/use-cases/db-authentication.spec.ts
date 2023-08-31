@@ -1,10 +1,10 @@
-import type { Encrypter } from '../../../src/data/protocols/cryptography/Encrypter'
-import type { HashComparer } from '../../../src/data/protocols/cryptography/hash-comparer'
-import type { LoadAccountByEmailRepository } from '../../../src/data/protocols/db/account/load-by-email-repository'
-import type { UpdateAccessTokenRepository } from '../../../src/data/protocols/db/account/update-access-token-repository'
-import { DbAuthentication } from '../../../src/data/use-cases/db-authentication'
-import { EncrypterStub, HashComparerStub } from '../mocks/mock-cryptography'
-import { LoadAccountByEmailRepositoryStub, UpdateAccessTokenRepositoryStub } from '../mocks/mock-db-account'
+import type { Encrypter } from '@/data/protocols/cryptography/Encrypter'
+import type { HashComparer } from '@/data/protocols/cryptography/hash-comparer'
+import type { LoadAccountByEmailRepository } from '@/data/protocols/db/account/load-by-email-repository'
+import type { UpdateAccessTokenRepository } from '@/data/protocols/db/account/update-access-token-repository'
+import { DbAuthentication } from '@/data/use-cases/db-authentication'
+import { EncrypterStub, HashComparerStub } from '@/tests/data/mocks/mock-cryptography'
+import { LoadAccountByEmailRepositoryStub, UpdateAccessTokenRepositoryStub } from '@/tests/data/mocks/mock-db-account'
 
 type SutType = {
   sut: DbAuthentication

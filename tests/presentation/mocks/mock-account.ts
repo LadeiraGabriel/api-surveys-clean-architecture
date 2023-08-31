@@ -1,6 +1,6 @@
-import type { LoadAccountByToken } from '../../../src/domain/use-cases/load-account-by-token'
-import type { AddAccount } from '../../../src/domain/use-cases/add-account'
-import type { Authentication } from '../../../src/domain/use-cases/Authentication'
+import type { LoadAccountByToken } from '@/domain/use-cases/load-account-by-token'
+import type { AddAccount } from '@/domain/use-cases/add-account'
+import type { Authentication } from '@/domain/use-cases/Authentication'
 
 export const mockAddAccountStub = (): AddAccount => {
   class AddAccountStub implements AddAccount {

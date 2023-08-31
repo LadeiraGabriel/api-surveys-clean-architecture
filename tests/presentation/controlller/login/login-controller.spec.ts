@@ -1,9 +1,9 @@
-import type { Authentication } from '../../../../src/domain/use-cases'
-import { LoginController } from '../../../../src/presentation/controllers/login/login-controller'
-import { MissingParamError } from '../../../../src/presentation/errors'
-import { badRequest, ok, serverError, unauthorized } from '../../../../src/presentation/helpers/http-helper'
-import type { Validation } from '../../../../src/presentation/protocols'
-import { mockAuthenticationStub, mockValidationStub } from '../../mocks'
+import type { Authentication } from '@/domain/use-cases'
+import { LoginController } from '@/presentation/controllers/login/login-controller'
+import { MissingParamError } from '@/presentation/errors'
+import { badRequest, ok, serverError, unauthorized } from '@/presentation/helpers/http-helper'
+import type { Validation } from '@/presentation/protocols'
+import { mockAuthenticationStub, mockValidationStub } from '@/tests/presentation/mocks'
 
 type SutType = () => {
   sut: LoginController

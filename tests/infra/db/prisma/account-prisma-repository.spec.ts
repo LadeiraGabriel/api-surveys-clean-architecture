@@ -1,5 +1,5 @@
-import { AccountPrismaRepository } from '../../../../src/infra/db/prisma/account-prisma-repository'
-import { prismaClientHelper } from '../../../../src/infra/helpers/prisma-client-helper'
+import { AccountPrismaRepository } from '@/infra/db/prisma/account-prisma-repository'
+import { prismaClientHelper } from '@/infra/helpers/prisma-client-helper'
 import { mockCreateAccount } from './mocks/mock-prisma-repository'
 
 beforeEach(async () => {

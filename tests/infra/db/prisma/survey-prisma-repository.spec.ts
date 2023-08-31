@@ -1,6 +1,6 @@
-import type { AddSurveyRepository } from '../../../../src/data/protocols/db/survey/add-survey-repository'
-import { SurveyPrismaRepository } from '../../../../src/infra/db/prisma/survey-prisma-repository'
-import { prismaClientHelper } from '../../../../src/infra/helpers/prisma-client-helper'
+import type { AddSurveyRepository } from '@/data/protocols/db/survey/add-survey-repository'
+import { SurveyPrismaRepository } from '@/infra/db/prisma/survey-prisma-repository'
+import { prismaClientHelper } from '@/infra/helpers/prisma-client-helper'
 beforeEach(async () => {
   await prismaClientHelper.anwer.deleteMany({})
   await prismaClientHelper.survey.deleteMany({})

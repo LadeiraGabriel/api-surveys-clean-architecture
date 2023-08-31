@@ -1,7 +1,7 @@
-import type { LoadSurveys } from '../../../../src/domain/use-cases'
-import { LoadSurveysController } from '../../../../src/presentation/controllers/survey/load-surveys-controller'
-import { ok, serverError } from '../../../../src/presentation/helpers/http-helper'
-import { mockLoadSurveysStub } from '../../mocks/mock-survey'
+import type { LoadSurveys } from '@/domain/use-cases'
+import { LoadSurveysController } from '@/presentation/controllers/survey/load-surveys-controller'
+import { ok, serverError } from '@/presentation/helpers/http-helper'
+import { mockLoadSurveysStub } from '@/tests/presentation/mocks/mock-survey'
 
 type SutType = {
   sut: LoadSurveysController

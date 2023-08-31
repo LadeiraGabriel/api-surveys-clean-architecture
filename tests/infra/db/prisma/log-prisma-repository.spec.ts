@@ -1,5 +1,5 @@
-import { LogPrismaRepository } from '../../../../src/infra/db/prisma/log-prisma-repository'
-import { prismaClientHelper } from '../../../../src/infra/helpers/prisma-client-helper'
+import { LogPrismaRepository } from '@/infra/db/prisma/log-prisma-repository'
+import { prismaClientHelper } from '@/infra/helpers/prisma-client-helper'
 
 describe('Log prisma repository', () => {
   beforeEach(async () => {

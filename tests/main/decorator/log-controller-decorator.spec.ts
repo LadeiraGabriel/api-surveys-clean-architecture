@@ -1,7 +1,7 @@
-import type { LogErrorRepository } from '../../../src/data/protocols/db/log/log-error-repository'
-import { LogControllerDecorator } from '../../../src/main/decorator/log-controller-decorator'
-import { serverError } from '../../../src/presentation/helpers/http-helper'
-import { ControllerStub } from '../mocks/mock-controller'
+import type { LogErrorRepository } from '@/data/protocols/db/log/log-error-repository'
+import { LogControllerDecorator } from '@/main/decorator/log-controller-decorator'
+import { serverError } from '@/presentation/helpers/http-helper'
+import { ControllerStub } from '@/tests/main/mocks/mock-controller'
 
 type SutType = {
   logErrorRepositoryStub: LogErrorRepository

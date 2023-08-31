@@ -1,9 +1,9 @@
-import type { Middleware } from '../../../src/presentation/protocols/middleware'
-import type { LoadAccountByToken } from '../../../src/domain/use-cases/load-account-by-token'
-import { AccessDeniedError } from '../../../src/presentation/errors/access-denied-error'
-import { forbidden, ok, serverError } from '../../../src/presentation/helpers/http-helper'
-import { AuthMiddleware } from '../../../src/presentation/middlewares/auth-middleware'
-import { mockLoadAccountByToken } from '../mocks'
+import type { Middleware } from '@/presentation/protocols/middleware'
+import type { LoadAccountByToken } from '@/domain/use-cases/load-account-by-token'
+import { AccessDeniedError } from '@/presentation/errors/access-denied-error'
+import { forbidden, ok, serverError } from '@/presentation/helpers/http-helper'
+import { AuthMiddleware } from '@/presentation/middlewares/auth-middleware'
+import { mockLoadAccountByToken } from '@/tests/presentation/mocks'
 
 type SutType = {
   sut: Middleware

@@ -1,8 +1,8 @@
-import type { Express } from 'express'
-import { setupApp } from '../../../src/main/config/app'
+import { setupApp } from '@/main/config/app'
 import request from 'supertest'
-import { prismaClientHelper } from '../../../src/infra/helpers/prisma-client-helper'
+import { prismaClientHelper } from '@/infra/helpers/prisma-client-helper'
 import Jwt from 'jsonwebtoken'
+import type { Express } from 'express'
 
 let app: Express
 

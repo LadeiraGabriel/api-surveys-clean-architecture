@@ -1,4 +1,4 @@
-import type { LoadSurveys, AddSurvey } from '../../../src/domain/use-cases'
+import type { LoadSurveys, AddSurvey } from '@/domain/use-cases'
 
 export const mockRequest = (): AddSurvey.Params => ({
   question: 'any_question',

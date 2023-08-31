@@ -1,7 +1,7 @@
-import type { AddSurveyRepository } from '../../../src/data/protocols/db/survey/add-survey-repository'
-import type { AddSurvey } from '../../../src/domain/use-cases/add-survey'
-import { DbAddSurvey } from '../../../src/data/use-cases/db-add-survey'
-import { AddSurveyRepositoryStub } from '../mocks/mock-db-add-survey'
+import type { AddSurveyRepository } from '@/data/protocols/db/survey/add-survey-repository'
+import type { AddSurvey } from '@/domain/use-cases/add-survey'
+import { DbAddSurvey } from '@/data/use-cases/db-add-survey'
+import { AddSurveyRepositoryStub } from '@/tests/data/mocks/mock-db-add-survey'
 type SutType = {
   sut: DbAddSurvey
   addSurveyRepositoryStub: AddSurveyRepository

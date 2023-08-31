@@ -1,6 +1,6 @@
-import { InvalidParamError } from '../../../src/presentation/errors'
-import { EmailValidation } from '../../../src/validations/validators'
-import { mockEmailValitorStub } from '../mocks/mock-email-validator'
+import { InvalidParamError } from '@/presentation/errors'
+import { EmailValidation } from '@/validations/validators'
+import { mockEmailValitorStub } from '@/tests/validation/mocks/mock-email-validator'
 
 describe('Email Validation', () => {
   test('Should call email validator with correct value', () => {
