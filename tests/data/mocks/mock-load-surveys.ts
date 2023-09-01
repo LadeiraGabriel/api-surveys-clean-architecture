@@ -11,7 +11,8 @@ export const mockLoadSurveysRepositoryStub = (): LoadSurveysRepository => {
             anwer: 'any_anwer',
             image: 'any_image'
           }
-        ]
+        ],
+        date: new Date()
       }])
     }
   }

@@ -43,7 +43,8 @@ describe('Survey Routes', () => {
         anwers: [{
           anwer: 'any_anwern',
           image: 'any_image'
-        }]
+        }],
+        date: new Date()
       }).expect(204)
     })
   })

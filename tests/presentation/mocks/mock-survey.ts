@@ -5,7 +5,8 @@ export const mockRequest = (): AddSurvey.Params => ({
   anwers: [{
     anwer: 'any_anwern',
     image: 'any_image'
-  }]
+  }],
+  date: new Date()
 })
 
 export const mockAddSurveyStub = (): AddSurvey => {
@@ -29,7 +30,8 @@ export const mockLoadSurveysStub = (): LoadSurveys => {
             anwer: 'any_anwer',
             image: 'any_image'
           }
-        ]
+        ],
+        date: new Date()
       }]
     }
   }

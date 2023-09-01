@@ -2,6 +2,7 @@ import type { AddSurveyRepository } from '@/data/protocols/db/survey/add-survey-
 import type { AddSurvey } from '@/domain/use-cases/add-survey'
 import { DbAddSurvey } from '@/data/use-cases/db-add-survey'
 import { AddSurveyRepositoryStub } from '@/tests/data/mocks/mock-db-add-survey'
+import MockDate from 'mockdate'
 type SutType = {
   sut: DbAddSurvey
   addSurveyRepositoryStub: AddSurveyRepository
@@ -21,10 +22,18 @@ export const mockRequest = (): AddSurvey.Params => ({
   anwers: [{
     anwer: 'any_anwern',
     image: 'any_image'
-  }]
+  }],
+  date: new Date()
 })
 
 describe('DbAddSurvey UseCase', () => {
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+
+  afterAll(() => {
+    MockDate.reset()
+  })
   test('Should call addSurveyRepository with correct values', async () => {
     const { sut, addSurveyRepositoryStub } = makeSut()
     const spyAddRepo = jest.spyOn(addSurveyRepositoryStub, 'add')

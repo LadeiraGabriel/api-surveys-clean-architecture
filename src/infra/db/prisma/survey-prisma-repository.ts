@@ -7,6 +7,7 @@ export class SurveyPrismaRepository implements AddSurveyRepository, LoadSurveysR
     await prismaClientHelper.survey.create({
       data: {
         question: data.question,
+        date: data.date,
         anwers: {
           createMany: {
             data: data.anwers

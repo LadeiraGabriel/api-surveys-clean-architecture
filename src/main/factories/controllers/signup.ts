@@ -1,7 +1,7 @@
 import { LogPrismaRepository } from '@/infra/db/prisma/log-prisma-repository'
 import { DbAddAccount } from '@/data/use-cases/db-add-acount'
 import { DbAuthentication } from '@/data/use-cases/db-authentication'
-import { BcryptAdapter } from '../../../infra/cryptography/bcrypt-adapter'
+import { BcryptAdapter } from '@/infra/cryptography/bcrypt-adapter'
 import { JwtAdapter } from '@/infra/cryptography/jwt-adapter'
 import { AccountPrismaRepository } from '@/infra/db/prisma/account-prisma-repository'
 import { SignUpController } from '@/presentation/controllers/login/SignUp-controller'

@@ -1,5 +1,5 @@
 import { prismaClientHelper } from '@/infra/helpers/prisma-client-helper'
-import type { LoadAccountByEmailRepository, UpdateAccessTokenRepository, CheckAccounByEmailRepository, AddAccountRepository, LoadAccountByTokenRepository } from '../../../data/protocols/db/account'
+import type { LoadAccountByEmailRepository, UpdateAccessTokenRepository, CheckAccounByEmailRepository, AddAccountRepository, LoadAccountByTokenRepository } from '@/data/protocols/db/account'
 
 export class AccountPrismaRepository implements CheckAccounByEmailRepository, AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository, LoadAccountByTokenRepository {
   async checkByEmail (email: CheckAccounByEmailRepository.Params): Promise<CheckAccounByEmailRepository.Result> {

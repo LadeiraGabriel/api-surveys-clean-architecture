@@ -1,9 +1,9 @@
-import type { AddSurvey } from './../../../../domain/use-cases/add-survey'
+import type { SurveyModel } from '@/domain/models/survey-model'
 export interface AddSurveyRepository {
   add (data: AddSurveyRepository.Params): AddSurveyRepository.Result
 }
 
 export namespace AddSurveyRepository {
-  export type Params = AddSurvey.Params
-  export type Result = AddSurvey.Result
+  export type Params = Omit<SurveyModel, 'id'>
+  export type Result = Promise<void>
 }

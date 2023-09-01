@@ -4,6 +4,7 @@ import { badRequest, noContent, serverError } from '@/presentation/helpers/http-
 import type { Controller, Validation } from '@/presentation/protocols'
 import { mockValidationStub } from '@/tests/presentation/mocks'
 import { mockAddSurveyStub } from '@/tests/presentation/mocks/mock-survey'
+import MockDate from 'mockdate'
 
 type SutType = {
   sut: Controller
@@ -27,10 +28,18 @@ export const mockRequest = (): AddSurvey.Params => ({
   anwers: [{
     anwer: 'any_anwern',
     image: 'any_image'
-  }]
+  }],
+  date: new Date()
 })
 
 describe('Add Survey controller', () => {
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+
+  afterAll(() => {
+    MockDate.reset()
+  })
   test('should call validation with correct values', async () => {
     const { sut, validationStub } = makeSut()
     const spyValidate = jest.spyOn(validationStub, 'validate')

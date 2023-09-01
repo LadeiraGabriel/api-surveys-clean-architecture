@@ -2,6 +2,7 @@ import type { LoadSurveys } from '@/domain/use-cases'
 import { LoadSurveysController } from '@/presentation/controllers/survey/load-surveys-controller'
 import { ok, serverError } from '@/presentation/helpers/http-helper'
 import { mockLoadSurveysStub } from '@/tests/presentation/mocks/mock-survey'
+import MockDate from 'mockdate'
 
 type SutType = {
   sut: LoadSurveysController
@@ -18,6 +19,13 @@ const makeSut = (): SutType => {
 }
 
 describe('Load Surveys Controller', () => {
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+
+  afterAll(() => {
+    MockDate.reset()
+  })
   test('should call load surveys', async () => {
     const { sut, loadSurveysStub } = makeSut()
     const spyLoad = jest.spyOn(loadSurveysStub, 'load')
@@ -36,7 +44,8 @@ describe('Load Surveys Controller', () => {
           anwer: 'any_anwer',
           image: 'any_image'
         }
-      ]
+      ],
+      date: new Date()
     }]))
   })
 

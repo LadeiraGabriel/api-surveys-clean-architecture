@@ -23,7 +23,8 @@ export const mockRequest = (): AddSurveyRepository.Params => ({
   {
     anwer: 'any_anwern',
     image: 'any_image'
-  }]
+  }],
+  date: new Date()
 })
 
 describe('Survey Prisma Repository', () => {
