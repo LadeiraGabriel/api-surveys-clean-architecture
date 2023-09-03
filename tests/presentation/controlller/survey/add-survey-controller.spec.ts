@@ -23,13 +23,12 @@ const makeSut = (): SutType => {
   }
 }
 
-export const mockRequest = (): AddSurvey.Params => ({
+export const mockRequest = (): Omit<AddSurvey.Params, 'date'> => ({
   question: 'any_question',
   anwers: [{
     anwer: 'any_anwern',
     image: 'any_image'
-  }],
-  date: new Date()
+  }]
 })
 
 describe('Add Survey controller', () => {
@@ -58,10 +57,10 @@ describe('Add Survey controller', () => {
     const { sut, addSuveyStub } = makeSut()
     const spyAdd = jest.spyOn(addSuveyStub, 'add')
     await sut.handle(mockRequest())
-    expect(spyAdd).toHaveBeenCalledWith(mockRequest())
+    expect(spyAdd).toHaveBeenCalledWith({ ...mockRequest(), date: new Date() })
   })
 
-  test('should call add survey with correct values', async () => {
+  test('should return 500 if add survey throws', async () => {
     const { sut, addSuveyStub } = makeSut()
     jest.spyOn(addSuveyStub, 'add').mockImplementationOnce(() => {
       throw new Error()

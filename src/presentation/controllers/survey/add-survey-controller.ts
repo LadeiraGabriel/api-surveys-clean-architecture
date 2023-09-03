@@ -10,7 +10,7 @@ export class AddSurveyController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      await this.addSurvey.add(request)
+      await this.addSurvey.add({ ...request, date: new Date() })
       return noContent()
     } catch (error) {
       return serverError(error)
