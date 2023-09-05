@@ -1,10 +1,9 @@
 import type { SaveSurveyResult } from '@/domain/use-cases/save-survey-result'
 
 export interface SaveSurveyResultRepository {
-  saveSurveyResult(date: SaveSurveyResultRepository.Params): Promise<SaveSurveyResultRepository.Result>
+  saveSurveyResult(date: SaveSurveyResultRepository.Params): Promise<void>
 }
 
 export namespace SaveSurveyResultRepository {
   export type Params = SaveSurveyResult.Params
-  export type Result = SaveSurveyResult.Result
 }
