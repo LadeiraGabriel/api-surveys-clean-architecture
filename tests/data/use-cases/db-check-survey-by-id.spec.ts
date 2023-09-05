@@ -1,5 +1,5 @@
 import { DbCheckSurveyById } from '@/data/use-cases/db-check-survey-by-id'
-import { makeCheckSurveyByIdRepositoryStub } from '../mocks/mock-check-survey-by-id'
+import { makeCheckSurveyByIdRepositoryStub } from '@/tests/data/mocks/mock-check-survey-by-id'
 import type { CheckSurveyByIdRepository } from '@/data/protocols/db/survey/check-survey-by-id-repository'
 
 type SutType = {
@@ -23,5 +23,13 @@ describe('Db check survey by id', () => {
     const spyCheck = jest.spyOn(checkSurveyByIdRepository, 'checkById')
     await sut.checkById(surveyId)
     expect(spyCheck).toHaveBeenCalledWith(surveyId)
+  })
+
+  test('should return false if check survey by id repository return false', async () => {
+    const surveyId = 'any_id'
+    const { sut, checkSurveyByIdRepository } = makeSut()
+    jest.spyOn(checkSurveyByIdRepository, 'checkById').mockReturnValueOnce(Promise.resolve(false))
+    const check = await sut.checkById(surveyId)
+    expect(check).toBeFalsy()
   })
 })
