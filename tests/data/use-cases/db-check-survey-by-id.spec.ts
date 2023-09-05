@@ -32,4 +32,12 @@ describe('Db check survey by id', () => {
     const check = await sut.checkById(surveyId)
     expect(check).toBeFalsy()
   })
+
+  test('should throws if check survey by id repository throws', async () => {
+    const surveyId = 'any_id'
+    const { sut, checkSurveyByIdRepository } = makeSut()
+    jest.spyOn(checkSurveyByIdRepository, 'checkById').mockReturnValueOnce(Promise.reject(new Error()))
+    const check = sut.checkById(surveyId)
+    await expect(check).rejects.toThrowError()
+  })
 })
