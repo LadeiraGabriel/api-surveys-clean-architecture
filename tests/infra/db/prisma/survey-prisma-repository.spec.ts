@@ -54,4 +54,23 @@ describe('Survey Prisma Repository', () => {
       expect(surveys).toEqual(result)
     })
   })
+
+  describe('check Survey by Id Repository', () => {
+    test('should  return true on success', async () => {
+      await prismaClientHelper.survey.create({
+        data: {
+          question: 'any_question',
+          date: new Date()
+        }
+      })
+      const surveyId = await prismaClientHelper.survey.findFirst({
+        where: {
+          question: 'any_question'
+        }
+      })
+      const sut = makeSut()
+      const survey = await sut.checkById(surveyId.id)
+      expect(survey).toBeTruthy()
+    })
+  })
 })

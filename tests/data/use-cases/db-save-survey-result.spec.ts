@@ -1,4 +1,3 @@
-import type { SaveSurveyResult } from '@/domain/use-cases/save-survey-result'
 import type { SaveSurveyResultRepository } from '@/data/protocols/db/survey/save-survey-result-repository'
 import type { LoadSurveyResultRepository } from '@/data/protocols/db/survey/load-survey-result-repository'
 import { DbSaveSurveyResult } from '@/data/use-cases/db-save-survey-result'
@@ -23,7 +22,7 @@ const makeSut = (): SutType => {
   }
 }
 
-const makeFakeRequest = (): SaveSurveyResult.Params => ({
+const makeFakeRequest = (): SaveSurveyResultRepository.Params => ({
   accountId: 'any_account_id',
   surveyId: 'any_survey_id',
   anwer: 'any_anwer',
