@@ -33,10 +33,19 @@ model Survey {
 }
 
 model Anwer {
-   id       String     @unique @default(uuid())
-   anwer    String
-   image    String? 
-   survey   Survey @relation(fields: [surveyId], references: [id])
-   surveyId String
+   id        String     @unique @default(uuid())
+   anwer     String
+   image     String? 
+   survey    Survey @relation(fields: [surveyId], references: [id])
+   surveyId  String
    @@map("anwers")
+  
+}
+
+model SurveyResult {
+  id        String     @unique @default(uuid())
+  accountId String     
+  surveyId  String     
+  anwer     String
+  date      DateTime
 }
