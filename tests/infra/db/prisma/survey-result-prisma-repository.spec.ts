@@ -61,9 +61,14 @@ const makeSurvey = async (): Promise<SurveyModel> => {
       question: 'any_question',
       anwers: {
         createMany: {
-          data: {
-            anwer: 'any_anwer'
-          }
+          data: [{
+            anwer: 'any_anwer',
+            image: 'any_image'
+          },
+          {
+            anwer: 'any_anwer_02',
+            image: 'any_image_02'
+          }]
         }
       },
       date: new Date()
@@ -154,6 +159,38 @@ describe('Survey Result prisma repository', () => {
         }
       })
       expect(result.anwer).toEqual('update_anwer')
+    })
+  })
+
+  describe('Load Survey Result prisma repository', () => {
+    test('should load survey result on success', async () => {
+      const account = await makeAccount()
+      const survey = await makeSurvey()
+      await makeSurveyResult()
+      const surveyResultPrismaRepository = new SurveyResultPrismaRepository()
+      const loadResult = await surveyResultPrismaRepository.loadBySurveyId(survey.id, account.id)
+      expect(loadResult).toEqual({
+        surveyId: survey.id,
+        question: survey.question,
+        anwers: [
+          {
+            image: 'any_image',
+            anwer: 'any_anwer',
+            count: 1,
+            percent: 100,
+            isCurrentAccountAnwer: true
+          },
+
+          {
+            anwer: 'any_anwer_02',
+            image: 'any_image_02',
+            count: 0,
+            percent: 0,
+            isCurrentAccountAnwer: false
+          }
+        ],
+        date: survey.date
+      })
     })
   })
 })
