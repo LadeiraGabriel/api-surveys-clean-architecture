@@ -48,4 +48,5 @@ model SurveyResult {
   surveyId  String     
   anwer     String
   date      DateTime
+  @@map("surveyresult")
 }
