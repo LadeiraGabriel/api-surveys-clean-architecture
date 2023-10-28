@@ -55,14 +55,14 @@ describe('Db save survey result', () => {
   test('should call load survey result repository with correct values', async () => {
     const request = makeFakeRequest()
     const { sut, loadSurveyResultRepositoryStub } = makeSut()
-    const spySaveResult = jest.spyOn(loadSurveyResultRepositoryStub, 'loadSurveyResult')
+    const spySaveResult = jest.spyOn(loadSurveyResultRepositoryStub, 'loadBySurveyId')
     await sut.save(request)
     expect(spySaveResult).toHaveBeenCalledWith(request.surveyId, request.accountId)
   })
 
   test('should return throws if load survey repository throws', async () => {
     const { sut, loadSurveyResultRepositoryStub } = makeSut()
-    jest.spyOn(loadSurveyResultRepositoryStub, 'loadSurveyResult').mockReturnValueOnce(Promise.reject(new Error()))
+    jest.spyOn(loadSurveyResultRepositoryStub, 'loadBySurveyId').mockReturnValueOnce(Promise.reject(new Error()))
     const result = sut.save(makeFakeRequest())
     await expect(result).rejects.toThrow()
   })
