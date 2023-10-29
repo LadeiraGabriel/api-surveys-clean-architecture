@@ -1,35 +1,34 @@
-import type { CheckSurveyById } from '@/domain/use-cases/check-survey-by-id'
+import type { LoadAnwersBySurvey } from '@/domain/use-cases/load-anwers-by-survey'
 import { SaveSurveyResultController } from '@/presentation/controllers/survey-result/save-survey-result-controller'
 
 type SutType = {
   sut: SaveSurveyResultController
-  checkSurveyById: CheckSurveyById
-}
-
-class DbCheckSyrveyByIdStub implements CheckSurveyById {
-  async checkById (id: string): Promise<CheckSurveyById.Result> {
-    return Promise.resolve(true)
-  }
+  loadAnwersBySurvey: LoadAnwersBySurvey
 }
 
 const makeSut = (): SutType => {
-  const checkSurveyById = new DbCheckSyrveyByIdStub()
-  const sut = new SaveSurveyResultController(checkSurveyById)
+  const loadAnwersBySurvey = new LoadAnwersBySurveyStub()
+  const sut = new SaveSurveyResultController(loadAnwersBySurvey)
   return {
     sut,
-    checkSurveyById
+    loadAnwersBySurvey
+  }
+}
+
+class LoadAnwersBySurveyStub implements LoadAnwersBySurvey {
+  async loadAnwers (id: string): Promise<LoadAnwersBySurvey.Result> {
+    return Promise.resolve(['any_anwer', 'other_anwer'])
   }
 }
 
 describe('Save survey result controller', () => {
-  test('Should call check survey by id with correct value', async () => {
-    const dataRequirements = {
-      surveyId: 'any_id',
-      accountId: 'any_id'
+  test('should call load anwers by survey with correct value', async () => {
+    const httpRequest = {
+      surveyId: 'any_id'
     }
-    const { sut, checkSurveyById } = makeSut()
-    const check = jest.spyOn(checkSurveyById, 'checkById')
-    await sut.handle(dataRequirements)
-    expect(check).toHaveBeenCalledWith(dataRequirements.surveyId)
+    const { sut, loadAnwersBySurvey } = makeSut()
+    const loadSpy = jest.spyOn(loadAnwersBySurvey, 'loadAnwers')
+    await sut.handle(httpRequest)
+    expect(loadSpy).toHaveBeenCalledWith(httpRequest.surveyId)
   })
 })
