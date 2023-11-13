@@ -38,8 +38,19 @@ describe('Save survey result controller', () => {
       surveyId: 'any_id'
     }
     const { sut, loadAnwersBySurvey } = makeSut()
-    jest.spyOn(loadAnwersBySurvey, 'loadAnwers').mockReturnValueOnce(null)
+    jest.spyOn(loadAnwersBySurvey, 'loadAnwers').mockReturnValueOnce(Promise.resolve([]))
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(forbidden(new InvalidParamError('surveyId')))
+  })
+
+  test('should return 403 if anwer not is valid', async () => {
+    const httpRequest = {
+      surveyId: 'any_id',
+      anwer: 'any_anwer'
+    }
+    const { sut, loadAnwersBySurvey } = makeSut()
+    jest.spyOn(loadAnwersBySurvey, 'loadAnwers').mockReturnValueOnce(Promise.resolve(['invalid_anwer', 'other_invalid_anwer']))
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(forbidden(new InvalidParamError('anwer')))
   })
 })
