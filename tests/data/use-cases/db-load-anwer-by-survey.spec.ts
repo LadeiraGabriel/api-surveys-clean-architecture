@@ -38,4 +38,14 @@ describe('Db Load Anwer By Survey', () => {
     const httpResponse = sut.loadAnwers(id)
     await expect(httpResponse).rejects.toThrow()
   })
+
+  test('should return anwers on success', async () => {
+    const id = 'any_id'
+    const { sut } = makeSut()
+    const httpResponse = await sut.loadAnwers(id)
+    expect(httpResponse).toEqual([
+      'any_anwer',
+      'other_anwer'
+    ])
+  })
 })
