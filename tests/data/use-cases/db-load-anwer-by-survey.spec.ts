@@ -28,4 +28,14 @@ describe('Db Load Anwer By Survey', () => {
     await sut.loadAnwers(id)
     expect(loadSpy).toHaveBeenCalledWith(id)
   })
+
+  test('should throws if load anwer by survey throws', async () => {
+    const id = 'any_id'
+    const { sut, loadAnwersBySurveyRepository } = makeSut()
+    jest.spyOn(loadAnwersBySurveyRepository, 'loadAnwersBySurvey').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const httpResponse = sut.loadAnwers(id)
+    await expect(httpResponse).rejects.toThrow()
+  })
 })
