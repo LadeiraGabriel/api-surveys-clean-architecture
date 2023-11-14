@@ -3,7 +3,7 @@ import type { LoadAnwersBySurvey } from '@/domain/use-cases/load-anwers-by-surve
 import type { SaveSurveyResult } from '@/domain/use-cases/save-survey-result'
 import { SaveSurveyResultController } from '@/presentation/controllers/survey-result/save-survey-result-controller'
 import { InvalidParamError } from '@/presentation/errors'
-import { forbidden } from '@/presentation/helpers/http-helper'
+import { forbidden, serverError } from '@/presentation/helpers/http-helper'
 
 beforeAll(() => {
   MockDate.set(new Date())
@@ -96,5 +96,18 @@ describe('Save survey result controller', () => {
     const saveResultSpy = jest.spyOn(saveSurveyResult, 'save')
     await sut.handle(httpRequest)
     expect(saveResultSpy).toHaveBeenCalledWith(httpRequest)
+  })
+
+  test('should return 500 if save survey result fails', async () => {
+    const httpRequest = {
+      accountId: 'any_id',
+      surveyId: 'any_id',
+      anwer: 'any_anwer',
+      date: new Date()
+    }
+    const { sut, saveSurveyResult } = makeSut()
+    jest.spyOn(saveSurveyResult, 'save').mockReturnValueOnce(Promise.reject(new Error()))
+    const httpReponse = await sut.handle(httpRequest)
+    expect(httpReponse).toEqual(serverError(new Error()))
   })
 })
