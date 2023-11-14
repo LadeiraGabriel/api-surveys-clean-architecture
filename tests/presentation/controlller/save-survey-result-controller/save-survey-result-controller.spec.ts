@@ -4,6 +4,7 @@ import type { SaveSurveyResult } from '@/domain/use-cases/save-survey-result'
 import { SaveSurveyResultController } from '@/presentation/controllers/survey-result/save-survey-result-controller'
 import { InvalidParamError } from '@/presentation/errors'
 import { forbidden, ok, serverError } from '@/presentation/helpers/http-helper'
+import { LoadAnwersBySurveyStub, SaveSurveyResultStub } from '../../mocks/mock-survey-result'
 
 beforeAll(() => {
   MockDate.set(new Date())
@@ -26,31 +27,6 @@ const makeSut = (): SutType => {
     sut,
     loadAnwersBySurvey,
     saveSurveyResult
-  }
-}
-
-class LoadAnwersBySurveyStub implements LoadAnwersBySurvey {
-  async loadAnwers (id: string): Promise<LoadAnwersBySurvey.Result> {
-    return Promise.resolve(['any_anwer', 'other_anwer'])
-  }
-}
-
-class SaveSurveyResultStub implements SaveSurveyResult {
-  async save (data: SaveSurveyResult.Params): Promise<SaveSurveyResult.Result> {
-    return Promise.resolve({
-      surveyId: 'any_id',
-      question: 'any_question',
-      anwers: [
-        {
-          image: 'any_image',
-          anwer: 'any_anwer',
-          count: 100,
-          percent: 50,
-          isCurrentAccountAnwer: true
-        }
-      ],
-      date: new Date()
-    })
   }
 }
 
