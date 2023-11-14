@@ -3,7 +3,7 @@ import type { LoadAnwersBySurvey } from '@/domain/use-cases/load-anwers-by-surve
 import type { SaveSurveyResult } from '@/domain/use-cases/save-survey-result'
 import { SaveSurveyResultController } from '@/presentation/controllers/survey-result/save-survey-result-controller'
 import { InvalidParamError } from '@/presentation/errors'
-import { forbidden, serverError } from '@/presentation/helpers/http-helper'
+import { forbidden, ok, serverError } from '@/presentation/helpers/http-helper'
 
 beforeAll(() => {
   MockDate.set(new Date())
@@ -38,12 +38,12 @@ class LoadAnwersBySurveyStub implements LoadAnwersBySurvey {
 class SaveSurveyResultStub implements SaveSurveyResult {
   async save (data: SaveSurveyResult.Params): Promise<SaveSurveyResult.Result> {
     return Promise.resolve({
-      surveyId: 'string',
-      question: 'string',
+      surveyId: 'any_id',
+      question: 'any_question',
       anwers: [
         {
-          image: 'string',
-          anwer: 'string',
+          image: 'any_image',
+          anwer: 'any_anwer',
           count: 100,
           percent: 50,
           isCurrentAccountAnwer: true
@@ -109,5 +109,30 @@ describe('Save survey result controller', () => {
     jest.spyOn(saveSurveyResult, 'save').mockReturnValueOnce(Promise.reject(new Error()))
     const httpReponse = await sut.handle(httpRequest)
     expect(httpReponse).toEqual(serverError(new Error()))
+  })
+
+  test('should return 200 on success', async () => {
+    const httpRequest = {
+      accountId: 'any_id',
+      surveyId: 'any_id',
+      anwer: 'any_anwer',
+      date: new Date()
+    }
+    const { sut } = makeSut()
+    const httpReponse = await sut.handle(httpRequest)
+    expect(httpReponse).toEqual(ok({
+      surveyId: 'any_id',
+      question: 'any_question',
+      anwers: [
+        {
+          image: 'any_image',
+          anwer: 'any_anwer',
+          count: 100,
+          percent: 50,
+          isCurrentAccountAnwer: true
+        }
+      ],
+      date: new Date()
+    }))
   })
 })

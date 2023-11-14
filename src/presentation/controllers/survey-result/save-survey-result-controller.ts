@@ -28,7 +28,7 @@ export class SaveSurveyResultController implements Controller {
         anwer: request.anwer,
         date: new Date()
       })
-      return Promise.resolve(ok(saveResult))
+      return ok(saveResult)
     } catch (error) {
       return serverError(error)
     }
