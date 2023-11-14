@@ -1,25 +1,56 @@
+import MockDate from 'mockdate'
 import type { LoadAnwersBySurvey } from '@/domain/use-cases/load-anwers-by-survey'
+import type { SaveSurveyResult } from '@/domain/use-cases/save-survey-result'
 import { SaveSurveyResultController } from '@/presentation/controllers/survey-result/save-survey-result-controller'
 import { InvalidParamError } from '@/presentation/errors'
 import { forbidden } from '@/presentation/helpers/http-helper'
 
+beforeAll(() => {
+  MockDate.set(new Date())
+})
+
+afterAll(() => {
+  MockDate.reset()
+})
 type SutType = {
   sut: SaveSurveyResultController
   loadAnwersBySurvey: LoadAnwersBySurvey
+  saveSurveyResult: SaveSurveyResult
 }
 
 const makeSut = (): SutType => {
+  const saveSurveyResult = new SaveSurveyResultStub()
   const loadAnwersBySurvey = new LoadAnwersBySurveyStub()
-  const sut = new SaveSurveyResultController(loadAnwersBySurvey)
+  const sut = new SaveSurveyResultController(loadAnwersBySurvey, saveSurveyResult)
   return {
     sut,
-    loadAnwersBySurvey
+    loadAnwersBySurvey,
+    saveSurveyResult
   }
 }
 
 class LoadAnwersBySurveyStub implements LoadAnwersBySurvey {
   async loadAnwers (id: string): Promise<LoadAnwersBySurvey.Result> {
     return Promise.resolve(['any_anwer', 'other_anwer'])
+  }
+}
+
+class SaveSurveyResultStub implements SaveSurveyResult {
+  async save (data: SaveSurveyResult.Params): Promise<SaveSurveyResult.Result> {
+    return Promise.resolve({
+      surveyId: 'string',
+      question: 'string',
+      anwers: [
+        {
+          image: 'string',
+          anwer: 'string',
+          count: 100,
+          percent: 50,
+          isCurrentAccountAnwer: true
+        }
+      ],
+      date: new Date()
+    })
   }
 }
 
@@ -52,5 +83,18 @@ describe('Save survey result controller', () => {
     jest.spyOn(loadAnwersBySurvey, 'loadAnwers').mockReturnValueOnce(Promise.resolve(['invalid_anwer', 'other_invalid_anwer']))
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(forbidden(new InvalidParamError('anwer')))
+  })
+
+  test('should call save survey result with correct values', async () => {
+    const httpRequest = {
+      accountId: 'any_id',
+      surveyId: 'any_id',
+      anwer: 'any_anwer',
+      date: new Date()
+    }
+    const { sut, saveSurveyResult } = makeSut()
+    const saveResultSpy = jest.spyOn(saveSurveyResult, 'save')
+    await sut.handle(httpRequest)
+    expect(saveResultSpy).toHaveBeenCalledWith(httpRequest)
   })
 })
