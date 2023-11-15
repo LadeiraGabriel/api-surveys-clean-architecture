@@ -73,4 +73,39 @@ describe('Survey Prisma Repository', () => {
       expect(survey).toBeTruthy()
     })
   })
+
+  describe('load Anwer by Survey  Repository', () => {
+    test('should  return anwers on success', async () => {
+      await prismaClientHelper.survey.create({
+        data: {
+          question: 'any_question',
+          date: new Date(),
+          anwers: {
+            createMany: {
+              data: [
+                {
+                  anwer: 'any_anwer',
+                  image: 'any_iamge'
+                },
+                {
+                  anwer: 'other_anwer',
+                  image: 'other_image'
+                }
+              ]
+            }
+          }
+        }
+      })
+      const surveyId = await prismaClientHelper.survey.findFirst({
+        where: {
+          question: 'any_question'
+        }
+      })
+      const sut = makeSut()
+      const loadAnwers = await sut.loadAnwersBySurvey(surveyId.id)
+      expect(loadAnwers).toEqual([
+        'any_anwer', 'other_anwer'
+      ])
+    })
+  })
 })
