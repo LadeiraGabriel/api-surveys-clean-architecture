@@ -1,11 +1,12 @@
-import type { Request, Response } from 'express'
+import type { Response } from 'express'
 import type { Controller, HttpResponse } from '@/presentation/protocols'
 
 export const adapterRoute = (controller: Controller) => {
-  return (req: Request, res: Response) => {
+  return (req: any, res: Response) => {
     const request = {
       ...(req.body || {}),
-      ...(req.params || {})
+      ...(req.params || {}),
+      accountId: req.accountId
     }
     controller.handle(request).then((httpResponse: HttpResponse) => {
       if (httpResponse.statusCode >= 200 && httpResponse.statusCode <= 299) {
