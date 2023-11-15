@@ -51,7 +51,6 @@ export class SurveyPrismaRepository implements AddSurveyRepository, LoadSurveysR
       anwers.push(objAnwer.anwer)
       return null
     })
-
     return anwers
   }
 }

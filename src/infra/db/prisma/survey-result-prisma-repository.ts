@@ -30,8 +30,6 @@ export class SurveyResultPrismaRepository implements SaveSurveyResultRepository,
         }
       })
     }
-
-    return Promise.resolve(null)
   }
 
   async loadBySurveyId (surveyId: string, accountId: string): Promise<LoadSurveyResultRepository.Result> {
@@ -54,7 +52,6 @@ GROUP BY
     surveys.id, surveys.question, anwers.anwer, anwers.image, surveyresult.anwer, surveys.date
 ORDER BY
     surveys.id, surveys.question, anwers.anwer, surveys.date;`
-    console.log(loadResult)
     return Promise.resolve(loadResultHelper(loadResult))
   }
 }
