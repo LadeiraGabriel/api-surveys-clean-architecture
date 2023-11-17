@@ -1,8 +1,9 @@
 import { surveyAnwerSchema } from './schemas/survey-anwer-schema'
 import { surveySchema } from './schemas/survey-schema'
-import { loginPath, surveysPath } from './paths'
+import { loginPath, surveysPath, signupPath } from './paths'
 import { badRequest, anauthorized, serverError, notFound, forbidden } from '@/main/docs/components'
 import { accountSchema, loginParamsSchema, errorSchema, surveysSchema, apiKeyAuthSchema } from '@/main/docs/schemas'
+import { signupParamsSchema } from './schemas/sign-up-params-schema'
 
 export default {
   openapi: '3.0.0',
@@ -19,6 +20,9 @@ export default {
     url: '/api'
   }],
   tags: [{
+    name: 'sign up'
+  },
+  {
     name: 'Login'
   },
   {
@@ -26,11 +30,13 @@ export default {
   }
   ],
   paths: {
+    '/signup': signupPath,
     '/login': loginPath,
     '/surveys': surveysPath
   },
   schemas: {
     account: accountSchema,
+    signupParams: signupParamsSchema,
     loginParams: loginParamsSchema,
     surveys: surveysSchema,
     survey: surveySchema,
