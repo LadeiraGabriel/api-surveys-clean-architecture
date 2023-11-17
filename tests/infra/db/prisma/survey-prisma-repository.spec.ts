@@ -48,7 +48,12 @@ describe('Survey Prisma Repository', () => {
       const surveys = await sut.loadSurveys()
       const result = await prismaClientHelper.survey.findMany({
         include: {
-          anwers: true
+          anwers: {
+            select: {
+              anwer: true,
+              image: true
+            }
+          }
         }
       })
       expect(surveys).toEqual(result)
@@ -85,7 +90,7 @@ describe('Survey Prisma Repository', () => {
               data: [
                 {
                   anwer: 'any_anwer',
-                  image: 'any_iamge'
+                  image: 'any_image'
                 },
                 {
                   anwer: 'other_anwer',

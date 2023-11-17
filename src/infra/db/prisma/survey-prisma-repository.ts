@@ -22,7 +22,12 @@ export class SurveyPrismaRepository implements AddSurveyRepository, LoadSurveysR
   async loadSurveys (): Promise<LoadSurveysRepository.Result[]> {
     const surveys = await prismaClientHelper.survey.findMany({
       include: {
-        anwers: true
+        anwers: {
+          select: {
+            anwer: true,
+            image: true
+          }
+        }
       }
     })
     return surveys
