@@ -38,7 +38,7 @@ describe('Survey Routes', () => {
           token: Jwt.sign({ id: account.id }, process.env.SECRET_KEY)
         }
       })
-      await request(app).post('/api/add-survey').set('x-access-token', account.token).send({
+      await request(app).post('/api/surveys').set('x-access-token', account.token).send({
         question: 'any_question',
         anwers: [{
           anwer: 'any_anwern',
