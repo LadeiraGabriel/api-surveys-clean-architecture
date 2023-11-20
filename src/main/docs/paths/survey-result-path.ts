@@ -1,4 +1,4 @@
-export const saveSurveyResultPath = {
+export const surveyResultPath = {
   put: {
     security: [{
       apiKeyAuth: []
