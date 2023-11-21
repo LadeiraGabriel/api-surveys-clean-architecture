@@ -4,7 +4,24 @@ import type { LoadSurveyResultRepository } from '@/data/protocols/db/survey/load
 export class DbLoadSurveyResult implements LoadSurveyResult {
   constructor (private readonly loadSurveyResultRepository: LoadSurveyResultRepository) { }
   async load (data: LoadSurveyResult.Params): Promise<LoadSurveyResult.Result> {
-    await this.loadSurveyResultRepository.loadBySurveyId(data.surveyId, data.accountId)
+    const loadResult = await this.loadSurveyResultRepository.loadBySurveyId(data.surveyId, data.accountId)
+
+    if (!loadResult) {
+      return {
+        surveyId: 'any_surveyid',
+        question: 'any_question',
+        anwers: [
+          {
+            image: 'any_image',
+            anwer: 'any_anwer',
+            count: 0,
+            percent: 0,
+            isCurrentAccountAnwer: false
+          }
+        ],
+        date: new Date()
+      }
+    }
     return Promise.resolve(null)
   }
 }
