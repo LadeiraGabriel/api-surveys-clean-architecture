@@ -1,18 +1,23 @@
-import { makeLoadSurveyResultRepositoryStub } from '../mocks/mock-load-survey-result'
+import type { LoadSurveyByIdRepository } from '../protocols/db/survey/load-survey-by-id-repository'
 import type { LoadSurveyResultRepository } from '@/data/protocols/db/survey/load-survey-result-repository'
+import { makeLoadSurveyResultRepositoryStub } from '../mocks/mock-load-survey-result'
 import { DbLoadSurveyResult } from '@/data/use-cases/db-load-survey-result'
+import { makeLoadSurveyByIdRepositoryStub } from '../mocks/load-survey-by-id-repository'
 
 type SutType = {
   sut: DbLoadSurveyResult
   loadSurveyResultRepository: LoadSurveyResultRepository
+  loadSurveyByIdRepository: LoadSurveyByIdRepository
 }
 
 const makeSut = (): SutType => {
+  const loadSurveyByIdRepository = makeLoadSurveyByIdRepositoryStub()
   const loadSurveyResultRepository = makeLoadSurveyResultRepositoryStub()
-  const sut = new DbLoadSurveyResult(loadSurveyResultRepository)
+  const sut = new DbLoadSurveyResult(loadSurveyResultRepository, loadSurveyByIdRepository)
   return {
     sut,
-    loadSurveyResultRepository
+    loadSurveyResultRepository,
+    loadSurveyByIdRepository
   }
 }
 
@@ -50,5 +55,17 @@ describe('Db load survey result', () => {
       ],
       date: new Date()
     })
+  })
+
+  test('should call load survey by Id survey repository with correct value', async () => {
+    const params = {
+      accountId: 'any_id',
+      surveyId: 'any_id'
+    }
+    const { sut, loadSurveyResultRepository, loadSurveyByIdRepository } = makeSut()
+    jest.spyOn(loadSurveyResultRepository, 'loadBySurveyId').mockReturnValueOnce(Promise.resolve(null))
+    const spyloadById = jest.spyOn(loadSurveyByIdRepository, 'loadSurveyById')
+    await sut.load(params)
+    expect(spyloadById).toHaveBeenCalledWith(params.surveyId)
   })
 })
