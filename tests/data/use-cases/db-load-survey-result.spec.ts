@@ -86,4 +86,27 @@ describe('Db load survey result', () => {
       date: new Date()
     })
   })
+
+  test('should return survey result on success', async () => {
+    const params = {
+      accountId: 'any_accountId',
+      surveyId: 'any_surveyId'
+    }
+    const { sut } = makeSut()
+    const loadResult = await sut.load(params)
+    expect(loadResult).toEqual({
+      surveyId: 'any_surveyid',
+      question: 'any_question',
+      anwers: [
+        {
+          image: 'any_image',
+          anwer: 'any_anwer',
+          count: 1,
+          percent: 1,
+          isCurrentAccountAnwer: true
+        }
+      ],
+      date: new Date()
+    })
+  })
 })
