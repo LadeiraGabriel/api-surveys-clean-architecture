@@ -1,12 +1,15 @@
+import MockDate from 'mockdate'
 import type { AddSurveyRepository } from '@/data/protocols/db/survey/add-survey-repository'
 import { SurveyPrismaRepository } from '@/infra/db/prisma/survey-prisma-repository'
 import { prismaClientHelper } from '@/infra/helpers/prisma-client-helper'
 beforeEach(async () => {
+  MockDate.set(new Date())
   await prismaClientHelper.anwer.deleteMany({})
   await prismaClientHelper.survey.deleteMany({})
 })
 
 afterEach(async () => {
+  MockDate.reset()
   await prismaClientHelper.anwer.deleteMany({})
   await prismaClientHelper.survey.deleteMany({})
 })
@@ -111,6 +114,41 @@ describe('Survey Prisma Repository', () => {
       expect(loadAnwers).toEqual([
         'any_anwer', 'other_anwer'
       ])
+    })
+  })
+
+  describe('Load Survey by Id Repository', () => {
+    test('should  return survey on success', async () => {
+      const survey = await prismaClientHelper.survey.create({
+        data: {
+          question: 'any_question',
+          date: new Date(),
+          anwers: {
+            createMany: {
+              data: [
+                {
+                  anwer: 'any_anwer',
+                  image: 'any_image'
+                }
+              ]
+            }
+          }
+        }
+      })
+      const sut = makeSut()
+      const loadSurvey = await sut.loadSurveyById(survey.id)
+      expect(loadSurvey).toBeTruthy()
+      expect(loadSurvey).toEqual({
+        id: survey.id,
+        question: 'any_question',
+        date: new Date(),
+        anwers: [
+          {
+            anwer: 'any_anwer',
+            image: 'any_image'
+          }
+        ]
+      })
     })
   })
 })
