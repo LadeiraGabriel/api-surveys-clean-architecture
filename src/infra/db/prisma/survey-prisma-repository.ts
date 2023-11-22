@@ -1,10 +1,11 @@
 import type { AddSurveyRepository } from '@/data/protocols/db/survey/add-survey-repository'
 import type { CheckSurveyByIdRepository } from '@/data/protocols/db/survey/check-survey-by-id-repository'
 import type { LoadAnwersBySurveyRepository } from '@/data/protocols/db/survey/load-anwer-by-survey-repository'
+import type { LoadSurveyByIdRepository } from '@/data/protocols/db/survey/load-survey-by-id-repository'
 import type { LoadSurveysRepository } from '@/data/protocols/db/survey/load-surveys-repository'
 import { prismaClientHelper } from '@/infra/helpers/prisma-client-helper'
 
-export class SurveyPrismaRepository implements AddSurveyRepository, LoadSurveysRepository, CheckSurveyByIdRepository, LoadAnwersBySurveyRepository {
+export class SurveyPrismaRepository implements AddSurveyRepository, LoadSurveysRepository, CheckSurveyByIdRepository, LoadAnwersBySurveyRepository, LoadSurveyByIdRepository {
   async add (data: AddSurveyRepository.Params): AddSurveyRepository.Result {
     await prismaClientHelper.survey.create({
       data: {
@@ -57,5 +58,22 @@ export class SurveyPrismaRepository implements AddSurveyRepository, LoadSurveysR
       return null
     })
     return anwers
+  }
+
+  async loadSurveyById (surveyId: LoadSurveyByIdRepository.Params): Promise<LoadSurveyByIdRepository.Result> {
+    const survey = await prismaClientHelper.survey.findFirst({
+      where: {
+        id: surveyId
+      },
+      include: {
+        anwers: {
+          select: {
+            anwer: true,
+            image: true
+          }
+        }
+      }
+    })
+    return survey
   }
 }
