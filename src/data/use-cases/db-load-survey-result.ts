@@ -13,7 +13,7 @@ export class DbLoadSurveyResult implements LoadSurveyResult {
       const survey = await this.loadSurveyByIdRepository.loadSurveyById(data.surveyId)
       return this.loadSurveyResultEmpty(survey)
     }
-    return Promise.resolve(null)
+    return loadResult
   }
 
   loadSurveyResultEmpty (survey: SurveyModel): SurveyResultModel {
