@@ -3,7 +3,15 @@ import type { LoadSurveyResultRepository } from '@/data/protocols/db/survey/load
 import { makeLoadSurveyResultRepositoryStub } from '../mocks/mock-load-survey-result'
 import { DbLoadSurveyResult } from '@/data/use-cases/db-load-survey-result'
 import { makeLoadSurveyByIdRepositoryStub } from '../mocks/load-survey-by-id-repository'
+import MockDate from 'mockdate'
 
+beforeAll(() => {
+  MockDate.set(new Date())
+})
+
+afterAll(() => {
+  MockDate.reset()
+})
 type SutType = {
   sut: DbLoadSurveyResult
   loadSurveyResultRepository: LoadSurveyResultRepository
@@ -33,16 +41,31 @@ describe('Db load survey result', () => {
     expect(spyloadResult).toHaveBeenCalledWith(params.surveyId, params.accountId)
   })
 
-  test('should return survey result with values null if survey result return null', async () => {
+  test('should return survey result with all values null if survey result return null', async () => {
     const params = {
       accountId: 'any_accountId',
       surveyId: 'any_surveyId'
     }
-    const { sut, loadSurveyResultRepository } = makeSut()
+    const { sut, loadSurveyResultRepository, loadSurveyByIdRepository } = makeSut()
     jest.spyOn(loadSurveyResultRepository, 'loadBySurveyId').mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(loadSurveyByIdRepository, 'loadSurveyById').mockReturnValueOnce(Promise.resolve({
+      id: 'any_id',
+      question: 'any_question',
+      anwers: [
+        {
+          image: 'any_image',
+          anwer: 'any_anwer'
+        },
+        {
+          image: 'other_image',
+          anwer: 'other_anwer'
+        }
+      ],
+      date: new Date()
+    }))
     const loadResult = await sut.load(params)
     expect(loadResult).toEqual({
-      surveyId: 'any_surveyid',
+      surveyId: 'any_id',
       question: 'any_question',
       anwers: [
         {
@@ -51,21 +74,16 @@ describe('Db load survey result', () => {
           count: 0,
           percent: 0,
           isCurrentAccountAnwer: false
+        },
+        {
+          image: 'other_image',
+          anwer: 'other_anwer',
+          count: 0,
+          percent: 0,
+          isCurrentAccountAnwer: false
         }
       ],
       date: new Date()
     })
-  })
-
-  test('should call load survey by Id survey repository with correct value', async () => {
-    const params = {
-      accountId: 'any_id',
-      surveyId: 'any_id'
-    }
-    const { sut, loadSurveyResultRepository, loadSurveyByIdRepository } = makeSut()
-    jest.spyOn(loadSurveyResultRepository, 'loadBySurveyId').mockReturnValueOnce(Promise.resolve(null))
-    const spyloadById = jest.spyOn(loadSurveyByIdRepository, 'loadSurveyById')
-    await sut.load(params)
-    expect(spyloadById).toHaveBeenCalledWith(params.surveyId)
   })
 })

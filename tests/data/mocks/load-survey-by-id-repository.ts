@@ -8,7 +8,7 @@ class LoadSurveyByIdRepositoryStub implements LoadSurveyByIdRepository {
   async loadSurveyById (surveyId: LoadSurveyByIdRepository.Params): Promise<LoadSurveyByIdRepository.Result> {
     return {
       id: 'any_id',
-      question: 'any_ question',
+      question: 'any_question',
       anwers: [
         {
           anwer: 'any_anwer',
