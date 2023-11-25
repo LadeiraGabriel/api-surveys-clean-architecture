@@ -6,11 +6,11 @@ import type { SurveyResultModel } from '@/domain/models/survey-result-model'
 
 export class DbLoadSurveyResult implements LoadSurveyResult {
   constructor (private readonly loadSurveyResultRepository: LoadSurveyResultRepository, private readonly loadSurveyByIdRepository: LoadSurveyByIdRepository) { }
-  async load (data: LoadSurveyResult.Params): Promise<LoadSurveyResult.Result> {
-    const loadResult = await this.loadSurveyResultRepository.loadBySurveyId(data.surveyId, data.accountId)
+  async load (accountId: string, surveyId: string): Promise<LoadSurveyResult.Result> {
+    const loadResult = await this.loadSurveyResultRepository.loadBySurveyId(accountId, surveyId)
 
     if (!loadResult) {
-      const survey = await this.loadSurveyByIdRepository.loadSurveyById(data.surveyId)
+      const survey = await this.loadSurveyByIdRepository.loadSurveyById(surveyId)
       return this.loadSurveyResultEmpty(survey)
     }
     return loadResult

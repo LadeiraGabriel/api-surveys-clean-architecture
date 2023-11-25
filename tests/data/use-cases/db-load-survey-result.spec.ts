@@ -37,7 +37,7 @@ describe('Db load survey result', () => {
     }
     const { sut, loadSurveyResultRepository } = makeSut()
     const spyloadResult = jest.spyOn(loadSurveyResultRepository, 'loadBySurveyId')
-    await sut.load(params)
+    await sut.load('any_id', 'any_id')
     expect(spyloadResult).toHaveBeenCalledWith(params.surveyId, params.accountId)
   })
 
@@ -63,7 +63,7 @@ describe('Db load survey result', () => {
       ],
       date: new Date()
     }))
-    const loadResult = await sut.load(params)
+    const loadResult = await sut.load(params.accountId, params.surveyId)
     expect(loadResult).toEqual({
       surveyId: 'any_id',
       question: 'any_question',
@@ -88,12 +88,8 @@ describe('Db load survey result', () => {
   })
 
   test('should return survey result on success', async () => {
-    const params = {
-      accountId: 'any_accountId',
-      surveyId: 'any_surveyId'
-    }
     const { sut } = makeSut()
-    const loadResult = await sut.load(params)
+    const loadResult = await sut.load('any_accountId', 'any_surveyId')
     expect(loadResult).toEqual({
       surveyId: 'any_surveyid',
       question: 'any_question',
