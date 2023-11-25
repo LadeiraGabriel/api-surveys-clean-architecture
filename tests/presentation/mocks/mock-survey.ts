@@ -1,4 +1,5 @@
 import type { LoadSurveys, AddSurvey } from '@/domain/use-cases'
+import type { CheckSurveyById } from '@/domain/use-cases/check-survey-by-id'
 
 export const mockRequest = (): AddSurvey.Params => ({
   question: 'any_question',
@@ -36,4 +37,13 @@ export const mockLoadSurveysStub = (): LoadSurveys => {
     }
   }
   return new LoadSurveysStub()
+}
+
+export const mockCheckSurveyById = (): CheckSurveyById => {
+  class CheckSurveyByIdStub implements CheckSurveyById {
+    async checkById (id: string): Promise<CheckSurveyById.Result> {
+      return Promise.resolve(true)
+    }
+  }
+  return new CheckSurveyByIdStub()
 }
