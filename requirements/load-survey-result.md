@@ -15,7 +15,6 @@
 
 
 ### 1. 🚫 retornar 404 caso a rota não encontrada.
-### 2. 🚫 retornar 400 caso os campos obrigatórios não sejam fornecidos. 
-### 3. 🚫 retornar 403 caso o usuario não seja válido.
-### 4. 🚫 retornar 403 caso o **survey-id** não seja válido.
-### 7. 🚫 retornar 500 caso o carregamento do resultado das enquetes falhar.
+### 2. 🚫 retornar 403 caso o usuario não seja válido.
+### 3. 🚫 retornar 403 caso o **survey-id** não seja válido.
+### 4. 🚫 retornar 500 caso o carregamento do resultado das enquetes falhar.
