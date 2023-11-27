@@ -48,6 +48,7 @@ JOIN
     anwers ON surveys.id = anwers."surveyId"
 LEFT JOIN
     surveyresult ON surveys.id = surveyresult."surveyId" AND anwers.anwer = surveyresult.anwer
+    WHERE surveys.id = ${surveyId}
 GROUP BY
     surveys.id, surveys.question, anwers.anwer, anwers.image, surveyresult.anwer, surveys.date
 ORDER BY
