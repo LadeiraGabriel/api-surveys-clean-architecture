@@ -32,14 +32,14 @@ export class SurveyResultPrismaRepository implements SaveSurveyResultRepository,
     }
   }
 
-  async loadBySurveyId (surveyId: string, accountId: string): Promise<LoadSurveyResultRepository.Result> {
+  async loadBySurveyId (accountId: string, surveyId: string): Promise<LoadSurveyResultRepository.Result> {
     const loadResult: loadReturnFromQuery[] = await prismaClientHelper.$queryRaw`SELECT
     surveys.id AS "surveyId",
     surveys.question AS question,
     anwers.anwer AS anwer,
     anwers.image AS image,
     COUNT(surveyresult.id) AS count,
-    (COUNT(surveyresult.id) * 100 / SUM(COUNT(surveyresult.id)) OVER ()) AS percent,
+    (COUNT(surveyresult.id) * 100 / NULLIF(SUM(COUNT(surveyresult.id)) OVER (), 0)) AS percent,
     CASE WHEN surveyresult.anwer = anwers.anwer THEN true ELSE false END AS isCurrentAccountAnwer,
     surveys.date AS "date"
 FROM
@@ -52,7 +52,7 @@ GROUP BY
     surveys.id, surveys.question, anwers.anwer, anwers.image, surveyresult.anwer, surveys.date
 ORDER BY
     surveys.id, surveys.question, anwers.anwer, surveys.date;`
-    return Promise.resolve(loadResultHelper(loadResult))
+    return loadResult.length ? loadResultHelper(loadResult) : null
   }
 }
 
