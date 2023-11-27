@@ -52,7 +52,7 @@ GROUP BY
     surveys.id, surveys.question, anwers.anwer, anwers.image, surveyresult.anwer, surveys.date
 ORDER BY
     surveys.id, surveys.question, anwers.anwer, surveys.date;`
-    return loadResult.length ? loadResultHelper(loadResult) : null
+    return loadResultHelper(loadResult)
   }
 }
 
