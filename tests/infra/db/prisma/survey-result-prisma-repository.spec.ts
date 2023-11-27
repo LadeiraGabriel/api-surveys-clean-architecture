@@ -18,6 +18,38 @@ type SurveyResultModel = {
   date: Date
 }
 
+beforeEach(async () => {
+  await prismaClientHelper.account.deleteMany({})
+  await prismaClientHelper.anwer.deleteMany({})
+  await prismaClientHelper.survey.deleteMany({})
+  await prismaClientHelper.surveyResult.deleteMany({})
+  Mockdate.set(new Date())
+})
+
+beforeAll(async () => {
+  await prismaClientHelper.account.deleteMany({})
+  await prismaClientHelper.anwer.deleteMany({})
+  await prismaClientHelper.survey.deleteMany({})
+  await prismaClientHelper.surveyResult.deleteMany({})
+  Mockdate.set(new Date())
+})
+
+afterAll(async () => {
+  await prismaClientHelper.account.deleteMany({})
+  await prismaClientHelper.anwer.deleteMany({})
+  await prismaClientHelper.survey.deleteMany({})
+  await prismaClientHelper.surveyResult.deleteMany({})
+  Mockdate.reset()
+})
+
+afterEach(async () => {
+  await prismaClientHelper.account.deleteMany({})
+  await prismaClientHelper.anwer.deleteMany({})
+  await prismaClientHelper.survey.deleteMany({})
+  await prismaClientHelper.surveyResult.deleteMany({})
+  Mockdate.reset()
+})
+
 const makeAccount = async (): Promise<AccountModel> => {
   const account = await prismaClientHelper.account.create({
     data: {
@@ -84,38 +116,6 @@ const makeSurvey = async (): Promise<SurveyModel> => {
   })
   return survey
 }
-
-beforeEach(async () => {
-  await prismaClientHelper.account.deleteMany({})
-  await prismaClientHelper.anwer.deleteMany({})
-  await prismaClientHelper.survey.deleteMany({})
-  await prismaClientHelper.surveyResult.deleteMany({})
-  Mockdate.set(new Date())
-})
-
-beforeAll(async () => {
-  await prismaClientHelper.account.deleteMany({})
-  await prismaClientHelper.anwer.deleteMany({})
-  await prismaClientHelper.survey.deleteMany({})
-  await prismaClientHelper.surveyResult.deleteMany({})
-  Mockdate.set(new Date())
-})
-
-afterAll(async () => {
-  await prismaClientHelper.account.deleteMany({})
-  await prismaClientHelper.anwer.deleteMany({})
-  await prismaClientHelper.survey.deleteMany({})
-  await prismaClientHelper.surveyResult.deleteMany({})
-  Mockdate.reset()
-})
-
-afterEach(async () => {
-  await prismaClientHelper.account.deleteMany({})
-  await prismaClientHelper.anwer.deleteMany({})
-  await prismaClientHelper.survey.deleteMany({})
-  await prismaClientHelper.surveyResult.deleteMany({})
-  Mockdate.reset()
-})
 describe('Survey Result prisma repository', () => {
   describe('Save Survey Result prisma repository', () => {
     test('should save survey result on success', async () => {
@@ -179,6 +179,35 @@ describe('Survey Result prisma repository', () => {
             count: 1,
             percent: 100,
             isCurrentAccountAnwer: true
+          },
+
+          {
+            anwer: 'any_anwer_02',
+            image: 'any_image_02',
+            count: 0,
+            percent: 0,
+            isCurrentAccountAnwer: false
+          }
+        ],
+        date: survey.date
+      })
+    })
+
+    test('should return null if survey result not exist', async () => {
+      const account = await makeAccount()
+      const survey = await makeSurvey()
+      const surveyResultPrismaRepository = new SurveyResultPrismaRepository()
+      const loadResult = await surveyResultPrismaRepository.loadBySurveyId(survey.id, account.id)
+      expect(loadResult).toEqual({
+        surveyId: survey.id,
+        question: survey.question,
+        anwers: [
+          {
+            image: 'any_image',
+            anwer: 'any_anwer',
+            count: 0,
+            percent: 0,
+            isCurrentAccountAnwer: false
           },
 
           {
