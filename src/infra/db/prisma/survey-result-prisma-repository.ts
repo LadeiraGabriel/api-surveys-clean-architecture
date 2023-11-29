@@ -33,14 +33,19 @@ export class SurveyResultPrismaRepository implements SaveSurveyResultRepository,
   }
 
   async loadBySurveyId (accountId: string, surveyId: string): Promise<LoadSurveyResultRepository.Result> {
+    const isCurrentAccount = await prismaClientHelper.surveyResult.findFirst({
+      where: {
+        accountId
+      }
+    })
     const loadResult: loadReturnFromQuery[] = await prismaClientHelper.$queryRaw`SELECT
     surveys.id AS "surveyId",
     surveys.question AS question,
     anwers.anwer AS anwer,
     anwers.image AS image,
-    COUNT(surveyresult.id) AS count,
+    COUNT(surveyresult.anwer) AS count,
     (COUNT(surveyresult.id) * 100 / NULLIF(SUM(COUNT(surveyresult.id)) OVER (), 0)) AS percent,
-    CASE WHEN surveyresult.anwer = anwers.anwer THEN true ELSE false END AS isCurrentAccountAnwer,
+    CASE WHEN surveyresult.anwer = anwers.anwer THEN true else false END AS isCurrentAccountAnwer,
     surveys.date AS "date"
 FROM
     surveys
@@ -53,7 +58,11 @@ GROUP BY
     surveys.id, surveys.question, anwers.anwer, anwers.image, surveyresult.anwer, surveys.date
 ORDER BY
     surveys.id, surveys.question, anwers.anwer, surveys.date;`
-    return loadResultHelper(loadResult)
+    if (isCurrentAccount) {
+      return loadResultHelper(loadResult, isCurrentAccount.anwer)
+    } else {
+      return loadResultHelper(loadResult)
+    }
   }
 }
 
@@ -76,22 +85,21 @@ type SurveyResultAnwerModel = {
   isCurrentAccountAnwer: boolean
 }
 
-function loadResultHelper (loadReturnFromQuery: loadReturnFromQuery[]): LoadSurveyResultRepository.Result {
-  const filterAnwers: SurveyResultAnwerModel[] = []
+function loadResultHelper (loadReturnFromQuery: loadReturnFromQuery[], isCurrentAccount?: string): LoadSurveyResultRepository.Result {
+  const listAnwer: SurveyResultAnwerModel[] = []
   for (const result of loadReturnFromQuery) {
-    filterAnwers.push({
+    listAnwer.push({
       image: result?.image,
       anwer: result.anwer,
       count: Number(result.count),
-      percent: Number(result.percent),
-      isCurrentAccountAnwer: result.iscurrentaccountanwer
+      percent: Math.floor(Number(result.percent)),
+      isCurrentAccountAnwer: result.anwer === isCurrentAccount
     })
   }
-
   return {
     surveyId: loadReturnFromQuery[0].surveyId,
     question: loadReturnFromQuery[0].question,
-    anwers: filterAnwers,
+    anwers: listAnwer,
     date: loadReturnFromQuery[0].date
   }
 }

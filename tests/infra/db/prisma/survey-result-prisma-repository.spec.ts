@@ -168,7 +168,7 @@ describe('Survey Result prisma repository', () => {
       const survey = await makeSurvey()
       await makeSurveyResult()
       const surveyResultPrismaRepository = new SurveyResultPrismaRepository()
-      const loadResult = await surveyResultPrismaRepository.loadBySurveyId(survey.id, account.id)
+      const loadResult = await surveyResultPrismaRepository.loadBySurveyId(account.id, survey.id)
       expect(loadResult).toEqual({
         surveyId: survey.id,
         question: survey.question,
@@ -193,11 +193,11 @@ describe('Survey Result prisma repository', () => {
       })
     })
 
-    test('should return null if survey result not exist', async () => {
+    test('should return count, percent zero and is current account anwer false if survey result not exist', async () => {
       const account = await makeAccount()
       const survey = await makeSurvey()
       const surveyResultPrismaRepository = new SurveyResultPrismaRepository()
-      const loadResult = await surveyResultPrismaRepository.loadBySurveyId(survey.id, account.id)
+      const loadResult = await surveyResultPrismaRepository.loadBySurveyId(account.id, survey.id)
       expect(loadResult).toEqual({
         surveyId: survey.id,
         question: survey.question,

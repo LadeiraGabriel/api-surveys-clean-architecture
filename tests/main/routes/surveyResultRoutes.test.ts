@@ -116,7 +116,7 @@ describe('Survey Routes', () => {
       await request(app)
         .get(`/api/surveys/${survey.id}/results`)
         .set('x-access-token', account.token)
-        .send({})
+        .send()
         .expect(200)
     })
   })
