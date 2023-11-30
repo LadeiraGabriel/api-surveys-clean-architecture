@@ -1,20 +1,19 @@
-import type { LoadSurveys } from '@/domain/use-cases'
 import { LoadSurveysController } from '@/presentation/controllers/survey/load-surveys-controller'
 import { ok, serverError } from '@/presentation/helpers/http-helper'
-import { mockLoadSurveysStub } from '@/tests/presentation/mocks/mock-survey'
+import { type LoadSurveysSpy, mockLoadSurveysSpy } from '@/tests/presentation/mocks/mock-survey'
 import MockDate from 'mockdate'
 
 type SutType = {
   sut: LoadSurveysController
-  loadSurveysStub: LoadSurveys
+  loadSurveysSpy: LoadSurveysSpy
 }
 
 const makeSut = (): SutType => {
-  const loadSurveysStub = mockLoadSurveysStub()
-  const sut = new LoadSurveysController(loadSurveysStub)
+  const loadSurveysSpy = mockLoadSurveysSpy()
+  const sut = new LoadSurveysController(loadSurveysSpy)
   return {
     sut,
-    loadSurveysStub
+    loadSurveysSpy
   }
 }
 
@@ -27,10 +26,9 @@ describe('Load Surveys Controller', () => {
     MockDate.reset()
   })
   test('should call load surveys', async () => {
-    const { sut, loadSurveysStub } = makeSut()
-    const spyLoad = jest.spyOn(loadSurveysStub, 'load')
+    const { sut, loadSurveysSpy } = makeSut()
     await sut.handle()
-    expect(spyLoad).toHaveBeenCalled()
+    expect(loadSurveysSpy.call).toBeTruthy()
   })
 
   test('should return surveys on success', async () => {
@@ -50,8 +48,8 @@ describe('Load Surveys Controller', () => {
   })
 
   test('should return 500 if load surveys throws', async () => {
-    const { sut, loadSurveysStub } = makeSut()
-    jest.spyOn(loadSurveysStub, 'load').mockReturnValueOnce(Promise.reject(new Error()))
+    const { sut, loadSurveysSpy } = makeSut()
+    jest.spyOn(loadSurveysSpy, 'load').mockReturnValueOnce(Promise.reject(new Error()))
     const httpRepose = await sut.handle()
     expect(httpRepose).toEqual(serverError(new Error()))
   })

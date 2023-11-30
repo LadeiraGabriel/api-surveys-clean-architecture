@@ -1,25 +1,27 @@
-import type { AddSurvey } from '@/domain/use-cases/add-survey'
+
+import type { AddSurvey } from '@/domain/use-cases'
 import { AddSurveyController } from '@/presentation/controllers/survey/add-survey-controller'
 import { badRequest, noContent, serverError } from '@/presentation/helpers/http-helper'
 import type { Controller, Validation } from '@/presentation/protocols'
 import { mockValidationSpy } from '@/tests/presentation/mocks'
-import { mockAddSurveyStub } from '@/tests/presentation/mocks/mock-survey'
+import type { AddSurveySpy } from '@/tests/presentation/mocks/mock-survey'
+import { mockAddSurveySpy } from '@/tests/presentation/mocks/mock-survey'
 import MockDate from 'mockdate'
 
 type SutType = {
   sut: Controller
   validationStub: Validation
-  addSuveyStub: AddSurvey
+  addSurveySpy: AddSurveySpy
 }
 
 const makeSut = (): SutType => {
   const validationStub = mockValidationSpy()
-  const addSuveyStub = mockAddSurveyStub()
-  const sut = new AddSurveyController(validationStub, addSuveyStub)
+  const addSurveySpy = mockAddSurveySpy()
+  const sut = new AddSurveyController(validationStub, addSurveySpy)
   return {
     sut,
     validationStub,
-    addSuveyStub
+    addSurveySpy
   }
 }
 
@@ -54,15 +56,14 @@ describe('Add Survey controller', () => {
   })
 
   test('should call add survey with correct values', async () => {
-    const { sut, addSuveyStub } = makeSut()
-    const spyAdd = jest.spyOn(addSuveyStub, 'add')
+    const { sut, addSurveySpy } = makeSut()
     await sut.handle(mockRequest())
-    expect(spyAdd).toHaveBeenCalledWith({ ...mockRequest(), date: new Date() })
+    expect(addSurveySpy.data).toEqual({ ...mockRequest(), date: new Date() })
   })
 
   test('should return 500 if add survey throws', async () => {
-    const { sut, addSuveyStub } = makeSut()
-    jest.spyOn(addSuveyStub, 'add').mockImplementationOnce(() => {
+    const { sut, addSurveySpy } = makeSut()
+    jest.spyOn(addSurveySpy, 'add').mockImplementationOnce(() => {
       throw new Error()
     })
     const httpResponse = await sut.handle(mockRequest())
