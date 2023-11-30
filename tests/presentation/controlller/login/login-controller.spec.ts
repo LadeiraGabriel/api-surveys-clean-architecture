@@ -2,20 +2,20 @@ import type { Authentication } from '@/domain/use-cases'
 import { LoginController } from '@/presentation/controllers/login/login-controller'
 import { MissingParamError } from '@/presentation/errors'
 import { badRequest, ok, serverError, unauthorized } from '@/presentation/helpers/http-helper'
-import type { Validation } from '@/presentation/protocols'
-import { mockAuthenticationSpy, mockValidationStub } from '@/tests/presentation/mocks'
+import { mockAuthenticationSpy, mockValidationSpy } from '@/tests/presentation/mocks'
+import type { ValidationSpy } from '@/tests/presentation/mocks'
 
 type SutType = () => {
   sut: LoginController
   authenticationSpy: Authentication
-  validationStub: Validation
+  validationStub: ValidationSpy
 }
 const mockrequest = {
   email: 'any_email',
   password: 'any_password'
 }
 const makeSut: SutType = () => {
-  const validationStub = mockValidationStub()
+  const validationStub = mockValidationSpy()
   const authenticationSpy = mockAuthenticationSpy()
   const sut = new LoginController(validationStub, authenticationSpy)
   return {

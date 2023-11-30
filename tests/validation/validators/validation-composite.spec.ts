@@ -1,7 +1,7 @@
 import { InvalidParamError, MissingParamError } from '@/presentation/errors'
 import type { Validation } from '@/presentation/protocols/validation'
 import { ValidationComposite } from '@/validations/validators'
-import { mockValidationStub } from '@/tests/presentation/mocks'
+import { mockValidationSpy } from '@/tests/presentation/mocks'
 
 type sutType = {
   sut: ValidationComposite
@@ -9,7 +9,7 @@ type sutType = {
 }
 
 const makeSut = (): sutType => {
-  const valitionStubs = [mockValidationStub(), mockValidationStub()]
+  const valitionStubs = [mockValidationSpy(), mockValidationSpy()]
   const sut = new ValidationComposite(valitionStubs)
   return {
     sut,
