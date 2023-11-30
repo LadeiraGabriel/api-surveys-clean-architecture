@@ -2,22 +2,30 @@ import type { LoadAccountByToken } from '@/domain/use-cases/load-account-by-toke
 import type { AddAccount } from '@/domain/use-cases/add-account'
 import type { Authentication } from '@/domain/use-cases/Authentication'
 
-export const mockAddAccountStub = (): AddAccount => {
-  class AddAccountStub implements AddAccount {
-    async add (account: AddAccount.Params): Promise<AddAccount.Result> {
-      return Promise.resolve(true)
-    }
+export class AddAccountSpy implements AddAccount {
+  public account: AddAccount.Params
+  public result = true
+  async add (account: AddAccount.Params): Promise<AddAccount.Result> {
+    this.account = account
+    return this.result
   }
-  return new AddAccountStub()
+}
+
+export const mockAddAccountSpy = (): AddAccountSpy => {
+  return new AddAccountSpy()
 }
 
 export const mockAuthenticationStub = (): Authentication => {
   class AuthenticationStub implements Authentication {
+    public data: Authentication.Params
+    public result = {
+      name: 'any_name',
+      accessToken: 'any_token'
+    }
+
     async auth (data: Authentication.Params): Promise<Authentication.Result> {
-      return Promise.resolve({
-        name: 'any_name',
-        accessToken: 'any_token'
-      })
+      this.data = data
+      return this.result
     }
   }
   return new AuthenticationStub()
@@ -25,8 +33,16 @@ export const mockAuthenticationStub = (): Authentication => {
 
 export const mockLoadAccountByToken = (): LoadAccountByToken => {
   class LoadAccountByTokenStub implements LoadAccountByToken {
+    public accessToken: string
+    public role: string
+    public result = {
+      id: 'any_id'
+    }
+
     async load (accessToken: string, role?: string): Promise<LoadAccountByToken.Result> {
-      return Promise.resolve({ id: 'any_id' })
+      this.accessToken = accessToken
+      this.role = role
+      return Promise.resolve(this.result)
     }
   }
 
