@@ -1,10 +1,9 @@
-import MockDate from 'mockdate'
 import { type CheckSurveyByIdSpy, mockCheckSurveyByIdSpy } from '../../mocks/mock-survey'
+import { InvalidParamError } from '@/presentation/errors'
+import { type LoadSurveyResultSpy, mockLoadSurveyResultSpy } from '../../mocks/mock-survey-result'
 import { LoadSurveyResultController } from '@/presentation/controllers/survey-result/load-survey-result-controller'
 import { forbidden, ok, serverError } from '@/presentation/helpers/http-helper'
-import { InvalidParamError } from '@/presentation/errors'
-import type { LoadSurveyResult } from '@/domain/use-cases/load-survey-result'
-import { mockLoadSurveyResultStub } from '../../mocks/mock-survey-result'
+import MockDate from 'mockdate'
 
 beforeAll(() => {
   MockDate.set(new Date())
@@ -16,17 +15,17 @@ afterAll(() => {
 type SutType = {
   sut: LoadSurveyResultController
   checkSurveyByIdSpy: CheckSurveyByIdSpy
-  loadSurveyResultStub: LoadSurveyResult
+  loadSurveyResultSpy: LoadSurveyResultSpy
 }
 
 const makeSut = (): SutType => {
   const checkSurveyByIdSpy = mockCheckSurveyByIdSpy()
-  const loadSurveyResultStub = mockLoadSurveyResultStub()
-  const sut = new LoadSurveyResultController(checkSurveyByIdSpy, loadSurveyResultStub)
+  const loadSurveyResultSpy = mockLoadSurveyResultSpy()
+  const sut = new LoadSurveyResultController(checkSurveyByIdSpy, loadSurveyResultSpy)
   return {
     sut,
     checkSurveyByIdSpy,
-    loadSurveyResultStub
+    loadSurveyResultSpy
   }
 }
 
@@ -65,18 +64,18 @@ describe('Load survey result controller', () => {
       surveyId: 'any_id',
       accountId: 'any_id'
     }
-    const { sut, loadSurveyResultStub } = makeSut()
-    const loadSpy = jest.spyOn(loadSurveyResultStub, 'load')
+    const { sut, loadSurveyResultSpy } = makeSut()
     await sut.handle(httpRequest)
-    expect(loadSpy).toHaveBeenCalledWith(httpRequest.surveyId, httpRequest.accountId)
+    expect(loadSurveyResultSpy.surveyId).toEqual(httpRequest.surveyId)
+    expect(loadSurveyResultSpy.accountId).toEqual(httpRequest.accountId)
   })
   test('should return 500 if load survey result throws', async () => {
     const httpRequest = {
       surveyId: 'any_id',
       accountId: 'any_id'
     }
-    const { sut, loadSurveyResultStub } = makeSut()
-    jest.spyOn(loadSurveyResultStub, 'load').mockResolvedValueOnce(Promise.reject(new Error()))
+    const { sut, loadSurveyResultSpy } = makeSut()
+    jest.spyOn(loadSurveyResultSpy, 'load').mockResolvedValueOnce(Promise.reject(new Error()))
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(serverError(new Error()))
   })
