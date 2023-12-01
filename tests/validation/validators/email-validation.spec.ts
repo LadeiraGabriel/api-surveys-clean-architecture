@@ -1,26 +1,25 @@
 import { InvalidParamError } from '@/presentation/errors'
 import { EmailValidation } from '@/validations/validators'
-import { mockEmailValitorStub } from '@/tests/validation/mocks/mock-email-validator'
+import { mockEmailValitorSpy } from '@/tests/validation/mocks/mock-email-validator'
 
 describe('Email Validation', () => {
   test('Should call email validator with correct value', () => {
     const input = {
       email: 'any_email'
     }
-    const emailValidatorStub = mockEmailValitorStub()
-    const spyIsValid = jest.spyOn(emailValidatorStub, 'isValid')
-    const sut = new EmailValidation(emailValidatorStub)
+    const emailValidatorSpy = mockEmailValitorSpy()
+    const sut = new EmailValidation(emailValidatorSpy)
     sut.validate(input)
-    expect(spyIsValid).toHaveBeenCalledWith(input.email)
+    expect(emailValidatorSpy.email).toEqual(input.email)
   })
 
   test('Should return InvalidParamError if email validator return false', () => {
     const input = {
       email: 'any_email'
     }
-    const emailValidatorStub = mockEmailValitorStub()
-    jest.spyOn(emailValidatorStub, 'isValid').mockReturnValueOnce(false)
-    const sut = new EmailValidation(emailValidatorStub)
+    const emailValidatorSpy = mockEmailValitorSpy()
+    emailValidatorSpy.result = false
+    const sut = new EmailValidation(emailValidatorSpy)
     const result = sut.validate(input)
     expect(result).toEqual(new InvalidParamError('email'))
   })
