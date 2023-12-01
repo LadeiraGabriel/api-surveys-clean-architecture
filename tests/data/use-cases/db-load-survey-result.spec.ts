@@ -1,8 +1,7 @@
-import type { LoadSurveyByIdRepository } from '../protocols/db/survey/load-survey-by-id-repository'
 import type { LoadSurveyResultRepository } from '@/data/protocols/db/survey/load-survey-result-repository'
 import { makeLoadSurveyResultRepositoryStub } from '../mocks/mock-load-survey-result'
 import { DbLoadSurveyResult } from '@/data/use-cases/db-load-survey-result'
-import { makeLoadSurveyByIdRepositoryStub } from '../mocks/load-survey-by-id-repository'
+import { mockLoadSurveyByIdRepositorySpy, type LoadSurveyByIdRepositorySpy } from '../mocks/mock-load-survey-by-id-repository'
 import MockDate from 'mockdate'
 
 beforeAll(() => {
@@ -15,17 +14,17 @@ afterAll(() => {
 type SutType = {
   sut: DbLoadSurveyResult
   loadSurveyResultRepository: LoadSurveyResultRepository
-  loadSurveyByIdRepository: LoadSurveyByIdRepository
+  loadSurveyByIdRepositorySpy: LoadSurveyByIdRepositorySpy
 }
 
 const makeSut = (): SutType => {
-  const loadSurveyByIdRepository = makeLoadSurveyByIdRepositoryStub()
+  const loadSurveyByIdRepositorySpy = mockLoadSurveyByIdRepositorySpy()
   const loadSurveyResultRepository = makeLoadSurveyResultRepositoryStub()
-  const sut = new DbLoadSurveyResult(loadSurveyResultRepository, loadSurveyByIdRepository)
+  const sut = new DbLoadSurveyResult(loadSurveyResultRepository, loadSurveyByIdRepositorySpy)
   return {
     sut,
     loadSurveyResultRepository,
-    loadSurveyByIdRepository
+    loadSurveyByIdRepositorySpy
   }
 }
 
@@ -46,9 +45,9 @@ describe('Db load survey result', () => {
       accountId: 'any_accountId',
       surveyId: 'any_surveyId'
     }
-    const { sut, loadSurveyResultRepository, loadSurveyByIdRepository } = makeSut()
+    const { sut, loadSurveyResultRepository, loadSurveyByIdRepositorySpy } = makeSut()
     jest.spyOn(loadSurveyResultRepository, 'loadBySurveyId').mockReturnValueOnce(Promise.resolve(null))
-    jest.spyOn(loadSurveyByIdRepository, 'loadSurveyById').mockReturnValueOnce(Promise.resolve({
+    loadSurveyByIdRepositorySpy.result = {
       id: 'any_id',
       question: 'any_question',
       anwers: [
@@ -62,7 +61,7 @@ describe('Db load survey result', () => {
         }
       ],
       date: new Date()
-    }))
+    }
     const loadResult = await sut.load(params.accountId, params.surveyId)
     expect(loadResult).toEqual({
       surveyId: 'any_id',
