@@ -9,29 +9,38 @@ export const mockFakeAccount = (): AddAccount.Params => ({
   email: 'any_email',
   password: 'any_password'
 })
-export class HasherStub implements Hasher {
+export class HasherSpy implements Hasher {
+  value: string
+  result: string = 'any_hash'
   async hash (value: string): Promise<string> {
-    return Promise.resolve('any_hash')
+    this.value = value
+    return this.result
   }
 }
 
-export class HashComparerStub implements HashComparer {
+export class HashComparerSpy implements HashComparer {
+  plainText: HashComparer.Params
+  result: HashComparer.Result = true
   async compare (plainText: HashComparer.Params): Promise<HashComparer.Result> {
-    return Promise.resolve(true)
+    this.plainText = plainText
+    return this.result
   }
 }
 
-export class EncrypterStub implements Encrypter {
+export class EncrypterSpy implements Encrypter {
+  plainText: Encrypter.Params
+  result: Encrypter.Result = 'any_token'
   async encrypt (plainText: Encrypter.Params): Promise<Encrypter.Result> {
-    return Promise.resolve('any_token')
+    this.plainText = plainText
+    return this.result
   }
 }
 
-export const mockdecrypterStub = (): Decrypter => {
-  class DecrypterStub implements Decrypter {
-    async decrypt (plainText: Encrypter.Params): Promise<Encrypter.Result> {
-      return Promise.resolve('any_token')
-    }
+export class DecrypterSpy implements Decrypter {
+  plainText: Decrypter.Params
+  result: Decrypter.Result = 'any_token'
+  async decrypt (plainText: Decrypter.Params): Promise<Decrypter.Result> {
+    this.plainText = plainText
+    return this.result
   }
-  return new DecrypterStub()
 }

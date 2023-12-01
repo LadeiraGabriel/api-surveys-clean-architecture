@@ -1,23 +1,22 @@
-import type { Decrypter } from '@/data/protocols/cryptography/descrypter'
 import type { LoadAccountByTokenRepository } from '@/data/protocols/db/account/load-account-by-token-repository'
 import { DbLoadAccountByToken } from '@/data/use-cases/db-load-account-by-token'
-import { mockdecrypterStub } from '@/tests/data/mocks/mock-cryptography'
+import { DecrypterSpy } from '@/tests/data/mocks/mock-cryptography'
 import { mockLoadAccountByTokenRepositoryStub } from '@/tests/data/mocks/mock-db-account'
 
 type SutType = {
   sut: DbLoadAccountByToken
   loadAccountByTokenRepositoryStub: LoadAccountByTokenRepository
-  decrypterStub: Decrypter
+  decrypterSpy: DecrypterSpy
 }
 
 const makeSut = (): SutType => {
-  const decrypterStub = mockdecrypterStub()
+  const decrypterSpy = new DecrypterSpy()
   const loadAccountByTokenRepositoryStub = mockLoadAccountByTokenRepositoryStub()
-  const sut = new DbLoadAccountByToken(loadAccountByTokenRepositoryStub, decrypterStub)
+  const sut = new DbLoadAccountByToken(loadAccountByTokenRepositoryStub, decrypterSpy)
   return {
     sut,
     loadAccountByTokenRepositoryStub,
-    decrypterStub
+    decrypterSpy
   }
 }
 
@@ -25,17 +24,16 @@ describe('Db load account by token use case', () => {
   test('should call decrypter with access token', async () => {
     const accessToken: string = 'any_token'
     const role = 'any_role'
-    const { sut, decrypterStub } = makeSut()
-    const spyDecript = jest.spyOn(decrypterStub, 'decrypt')
+    const { sut, decrypterSpy } = makeSut()
     await sut.load(accessToken, role)
-    expect(spyDecript).toHaveBeenCalledWith(accessToken)
+    expect(decrypterSpy.plainText).toEqual(accessToken)
   })
 
   test('should return null if decrypter return null', async () => {
     const accessToken: string = 'any_token'
     const role = 'any_role'
-    const { sut, decrypterStub } = makeSut()
-    jest.spyOn(decrypterStub, 'decrypt').mockReturnValueOnce(Promise.resolve(null))
+    const { sut, decrypterSpy } = makeSut()
+    decrypterSpy.result = null
     const result = await sut.load(accessToken, role)
     expect(result).toBeNull()
   })
@@ -43,8 +41,8 @@ describe('Db load account by token use case', () => {
   test('should return null if decrypter throws', async () => {
     const accessToken: string = 'any_token'
     const role = 'any_role'
-    const { sut, decrypterStub } = makeSut()
-    jest.spyOn(decrypterStub, 'decrypt').mockReturnValueOnce(Promise.reject(new Error()))
+    const { sut, decrypterSpy } = makeSut()
+    jest.spyOn(decrypterSpy, 'decrypt').mockReturnValueOnce(Promise.reject(new Error()))
     const result = await sut.load(accessToken, role)
     expect(result).toBeNull()
   })

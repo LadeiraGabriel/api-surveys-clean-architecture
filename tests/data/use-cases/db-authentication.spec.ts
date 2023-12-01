@@ -1,30 +1,28 @@
-import type { Encrypter } from '@/data/protocols/cryptography/Encrypter'
-import type { HashComparer } from '@/data/protocols/cryptography/hash-comparer'
 import type { LoadAccountByEmailRepository } from '@/data/protocols/db/account/load-by-email-repository'
 import type { UpdateAccessTokenRepository } from '@/data/protocols/db/account/update-access-token-repository'
 import { DbAuthentication } from '@/data/use-cases/db-authentication'
-import { EncrypterStub, HashComparerStub } from '@/tests/data/mocks/mock-cryptography'
+import { EncrypterSpy, HashComparerSpy } from '@/tests/data/mocks/mock-cryptography'
 import { LoadAccountByEmailRepositoryStub, UpdateAccessTokenRepositoryStub } from '@/tests/data/mocks/mock-db-account'
 
 type SutType = {
   sut: DbAuthentication
   loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository
-  hashComparerStub: HashComparer
-  encrypterStub: Encrypter
+  hashComparerSpy: HashComparerSpy
+  encrypterSpy: EncrypterSpy
   updateaccessTokenRepositoryStub: UpdateAccessTokenRepository
 }
 
 const makeSut = (): SutType => {
   const loadAccountByEmailRepositoryStub = new LoadAccountByEmailRepositoryStub()
-  const hashComparerStub = new HashComparerStub()
-  const encrypterStub = new EncrypterStub()
+  const hashComparerSpy = new HashComparerSpy()
+  const encrypterSpy = new EncrypterSpy()
   const updateaccessTokenRepositoryStub = new UpdateAccessTokenRepositoryStub()
-  const sut = new DbAuthentication(loadAccountByEmailRepositoryStub, hashComparerStub, encrypterStub, updateaccessTokenRepositoryStub)
+  const sut = new DbAuthentication(loadAccountByEmailRepositoryStub, hashComparerSpy, encrypterSpy, updateaccessTokenRepositoryStub)
   return {
     sut,
     loadAccountByEmailRepositoryStub,
-    hashComparerStub,
-    encrypterStub,
+    hashComparerSpy,
+    encrypterSpy,
     updateaccessTokenRepositoryStub
   }
 }
@@ -68,8 +66,8 @@ describe('Db Authentication', () => {
       email: 'any_email',
       password: 'any_password'
     }
-    const { sut, hashComparerStub } = makeSut()
-    const compareSpy = jest.spyOn(hashComparerStub, 'compare')
+    const { sut, hashComparerSpy } = makeSut()
+    const compareSpy = jest.spyOn(hashComparerSpy, 'compare')
     await sut.auth(requiredFields)
     expect(compareSpy).toHaveBeenCalledWith('any_password', 'any_hash')
   })
@@ -79,8 +77,8 @@ describe('Db Authentication', () => {
       email: 'any_email',
       password: 'any_password'
     }
-    const { sut, hashComparerStub } = makeSut()
-    jest.spyOn(hashComparerStub, 'compare').mockReturnValueOnce(Promise.resolve(false))
+    const { sut, hashComparerSpy } = makeSut()
+    jest.spyOn(hashComparerSpy, 'compare').mockReturnValueOnce(Promise.resolve(false))
     const result = await sut.auth(requiredFields)
     expect(result).toBeNull()
   })
@@ -90,8 +88,8 @@ describe('Db Authentication', () => {
       email: 'any_email',
       password: 'any_password'
     }
-    const { sut, hashComparerStub } = makeSut()
-    jest.spyOn(hashComparerStub, 'compare').mockReturnValueOnce(Promise.reject(new Error()))
+    const { sut, hashComparerSpy } = makeSut()
+    jest.spyOn(hashComparerSpy, 'compare').mockReturnValueOnce(Promise.reject(new Error()))
     const promise = sut.auth(requiredFields)
     await expect(promise).rejects.toThrowError()
   })
@@ -101,8 +99,8 @@ describe('Db Authentication', () => {
       email: 'any_email',
       password: 'any_password'
     }
-    const { sut, encrypterStub } = makeSut()
-    const encripterSpy = jest.spyOn(encrypterStub, 'encrypt')
+    const { sut, encrypterSpy } = makeSut()
+    const encripterSpy = jest.spyOn(encrypterSpy, 'encrypt')
     await sut.auth(requiredFields)
     expect(encripterSpy).toHaveBeenCalledWith('any_id')
   })
@@ -112,8 +110,8 @@ describe('Db Authentication', () => {
       email: 'any_email',
       password: 'any_password'
     }
-    const { sut, encrypterStub } = makeSut()
-    jest.spyOn(encrypterStub, 'encrypt').mockReturnValueOnce(Promise.reject(new Error()))
+    const { sut, encrypterSpy } = makeSut()
+    jest.spyOn(encrypterSpy, 'encrypt').mockReturnValueOnce(Promise.reject(new Error()))
     const promise = sut.auth(requiredFields)
     await expect(promise).rejects.toThrowError()
   })
