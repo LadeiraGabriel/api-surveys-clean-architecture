@@ -1,7 +1,7 @@
 import type { LoadAccountByTokenRepository } from '@/data/protocols/db/account/load-account-by-token-repository'
 import { DbLoadAccountByToken } from '@/data/use-cases/db-load-account-by-token'
 import { DecrypterSpy } from '@/tests/data/mocks/mock-cryptography'
-import { mockLoadAccountByTokenRepositoryStub } from '@/tests/data/mocks/mock-db-account'
+import { LoadAccountByTokenRepositorySpy } from '@/tests/data/mocks/mock-db-account'
 
 type SutType = {
   sut: DbLoadAccountByToken
@@ -11,7 +11,7 @@ type SutType = {
 
 const makeSut = (): SutType => {
   const decrypterSpy = new DecrypterSpy()
-  const loadAccountByTokenRepositoryStub = mockLoadAccountByTokenRepositoryStub()
+  const loadAccountByTokenRepositoryStub = new LoadAccountByTokenRepositorySpy()
   const sut = new DbLoadAccountByToken(loadAccountByTokenRepositoryStub, decrypterSpy)
   return {
     sut,
