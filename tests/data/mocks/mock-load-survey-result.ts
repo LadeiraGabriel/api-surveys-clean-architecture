@@ -19,7 +19,7 @@ export class LoadSurveyResultRepositorySpy implements LoadSurveyResultRepository
     date: new Date()
   }
 
-  async loadBySurveyId (surveyId: string, accountId: string): Promise<SurveyResultModel> {
+  async loadBySurveyId (accountId: string, surveyId: string): Promise<SurveyResultModel> {
     this.surveyId = surveyId
     this.accountId = accountId
     return this.result
