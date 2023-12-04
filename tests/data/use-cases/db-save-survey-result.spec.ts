@@ -1,18 +1,17 @@
 import type { SaveSurveyResultRepository } from '@/data/protocols/db/survey/save-survey-result-repository'
-import type { LoadSurveyResultRepository } from '@/data/protocols/db/survey/load-survey-result-repository'
 import { DbSaveSurveyResult } from '@/data/use-cases/db-save-survey-result'
 import { makeSaveSurveyByIdRepositoryStub } from '@/tests/data/mocks/mock-save-survey-result'
-import { makeLoadSurveyResultRepositoryStub } from '@/tests/data/mocks/mock-load-survey-result'
+import { mockLoadSurveyResultRepositorySpy, type LoadSurveyResultRepositorySpy } from '@/tests/data/mocks/mock-load-survey-result'
 import MockDate from 'mockdate'
 
 type SutType = {
   sut: DbSaveSurveyResult
   saveSurveyResultRepository: SaveSurveyResultRepository
-  loadSurveyResultRepositoryStub: LoadSurveyResultRepository
+  loadSurveyResultRepositoryStub: LoadSurveyResultRepositorySpy
 }
 
 const makeSut = (): SutType => {
-  const loadSurveyResultRepositoryStub = makeLoadSurveyResultRepositoryStub()
+  const loadSurveyResultRepositoryStub = mockLoadSurveyResultRepositorySpy()
   const saveSurveyResultRepository = makeSaveSurveyByIdRepositoryStub()
   const sut = new DbSaveSurveyResult(saveSurveyResultRepository, loadSurveyResultRepositoryStub)
   return {

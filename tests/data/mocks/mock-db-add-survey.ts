@@ -1,7 +1,10 @@
 import type { AddSurveyRepository } from '@/data/protocols/db/survey/add-survey-repository'
 
-export class AddSurveyRepositoryStub implements AddSurveyRepository {
+export class AddSurveyRepositorySpy implements AddSurveyRepository {
+  data: AddSurveyRepository.Params
+  result = null
   async add (data: AddSurveyRepository.Params): AddSurveyRepository.Result {
-    return Promise.resolve(null)
+    this.data = data
+    return this.result
   }
 }
