@@ -1,18 +1,17 @@
-import type { LoadSurveysRepository } from '@/data/protocols/db/survey/load-surveys-repository'
 import { DbLoadSurveys } from '@/data/use-cases/db-load-surveys'
-import { mockLoadSurveysRepositoryStub } from '@/tests/data/mocks/mock-load-surveys'
+import { mockLoadSurveysRepositorySpy, type LoadSurveysRepositorySpy } from '@/tests/data/mocks/mock-load-surveys'
 import MockDate from 'mockdate'
 type SutType = {
   sut: DbLoadSurveys
-  loadSurveysRepositoryStub: LoadSurveysRepository
+  loadSurveysRepositorySpy: LoadSurveysRepositorySpy
 }
 
 const makeSut = (): SutType => {
-  const loadSurveysRepositoryStub = mockLoadSurveysRepositoryStub()
-  const sut = new DbLoadSurveys(loadSurveysRepositoryStub)
+  const loadSurveysRepositorySpy = mockLoadSurveysRepositorySpy()
+  const sut = new DbLoadSurveys(loadSurveysRepositorySpy)
   return {
     sut,
-    loadSurveysRepositoryStub
+    loadSurveysRepositorySpy
   }
 }
 describe('Db load surveys', () => {
@@ -24,10 +23,9 @@ describe('Db load surveys', () => {
     MockDate.reset()
   })
   test('should call load surveys repository', async () => {
-    const { sut, loadSurveysRepositoryStub } = makeSut()
-    const spyloadRepo = jest.spyOn(loadSurveysRepositoryStub, 'loadSurveys')
+    const { sut, loadSurveysRepositorySpy } = makeSut()
     await sut.load()
-    expect(spyloadRepo).toHaveBeenCalled()
+    expect(loadSurveysRepositorySpy.call).toBeTruthy()
   })
   test('should return list surveys on success', async () => {
     const { sut } = makeSut()
@@ -46,8 +44,8 @@ describe('Db load surveys', () => {
   })
 
   test('should throws if load surveys repository throws', async () => {
-    const { sut, loadSurveysRepositoryStub } = makeSut()
-    jest.spyOn(loadSurveysRepositoryStub, 'loadSurveys').mockReturnValueOnce(Promise.reject(new Error()))
+    const { sut, loadSurveysRepositorySpy } = makeSut()
+    jest.spyOn(loadSurveysRepositorySpy, 'loadSurveys').mockReturnValueOnce(Promise.reject(new Error()))
     const listSurveys = sut.load()
     await expect(listSurveys).rejects.toThrow()
   })
